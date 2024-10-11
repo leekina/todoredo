@@ -10,8 +10,13 @@ class Chat extends _$Chat {
     return [];
   }
 
-  void addchat(String chat, bool re) {
-    state = AsyncData([...state.value!, Todo.add(todo: chat, re: re)]);
+  void addchat({required String chat, required bool re, DateTime? date}) {
+    if (date == null) {
+      state = AsyncData([...state.value!, Todo.add(todo: chat, re: re)]);
+    } else {
+      state = AsyncData(
+          [...state.value!, Todo.add(todo: chat, re: re, date: date)]);
+    }
   }
 
   void editChat(String id, String chat) {

@@ -16,11 +16,11 @@ class Todo with _$Todo {
     @Default(false) bool redo,
   }) = _Todo;
 
-  factory Todo.add({required String todo, required bool re}) {
+  factory Todo.add({required String todo, required bool re, DateTime? date}) {
     return Todo(
       id: uuid.v4(),
       title: todo,
-      date: DateTime.now(),
+      date: date ?? DateTime.now(),
       redo: re,
     );
   }
