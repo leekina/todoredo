@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-part 'chat.model.g.dart';
-part 'chat.model.freezed.dart';
+part 'todo.model.g.dart';
+part 'todo.model.freezed.dart';
 
 const uuid = Uuid();
 
@@ -16,11 +16,12 @@ class Todo with _$Todo {
     @Default(false) bool redo,
   }) = _Todo;
 
-  factory Todo.add({required String todo, required bool re, DateTime? date}) {
+  factory Todo.add(
+      {required String todo, required bool re, required DateTime date}) {
     return Todo(
       id: uuid.v4(),
       title: todo,
-      date: date ?? DateTime.now(),
+      date: date,
       redo: re,
     );
   }

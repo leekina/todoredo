@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todoredo/models/chat.model.dart';
+import 'package:todoredo/models/todo.model.dart';
+import 'package:todoredo/repository/todo_repository.dart';
 
 part 'providers.g.dart';
 
@@ -7,19 +8,22 @@ part 'providers.g.dart';
 class Chat extends _$Chat {
   @override
   FutureOr<List<Todo>> build() {
-    return [];
+    return ref.read(todosRepositoryProvider).getTodos();
   }
 
   void addchat({required String chat, required bool re, DateTime? date}) {
+    final newTodo = Todo.add(todo: chat, re: re, date: date ?? DateTime.now());
+
+    ref.read(todosRepositoryProvider).addTodo(todo: newTodo);
     if (date == null) {
-      state = AsyncData([...state.value!, Todo.add(todo: chat, re: re)]);
+      state = AsyncData([...state.value!, newTodo]);
     } else {
-      state = AsyncData(
-          [...state.value!, Todo.add(todo: chat, re: re, date: date)]);
+      state = AsyncData([...state.value!, newTodo]);
     }
   }
 
   void editChat(String id, String chat) {
+    ref.read(todosRepositoryProvider).editTodo(id: id, desc: chat);
     state = AsyncData([
       for (final todo in state.value!)
         todo.id == id ? todo.copyWith(title: chat) : todo
@@ -27,6 +31,7 @@ class Chat extends _$Chat {
   }
 
   void deleteChat(String id) {
+    ref.read(todosRepositoryProvider).removeTodo(id: id);
     state = AsyncData([
       for (final todo in state.value!)
         if (todo.id != id) todo
@@ -34,6 +39,7 @@ class Chat extends _$Chat {
   }
 
   void completeChat(String id) {
+    ref.read(todosRepositoryProvider).completeTodo(id: id);
     state = AsyncData([
       for (final todo in state.value!)
         todo.id == id ? todo.copyWith(complete: !todo.complete) : todo
@@ -41,6 +47,7 @@ class Chat extends _$Chat {
   }
 
   void changeReChat(String id) {
+    ref.read(todosRepositoryProvider).changeReTodo(id: id);
     state = AsyncData([
       for (final todo in state.value!)
         todo.id == id ? todo.copyWith(redo: !todo.redo) : todo
