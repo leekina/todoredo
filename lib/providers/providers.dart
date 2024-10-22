@@ -46,13 +46,13 @@ class Chat extends _$Chat {
     ]);
   }
 
-  void changeReChat(String id) {
-    ref.read(todosRepositoryProvider).changeReTodo(id: id);
-    state = AsyncData([
-      for (final todo in state.value!)
-        todo.id == id ? todo.copyWith(redo: !todo.redo) : todo
-    ]);
-  }
+  // void changeReChat(String id) {
+  //   ref.read(todosRepositoryProvider).changeReTodo(id: id);
+  //   state = AsyncData([
+  //     for (final todo in state.value!)
+  //       todo.id == id ? todo.copyWith(redo: !todo.redo) : todo
+  //   ]);
+  // }
 }
 
 @riverpod

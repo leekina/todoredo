@@ -25,22 +25,10 @@ class ChatWidget extends HookConsumerWidget {
           Dismissible(
             key: ValueKey(todo.id),
             onDismissed: (direction) {
-              //완료면 복사
-              if (todo.date.isBefore(DateTime.now())) {
-                if (direction == DismissDirection.endToStart) {
-                  ref.read(chatProvider.notifier).addchat(
-                        chat: todo.title,
-                        re: true,
-                        date: DateTime.now().add(const Duration(days: 1)),
-                      );
-                  if (!todo.complete) {
-                    ref.read(chatProvider.notifier).deleteChat(todo.id);
-                  }
-                } else {
-                  ref.read(chatProvider.notifier).deleteChat(todo.id);
-                }
-
-                //아니아니면 미루기
+              if (direction == DismissDirection.startToEnd) {
+                ref.read(chatProvider.notifier).deleteChat(todo.id);
+              } else {
+                // change to schedule
               }
             },
             child: GestureDetector(

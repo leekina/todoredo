@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todoredo/main.dart';
+import 'package:todoredo/models/todo.model.dart';
 
 import 'package:todoredo/providers/providers.dart';
 import 'package:todoredo/util/weekday_convertor.dart';
@@ -67,47 +68,22 @@ class MainPage extends HookConsumerWidget {
                       itemBuilder: (context, index) {
                         final todo = data[index];
                         final date = DateFormat('MM. dd').format(todo.date);
-                        final now = DateFormat('MM. dd').format(DateTime.now());
+                        final today =
+                            DateFormat('MM. dd').format(DateTime.now());
+
                         return Column(
                           children: [
                             if (index == 0)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: date == now
-                                        ? Colors.lightGreenAccent
-                                            .withOpacity(0.7)
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                      '$date ${weekdayConvertor(todo.date.weekday)}'),
-                                ),
-                              )
+                              DateView(todo)
                             else if (date !=
                                 DateFormat('MM. dd')
                                     .format(data[index - 1].date))
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: date == now
-                                        ? Colors.lightGreenAccent
-                                            .withOpacity(0.7)
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                      '$date ${weekdayConvertor(todo.date.weekday)}'),
-                                ),
-                              ),
+                              DateView(todo),
+                            if (date == today &&
+                                date !=
+                                    DateFormat('MM. dd')
+                                        .format(data[index - 1].date))
+                              const ScheduleWidget(),
                             ChatWidget(todo: todo),
                           ],
                         );
@@ -125,5 +101,36 @@ class MainPage extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class DateView extends HookConsumerWidget {
+  final Todo todo;
+  const DateView(this.todo, {super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final date = DateFormat('MM. dd').format(todo.date);
+    final today = DateFormat('MM. dd').format(DateTime.now());
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: date == today
+              ? Colors.lightGreenAccent.withOpacity(0.7)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text('$date ${weekdayConvertor(todo.date.weekday)}'),
+      ),
+    );
+  }
+}
+
+class ScheduleWidget extends HookConsumerWidget {
+  const ScheduleWidget({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const Text('Schedule');
   }
 }
