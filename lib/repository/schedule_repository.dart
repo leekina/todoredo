@@ -28,7 +28,7 @@ class HiveScheduleRepository extends SchedulesRepository {
     try {
       return [
         for (final schedule in scheduleBox.values)
-          schedule.fromJson(Map<String, dynamic>.from(schedule))
+          Schedule.fromJson(Map<String, dynamic>.from(schedule))
       ];
     } catch (e) {
       rethrow;

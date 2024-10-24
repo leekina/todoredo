@@ -3,17 +3,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/page/main_page.dart';
-import 'package:todoredo/providers/providers.dart';
+import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/repository/schedule_repository.dart';
 import 'package:todoredo/repository/todo_repository.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('todos');
   await Hive.openBox('schedules');
+
   runApp(
     ProviderScope(
       overrides: [
         todosRepositoryProvider.overrideWithValue(HiveTodoRepository()),
+        schedulesRepositoryProvider.overrideWithValue(HiveScheduleRepository()),
       ],
       child: const MyApp(),
     ),
@@ -56,9 +59,9 @@ class BottomWidget extends HookConsumerWidget {
         controller: controller,
         focusNode: textFocus,
         onFieldSubmitted: (value) {
-          ref
-              .read(chatProvider.notifier)
-              .addchat(chat: value, re: selectRe.value);
+          ref.read(crudTodoProvider.notifier).addTodo(
+                chat: value,
+              );
           controller.clear();
         },
         decoration: InputDecoration(
@@ -78,8 +81,8 @@ class BottomWidget extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(20),
             onTap: () {
               ref
-                  .read(chatProvider.notifier)
-                  .addchat(chat: controller.text, re: selectRe.value);
+                  .read(crudTodoProvider.notifier)
+                  .addTodo(chat: controller.text);
               controller.clear();
             },
             child: const Icon(Icons.send),

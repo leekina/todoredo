@@ -4,13 +4,14 @@ import 'package:intl/intl.dart';
 
 import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/page/main_page.dart';
-import 'package:todoredo/providers/providers.dart';
+import 'package:todoredo/providers/schedule_providers.dart';
+import 'package:todoredo/providers/todo_providers.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
 
-class ChatWidget extends HookConsumerWidget {
+class TodoWidget extends HookConsumerWidget {
   final Todo todo;
 
-  const ChatWidget({
+  const TodoWidget({
     super.key,
     required this.todo,
   });
@@ -19,50 +20,49 @@ class ChatWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      child: Stack(
-        children: [
-          if (todo.complete) ChatView(todo: todo),
-          Dismissible(
-            key: ValueKey(todo.id),
-            onDismissed: (direction) {
-              if (direction == DismissDirection.startToEnd) {
-                ref.read(chatProvider.notifier).deleteChat(todo.id);
-              } else {
-                // change to schedule
-              }
-            },
-            child: GestureDetector(
-              onLongPress: () {
-                if (!todo.complete) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return EditChatDialog(todo);
-                    },
-                  );
-                }
-              },
-              onTap: () {
-                //오늘이전꺼만 컴플리트 가능
-                if (todo.date.isBefore(DateTime.now())) {
-                  ref.read(chatProvider.notifier).completeChat(todo.id);
-                }
+      child: Dismissible(
+        key: ValueKey(todo.id),
+        onDismissed: (direction) {
+          //디스미스
+          if (direction == DismissDirection.endToStart) {
+            ref
+                .read(crudScheduleProvider.notifier)
+                .addSchedule(chat: todo.title, re: false);
+            //스케쥴로 전환
+          }
+          ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
+        },
+        child: GestureDetector(
+          //길게 누르면 수정
+          onLongPress: () {
+            if (!todo.complete) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return EditTodoDialog(todo);
+                },
+              );
+            }
+          },
+          onTap: () {
+            //오늘이전꺼만 컴플리트 가능
+            if (todo.date.isBefore(DateTime.now())) {
+              ref.read(crudTodoProvider.notifier).completeTodo(todo.id);
+            }
 
-                //언포커스
-                textFocus.unfocus();
-              },
-              child: ChatView(todo: todo),
-            ),
-          ),
-        ],
+            //언포커스
+            textFocus.unfocus();
+          },
+          child: TodoView(todo: todo),
+        ),
       ),
     );
   }
 }
 
-class ChatView extends HookConsumerWidget {
+class TodoView extends HookConsumerWidget {
   final Todo todo;
-  const ChatView({
+  const TodoView({
     super.key,
     required this.todo,
   });

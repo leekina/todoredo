@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/providers.dart';
+import 'package:todoredo/providers/todo_providers.dart';
 
-class EditChatDialog extends HookConsumerWidget {
+class EditTodoDialog extends HookConsumerWidget {
   final Todo todo;
-  const EditChatDialog(this.todo, {super.key});
+  const EditTodoDialog(this.todo, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController(text: todo.title);
@@ -19,7 +19,7 @@ class EditChatDialog extends HookConsumerWidget {
       actions: [
         TextButton(
             onPressed: () {
-              ref.read(chatProvider.notifier).deleteChat(todo.id);
+              ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
               Navigator.pop(context);
             },
             child: const Text('삭제')),
@@ -31,8 +31,8 @@ class EditChatDialog extends HookConsumerWidget {
         TextButton(
             onPressed: () {
               ref
-                  .read(chatProvider.notifier)
-                  .editChat(todo.id, controller.text);
+                  .read(crudTodoProvider.notifier)
+                  .editTodo(todo.id, controller.text);
               Navigator.pop(context);
             },
             child: const Text('확인')),

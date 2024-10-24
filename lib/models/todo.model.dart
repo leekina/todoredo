@@ -13,8 +13,7 @@ class Todo with _$Todo {
     @Default(false) bool complete,
   }) = _Todo;
 
-  factory Todo.add(
-      {required String todo, required bool re, required DateTime date}) {
+  factory Todo.add({required String todo, required DateTime date}) {
     return Todo(
       id: uuid.v4(),
       title: todo,

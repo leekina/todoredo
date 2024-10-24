@@ -18,7 +18,6 @@ abstract class TodosRepository {
     required String desc,
   });
   Future<void> completeTodo({required String id});
-  Future<void> changeReTodo({required String id});
 }
 
 class HiveTodoRepository extends TodosRepository {
@@ -70,17 +69,6 @@ class HiveTodoRepository extends TodosRepository {
     try {
       final todoMap = todoBox.get(id);
       todoMap['complete'] = !todoMap['complete'];
-      await todoBox.put(id, todoMap);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> changeReTodo({required String id}) async {
-    try {
-      final todoMap = todoBox.get(id);
-      todoMap['redo'] = !todoMap['redo'];
       await todoBox.put(id, todoMap);
     } catch (e) {
       rethrow;
