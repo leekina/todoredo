@@ -9,6 +9,7 @@ import 'package:todoredo/repository/todo_repository.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('todos');
+  await Hive.openBox('schedules');
   runApp(
     ProviderScope(
       overrides: [
