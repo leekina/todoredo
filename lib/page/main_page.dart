@@ -69,16 +69,21 @@ class MainPage extends HookConsumerWidget {
                       itemBuilder: (context, index) {
                         final todo = todoList[index];
                         final date = DateFormat('MM. dd').format(todo.date);
+                        final today =
+                            DateFormat('MM. dd').format(DateTime.now());
+                        final isTodayAndNoTodo =
+                            (todoList.length - 1 == index && date != today);
 
                         return Column(
                           children: [
                             if (index == 0)
-                              DateView(todo)
+                              DateView(todo.date)
                             else if (date !=
                                 DateFormat('MM. dd')
                                     .format(todoList[index - 1].date))
-                              DateView(todo),
+                              DateView(todo.date),
                             TodoWidget(todo: todo),
+                            if (isTodayAndNoTodo) DateView(DateTime.now())
                           ],
                         );
                       },
@@ -99,11 +104,11 @@ class MainPage extends HookConsumerWidget {
 }
 
 class DateView extends HookConsumerWidget {
-  final Todo todo;
-  const DateView(this.todo, {super.key});
+  final DateTime todoDate;
+  const DateView(this.todoDate, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = DateFormat('MM. dd').format(todo.date);
+    final date = DateFormat('MM. dd').format(todoDate);
     final today = DateFormat('MM. dd').format(DateTime.now());
     return Column(
       children: [
@@ -117,7 +122,7 @@ class DateView extends HookConsumerWidget {
                   : Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text('$date ${weekdayConvertor(todo.date.weekday)}'),
+            child: Text('$date ${weekdayConvertor(todoDate.weekday)}'),
           ),
         ),
         if (today == date) const ScheduleList(),
