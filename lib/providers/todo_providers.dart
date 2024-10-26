@@ -9,46 +9,46 @@ part 'todo_providers.g.dart';
 @riverpod
 class CrudTodo extends _$CrudTodo {
   @override
-  FutureOr<List<Todo>> build() {
-    return ref.read(todosRepositoryProvider).getTodos();
+  FutureOr<List<Todo>> build() async {
+    return await ref.read(todosRepositoryProvider).getTodos();
   }
 
-  void addTodo({required String chat, DateTime? date, TodoType? type}) {
+  void addTodo({required String chat, DateTime? date, TodoType? type}) async {
     final newTodo = Todo.add(
       todo: chat,
       date: date ?? DateTime.now(),
       type: type ?? TodoType.todo,
     );
-    ref.read(todosRepositoryProvider).addTodo(todo: newTodo);
+    await ref.read(todosRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...state.value!, newTodo]);
   }
 
-  void editTodoTitle(String id, String chat) {
-    ref.read(todosRepositoryProvider).editTodoTitle(id: id, desc: chat);
+  void editTodoTitle(String id, String chat) async {
+    await ref.read(todosRepositoryProvider).editTodoTitle(id: id, desc: chat);
     state = AsyncData([
       for (final todo in state.value!)
         todo.id == id ? todo.copyWith(title: chat) : todo
     ]);
   }
 
-  void editTodoType(String id, TodoType type) {
-    ref.read(todosRepositoryProvider).editTodoType(id: id, type: type);
+  void editTodoType(String id, TodoType type) async {
+    await ref.read(todosRepositoryProvider).editTodoType(id: id, type: type);
     state = AsyncData([
       for (final todo in state.value!)
         todo.id == id ? todo.copyWith(type: type) : todo
     ]);
   }
 
-  void toogleTodoComplete(String id) {
-    ref.read(todosRepositoryProvider).toogleTodoComplete(id: id);
+  void toogleTodoComplete(String id) async {
+    await ref.read(todosRepositoryProvider).toogleTodoComplete(id: id);
     state = AsyncData([
       for (final todo in state.value!)
         todo.id == id ? todo.copyWith(complete: !todo.complete) : todo
     ]);
   }
 
-  void deleteTodo(String id) {
-    ref.read(todosRepositoryProvider).removeTodo(id: id);
+  void deleteTodo(String id) async {
+    await ref.read(todosRepositoryProvider).removeTodo(id: id);
     state = AsyncData([
       for (final todo in state.value!)
         if (todo.id != id) todo
@@ -69,6 +69,22 @@ class GetSchedule extends _$GetSchedule {
   @override
   FutureOr<List<Todo>> build() {
     return ref.read(todosRepositoryProvider).getTodos(type: TodoType.schedule);
+  }
+}
+
+@riverpod
+class GetScheduleNotCompleted extends _$GetScheduleNotCompleted {
+  @override
+  FutureOr<List<Todo>> build() async {
+    final schedules = ref.watch(getScheduleProvider).valueOrNull;
+    if (schedules != null) {
+      final scheduleNot = [
+        for (final schedule in schedules)
+          if (schedule.complete == false) schedule
+      ];
+      return scheduleNot;
+    }
+    return [];
   }
 }
 

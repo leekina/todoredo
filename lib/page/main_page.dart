@@ -124,7 +124,7 @@ class DateView extends HookConsumerWidget {
             child: Text('$date ${weekdayConvertor(todoDate.weekday)}'),
           ),
         ),
-        // if (today == date) const ScheduleList(),
+        if (today == date) const Text('schedule'),
       ],
     );
   }

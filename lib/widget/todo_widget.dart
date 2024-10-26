@@ -3,10 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/page/main_page.dart';
 import 'package:todoredo/providers/todo_providers.dart';
 import 'package:todoredo/util/common.dart';
-import 'package:todoredo/widget/add_todo_widget.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
 
 class TodoWidget extends HookConsumerWidget {
@@ -29,7 +27,9 @@ class TodoWidget extends HookConsumerWidget {
         onDismissed: (direction) {
           //디스미스
           if (direction == DismissDirection.endToStart) {
-            //스케쥴로 전환
+            ref
+                .read(crudTodoProvider.notifier)
+                .editTodoType(todo.id, TodoType.schedule);
           }
           ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
         },
