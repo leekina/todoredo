@@ -32,7 +32,7 @@ class EditTodoDialog extends HookConsumerWidget {
             onPressed: () {
               ref
                   .read(crudTodoProvider.notifier)
-                  .editTodo(todo.id, controller.text);
+                  .editTodoTitle(todo.id, controller.text);
               Navigator.pop(context);
             },
             child: const Text('확인')),

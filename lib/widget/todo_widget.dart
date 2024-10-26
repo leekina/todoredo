@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/page/main_page.dart';
-import 'package:todoredo/providers/schedule_providers.dart';
 import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/util/common.dart';
+import 'package:todoredo/widget/add_todo_widget.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
 
 class TodoWidget extends HookConsumerWidget {
@@ -22,12 +23,12 @@ class TodoWidget extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Dismissible(
         key: ValueKey(todo.id),
+        direction: todo.complete
+            ? DismissDirection.startToEnd
+            : DismissDirection.horizontal,
         onDismissed: (direction) {
           //디스미스
           if (direction == DismissDirection.endToStart) {
-            ref
-                .read(crudScheduleProvider.notifier)
-                .addSchedule(chat: todo.title, re: false);
             //스케쥴로 전환
           }
           ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
@@ -46,12 +47,12 @@ class TodoWidget extends HookConsumerWidget {
           },
           onTap: () {
             //오늘이전꺼만 컴플리트 가능
-            if (todo.date.isBefore(DateTime.now())) {
-              ref.read(crudTodoProvider.notifier).completeTodo(todo.id);
+            if (todo.createDate.isBefore(DateTime.now())) {
+              ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo.id);
             }
 
             //언포커스
-            textFocus.unfocus();
+            addTodoNode.unfocus();
           },
           child: TodoView(todo: todo),
         ),
@@ -68,7 +69,7 @@ class TodoView extends HookConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final time = DateFormat('hh:mm').format(todo.date);
+    final time = DateFormat('hh:mm').format(todo.createDate);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -82,12 +83,13 @@ class TodoView extends HookConsumerWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color:
-                  todo.complete ? Colors.green.withOpacity(0.8) : Colors.white),
+              color: todo.complete
+                  ? Colors.green.shade900.withOpacity(0.8)
+                  : Colors.white),
           child: Text(
             todo.title,
             style: TextStyle(
-              color: todo.date.isBefore(DateTime.now())
+              color: todo.createDate.isBefore(DateTime.now())
                   ? todo.complete
                       ? Colors.white
                       : Colors.black

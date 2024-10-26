@@ -9,15 +9,19 @@ class Todo with _$Todo {
   const factory Todo({
     required String id,
     required String title,
-    required DateTime date,
+    required TodoType type,
+    required DateTime createDate,
+    DateTime? completeDate,
     @Default(false) bool complete,
   }) = _Todo;
 
-  factory Todo.add({required String todo, required DateTime date}) {
+  factory Todo.add(
+      {required String todo, required DateTime date, required TodoType type}) {
     return Todo(
       id: uuid.v4(),
       title: todo,
-      date: date,
+      type: type,
+      createDate: date,
     );
   }
 
