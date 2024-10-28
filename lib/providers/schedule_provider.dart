@@ -21,6 +21,13 @@ class CrudSchedule extends _$CrudSchedule {
     state = AsyncData([...?state.value, newTodo]);
   }
 
+  void addScheduleFromTodo(Todo todo) async {
+    await ref
+        .read(scheduleRepositoryProvider)
+        .addTodo(todo: todo.copyWith(complete: false));
+    state = AsyncData([...?state.value, todo]);
+  }
+
   void editTodoTitle(String id, String chat) async {
     await ref
         .read(scheduleRepositoryProvider)

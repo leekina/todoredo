@@ -66,6 +66,7 @@ class ScheduleWidget extends HookConsumerWidget {
             }
           },
           onTap: () {
+            //완료
             //투두에 추가하고 스케쥴에서는 제거
             ref.read(crudTodoProvider.notifier).addTodoFromSchedule(schedule);
             ref.read(crudScheduleProvider.notifier).deleteTodo(schedule.id);

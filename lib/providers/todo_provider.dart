@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:todoredo/models/todo.model.dart';
+import 'package:todoredo/providers/schedule_provider.dart';
 
 import 'package:todoredo/repository/todo_repository.dart';
 import 'package:todoredo/util/common.dart';
@@ -24,7 +25,9 @@ class CrudTodo extends _$CrudTodo {
   }
 
   void addTodoFromSchedule(Todo todo) async {
-    await ref.read(todoRepositoryProvider).addTodo(todo: todo);
+    await ref
+        .read(todoRepositoryProvider)
+        .addTodo(todo: todo.copyWith(complete: true));
     state = AsyncData([...?state.value, todo]);
   }
 
@@ -44,12 +47,20 @@ class CrudTodo extends _$CrudTodo {
     ]);
   }
 
-  void toogleTodoComplete(String id) async {
-    await ref.read(todoRepositoryProvider).toogleTodoComplete(id: id);
-    state = AsyncData([
-      for (final todo in state.value ?? [])
-        todo.id == id ? todo.copyWith(complete: !todo.complete) : todo
-    ]);
+  void toogleTodoComplete(Todo entity) async {
+    //스케쥴 일 경우에는 완료안된 스케쥴로 복귀
+    if (entity.type == TodoType.schedule.name) {
+      ref
+          .read(crudScheduleProvider.notifier)
+          .addScheduleFromTodo(entity.copyWith(complete: false));
+      deleteTodo(entity.id);
+    } else {
+      await ref.read(todoRepositoryProvider).toogleTodoComplete(id: entity.id);
+      state = AsyncData([
+        for (final todo in state.value ?? [])
+          todo.id == entity.id ? todo.copyWith(complete: !todo.complete) : todo
+      ]);
+    }
   }
 
   void deleteTodo(String id) async {

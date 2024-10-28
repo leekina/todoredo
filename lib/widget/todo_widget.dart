@@ -48,8 +48,7 @@ class TodoWidget extends HookConsumerWidget {
             }
           },
           onTap: () {
-            ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo.id);
-
+            ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo);
             //언포커스
             addTodoNode.unfocus();
           },
