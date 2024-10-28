@@ -2,30 +2,16 @@ import 'package:hive/hive.dart';
 import 'package:todoredo/models/todo.model.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:todoredo/repository/repository_scheme.dart';
 import 'package:todoredo/util/common.dart';
 part 'todo_repository.g.dart';
 
 @riverpod
-TodosRepository todosRepository(TodosRepositoryRef ref) {
+TodoRepository todoRepository(TodoRepositoryRef ref) {
   throw UnimplementedError();
 }
 
-abstract class TodosRepository {
-  Future<List<Todo>> getTodos({TodoType? type});
-  Future<void> addTodo({required Todo todo});
-  Future<void> removeTodo({required String id});
-  Future<void> editTodoTitle({
-    required String id,
-    required String desc,
-  });
-  Future<void> editTodoType({
-    required String id,
-    required TodoType type,
-  });
-  Future<void> toogleTodoComplete({required String id});
-}
-
-class HiveTodoRepository extends TodosRepository {
+class TodoRepository extends TodoRepositoryScheme {
   final Box todoBox = Hive.box('todos');
 
   @override
@@ -33,7 +19,6 @@ class HiveTodoRepository extends TodosRepository {
     try {
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
-
       switch (type) {
         case TodoType.todo:
           return [
@@ -84,7 +69,6 @@ class HiveTodoRepository extends TodosRepository {
     }
   }
 
-  @override
   Future<void> editTodoType(
       {required String id, required TodoType type}) async {
     try {
@@ -105,7 +89,6 @@ class HiveTodoRepository extends TodosRepository {
     }
   }
 
-  @override
   Future<void> toogleTodoComplete({required String id}) async {
     try {
       final todoMap = Todo.fromJson(todoBox.get(id));

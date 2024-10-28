@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/providers/schedule_provider.dart';
+import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
 import 'package:todoredo/widget/todo_widget.dart';
 
-//TODO : 이 파일 확인 필요 임시 작성임
 class ScheduleListWidget extends HookConsumerWidget {
   const ScheduleListWidget({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scheduleListNotCompleted = ref.watch(getScheduleNotCompletedProvider);
+    final scheduleListNotCompleted = ref.watch(crudScheduleProvider);
     return scheduleListNotCompleted.maybeWhen(
       data: (scheduleList) {
         return ListView.builder(
@@ -47,9 +47,11 @@ class ScheduleWidget extends HookConsumerWidget {
         onDismissed: (direction) {
           //디스미스
           if (direction == DismissDirection.startToEnd) {
-            ref.read(crudTodoProvider.notifier).addTodo(chat: schedule.title);
+            ref
+                .read(crudTodoProvider.notifier)
+                .addTodo(chat: schedule.title, date: schedule.createDate);
           }
-          ref.read(crudTodoProvider.notifier).deleteTodo(schedule.id);
+          ref.read(crudScheduleProvider.notifier).deleteTodo(schedule.id);
         },
         child: GestureDetector(
           //길게 누르면 수정
@@ -64,12 +66,9 @@ class ScheduleWidget extends HookConsumerWidget {
             }
           },
           onTap: () {
-            //오늘이전꺼만 컴플리트 가능
-            if (schedule.createDate.isBefore(DateTime.now())) {
-              ref
-                  .read(crudTodoProvider.notifier)
-                  .toogleTodoComplete(schedule.id);
-            }
+            //투두에 추가하고 스케쥴에서는 제거
+            ref.read(crudTodoProvider.notifier).addTodoFromSchedule(schedule);
+            ref.read(crudScheduleProvider.notifier).deleteTodo(schedule.id);
 
             //언포커스
             addTodoNode.unfocus();

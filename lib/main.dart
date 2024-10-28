@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/page/main_page.dart';
+import 'package:todoredo/repository/schedule_repository.dart';
 
 import 'package:todoredo/repository/todo_repository.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('todos');
+  await Hive.openBox('schedules');
 
   runApp(
     ProviderScope(
       overrides: [
-        todosRepositoryProvider.overrideWithValue(HiveTodoRepository()),
+        todoRepositoryProvider.overrideWithValue(TodoRepository()),
+        scheduleRepositoryProvider.overrideWithValue(ScheduleRepository()),
       ],
       child: const MyApp(),
     ),

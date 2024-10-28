@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/util/weekday_convertor.dart';
 import 'package:todoredo/widget/add_todo_widget.dart';
@@ -15,7 +15,7 @@ class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(getAllTodosProvider);
+    final todos = ref.watch(crudTodoProvider);
     final controller = useTextEditingController();
     final scrollController = useScrollController();
 

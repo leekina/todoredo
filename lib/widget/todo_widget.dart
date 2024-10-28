@@ -3,7 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/providers/schedule_provider.dart';
+import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
 
@@ -25,12 +26,12 @@ class TodoWidget extends HookConsumerWidget {
             ? DismissDirection.startToEnd
             : DismissDirection.horizontal,
         onDismissed: (direction) {
-          //디스미스
+          //스케쥴 추가후 삭제
           if (direction == DismissDirection.endToStart) {
-            ref.read(crudTodoProvider.notifier).addTodo(
-                chat: todo.title,
-                date: todo.createDate,
-                type: TodoType.schedule);
+            ref.read(crudScheduleProvider.notifier).addSchedule(
+                  chat: todo.title,
+                  createDate: DateTime.now(),
+                );
           }
           ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
         },
@@ -47,10 +48,7 @@ class TodoWidget extends HookConsumerWidget {
             }
           },
           onTap: () {
-            //오늘이전꺼만 컴플리트 가능
-            if (todo.createDate.isBefore(DateTime.now())) {
-              ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo.id);
-            }
+            ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo.id);
 
             //언포커스
             addTodoNode.unfocus();
@@ -70,7 +68,7 @@ class TodoView extends HookConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSchedule = todo.type == TodoType.schedule;
+    final isSchedule = todo.type == TodoType.schedule.name;
     final time = DateFormat('hh:mm').format(todo.createDate);
     return Row(
       mainAxisAlignment:
@@ -93,13 +91,8 @@ class TodoView extends HookConsumerWidget {
                   : Colors.white),
           child: Text(
             todo.title,
-            style: TextStyle(
-              color: todo.createDate.isBefore(DateTime.now())
-                  ? todo.complete
-                      ? Colors.white
-                      : Colors.black
-                  : Colors.grey,
-            ),
+            style:
+                TextStyle(color: todo.complete ? Colors.white : Colors.black),
           ),
         ),
         const SizedBox(width: 4),

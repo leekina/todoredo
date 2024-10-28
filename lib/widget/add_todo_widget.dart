@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 
 class AddTodoWidget extends HookConsumerWidget {

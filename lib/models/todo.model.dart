@@ -16,12 +16,14 @@ class Todo with _$Todo {
   }) = _Todo;
 
   factory Todo.add(
-      {required String todo, required DateTime date, required TodoType type}) {
+      {required String todo,
+      required DateTime createDate,
+      required TodoType type}) {
     return Todo(
       id: uuid.v4(),
       title: todo,
       type: type.name,
-      createDate: date,
+      createDate: createDate,
     );
   }
 

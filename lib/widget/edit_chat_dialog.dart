@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/todo_providers.dart';
+import 'package:todoredo/providers/schedule_provider.dart';
+import 'package:todoredo/providers/todo_provider.dart';
+import 'package:todoredo/util/common.dart';
 
 class EditTodoDialog extends HookConsumerWidget {
   final Todo todo;
@@ -19,7 +21,9 @@ class EditTodoDialog extends HookConsumerWidget {
       actions: [
         TextButton(
             onPressed: () {
-              ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
+              todo.type == TodoType.schedule.name
+                  ? ref.read(crudScheduleProvider.notifier).deleteTodo(todo.id)
+                  : ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
               Navigator.pop(context);
             },
             child: const Text('삭제')),
