@@ -7,6 +7,7 @@ import 'package:todoredo/providers/todo_providers.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/util/weekday_convertor.dart';
 import 'package:todoredo/widget/add_todo_widget.dart';
+import 'package:todoredo/widget/schedule_list_widget.dart';
 
 import 'package:todoredo/widget/todo_widget.dart';
 
@@ -14,7 +15,7 @@ class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(crudTodoProvider);
+    final todos = ref.watch(getAllTodosProvider);
     final controller = useTextEditingController();
     final scrollController = useScrollController();
 
@@ -58,6 +59,14 @@ class MainPage extends HookConsumerWidget {
                   data: (todoList) {
                     todoList.sort(
                       (a, b) {
+                        if (a.type == TodoType.schedule.name &&
+                            a.completeDate != null) {
+                          return a.completeDate!.compareTo(b.createDate);
+                        }
+                        if (b.type == TodoType.schedule.name &&
+                            b.completeDate != null) {
+                          return a.createDate.compareTo(b.completeDate!);
+                        }
                         return a.createDate.compareTo(b.createDate);
                       },
                     );
@@ -124,7 +133,7 @@ class DateView extends HookConsumerWidget {
             child: Text('$date ${weekdayConvertor(todoDate.weekday)}'),
           ),
         ),
-        if (today == date) const Text('schedule'),
+        if (today == date) const ScheduleListWidget(),
       ],
     );
   }

@@ -9,4 +9,6 @@ enum TodoType {
   todo,
   schedule,
   redo,
+
+  // final String id;
 }

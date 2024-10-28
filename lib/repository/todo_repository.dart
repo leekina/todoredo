@@ -33,23 +33,24 @@ class HiveTodoRepository extends TodosRepository {
     try {
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
+
       switch (type) {
         case TodoType.todo:
           return [
             for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.todo.toString())
+              if (todo['type'] == TodoType.todo.name)
                 Todo.fromJson(Map<String, dynamic>.from(todo))
           ];
         case TodoType.schedule:
           return [
             for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.schedule.toString())
+              if (todo['type'] == TodoType.schedule.name)
                 Todo.fromJson(Map<String, dynamic>.from(todo))
           ];
         case TodoType.redo:
           return [
             for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.redo.toString())
+              if (todo['type'] == TodoType.redo.name)
                 Todo.fromJson(Map<String, dynamic>.from(todo))
           ];
         default:
@@ -88,7 +89,7 @@ class HiveTodoRepository extends TodosRepository {
       {required String id, required TodoType type}) async {
     try {
       final todoMap = todoBox.get(id);
-      todoMap['type'] = type;
+      todoMap['type'] = type.name;
       await todoBox.put(id, todoMap);
     } catch (e) {
       rethrow;

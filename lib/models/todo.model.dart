@@ -9,7 +9,7 @@ class Todo with _$Todo {
   const factory Todo({
     required String id,
     required String title,
-    required TodoType type,
+    required String type,
     required DateTime createDate,
     DateTime? completeDate,
     @Default(false) bool complete,
@@ -20,7 +20,7 @@ class Todo with _$Todo {
     return Todo(
       id: uuid.v4(),
       title: todo,
-      type: type,
+      type: type.name,
       createDate: date,
     );
   }

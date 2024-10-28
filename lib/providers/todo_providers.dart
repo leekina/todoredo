@@ -6,11 +6,13 @@ import 'package:todoredo/util/common.dart';
 
 part 'todo_providers.g.dart';
 
+//TODO: 상태관리자 적용하기
+
 @riverpod
 class CrudTodo extends _$CrudTodo {
   @override
-  FutureOr<List<Todo>> build() async {
-    return await ref.read(todosRepositoryProvider).getTodos();
+  FutureOr<List<Todo>?> build() async {
+    return null;
   }
 
   void addTodo({required String chat, DateTime? date, TodoType? type}) async {
@@ -20,13 +22,13 @@ class CrudTodo extends _$CrudTodo {
       type: type ?? TodoType.todo,
     );
     await ref.read(todosRepositoryProvider).addTodo(todo: newTodo);
-    state = AsyncData([...state.value!, newTodo]);
+    state = AsyncData([...?state.value, newTodo]);
   }
 
   void editTodoTitle(String id, String chat) async {
     await ref.read(todosRepositoryProvider).editTodoTitle(id: id, desc: chat);
     state = AsyncData([
-      for (final todo in state.value!)
+      for (final todo in state.value ?? [])
         todo.id == id ? todo.copyWith(title: chat) : todo
     ]);
   }
@@ -34,15 +36,15 @@ class CrudTodo extends _$CrudTodo {
   void editTodoType(String id, TodoType type) async {
     await ref.read(todosRepositoryProvider).editTodoType(id: id, type: type);
     state = AsyncData([
-      for (final todo in state.value!)
-        todo.id == id ? todo.copyWith(type: type) : todo
+      for (final todo in state.value ?? [])
+        todo.id == id ? todo.copyWith(type: type.name) : todo
     ]);
   }
 
   void toogleTodoComplete(String id) async {
     await ref.read(todosRepositoryProvider).toogleTodoComplete(id: id);
     state = AsyncData([
-      for (final todo in state.value!)
+      for (final todo in state.value ?? [])
         todo.id == id ? todo.copyWith(complete: !todo.complete) : todo
     ]);
   }
@@ -50,22 +52,36 @@ class CrudTodo extends _$CrudTodo {
   void deleteTodo(String id) async {
     await ref.read(todosRepositoryProvider).removeTodo(id: id);
     state = AsyncData([
-      for (final todo in state.value!)
+      for (final todo in state.value ?? [])
         if (todo.id != id) todo
     ]);
   }
 }
 
 @riverpod
-class GetTodo extends _$GetTodo {
+class GetAllTodos extends _$GetAllTodos {
   @override
-  FutureOr<List<Todo>> build() {
+  FutureOr<List<Todo>> build() async {
+    ref.listen(
+      crudTodoProvider,
+      (previous, next) {
+        // state = AsyncData([...state.value!.merge(next)]);
+      },
+    );
+    return ref.read(todosRepositoryProvider).getTodos();
+  }
+}
+
+@riverpod
+class GetTodosOnly extends _$GetTodosOnly {
+  @override
+  FutureOr<List<Todo>> build() async {
     return ref.read(todosRepositoryProvider).getTodos(type: TodoType.todo);
   }
 }
 
 @riverpod
-class GetSchedule extends _$GetSchedule {
+class GetSchedulesOnly extends _$GetSchedulesOnly {
   @override
   FutureOr<List<Todo>> build() {
     return ref.read(todosRepositoryProvider).getTodos(type: TodoType.schedule);
@@ -76,7 +92,7 @@ class GetSchedule extends _$GetSchedule {
 class GetScheduleNotCompleted extends _$GetScheduleNotCompleted {
   @override
   FutureOr<List<Todo>> build() async {
-    final schedules = ref.watch(getScheduleProvider).valueOrNull;
+    final schedules = ref.watch(getSchedulesOnlyProvider).valueOrNull;
     if (schedules != null) {
       final scheduleNot = [
         for (final schedule in schedules)

@@ -27,9 +27,10 @@ class TodoWidget extends HookConsumerWidget {
         onDismissed: (direction) {
           //디스미스
           if (direction == DismissDirection.endToStart) {
-            ref
-                .read(crudTodoProvider.notifier)
-                .editTodoType(todo.id, TodoType.schedule);
+            ref.read(crudTodoProvider.notifier).addTodo(
+                chat: todo.title,
+                date: todo.createDate,
+                type: TodoType.schedule);
           }
           ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
         },
@@ -69,15 +70,19 @@ class TodoView extends HookConsumerWidget {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isSchedule = todo.type == TodoType.schedule;
     final time = DateFormat('hh:mm').format(todo.createDate);
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment:
+          isSchedule ? MainAxisAlignment.start : MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(
-          time,
-          style: const TextStyle(color: Colors.grey),
-        ),
+        isSchedule
+            ? const SizedBox()
+            : Text(
+                time,
+                style: const TextStyle(color: Colors.grey),
+              ),
         const SizedBox(width: 4),
         Container(
           padding: const EdgeInsets.all(12),
@@ -98,6 +103,12 @@ class TodoView extends HookConsumerWidget {
           ),
         ),
         const SizedBox(width: 4),
+        isSchedule
+            ? Text(
+                time,
+                style: const TextStyle(color: Colors.grey),
+              )
+            : const SizedBox(),
       ],
     );
   }
