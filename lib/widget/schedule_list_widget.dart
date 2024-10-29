@@ -14,6 +14,11 @@ class ScheduleListWidget extends HookConsumerWidget {
     final scheduleListNotCompleted = ref.watch(crudScheduleProvider);
     return scheduleListNotCompleted.maybeWhen(
       data: (scheduleList) {
+        scheduleList.sort(
+          (a, b) {
+            return a.createDate.compareTo(b.createDate);
+          },
+        );
         return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -51,7 +56,7 @@ class ScheduleWidget extends HookConsumerWidget {
                 .read(crudTodoProvider.notifier)
                 .addTodo(chat: schedule.title, date: schedule.createDate);
           }
-          ref.read(crudScheduleProvider.notifier).deleteTodo(schedule.id);
+          ref.read(crudScheduleProvider.notifier).deleteSchedule(schedule.id);
         },
         child: GestureDetector(
           //길게 누르면 수정
@@ -69,12 +74,12 @@ class ScheduleWidget extends HookConsumerWidget {
             //완료
             //투두에 추가하고 스케쥴에서는 제거
             ref.read(crudTodoProvider.notifier).addTodoFromSchedule(schedule);
-            ref.read(crudScheduleProvider.notifier).deleteTodo(schedule.id);
+            ref.read(crudScheduleProvider.notifier).deleteSchedule(schedule.id);
 
             //언포커스
             addTodoNode.unfocus();
           },
-          child: TodoWidget(
+          child: TodoView(
             todo: schedule,
           ),
         ),

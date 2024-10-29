@@ -28,7 +28,7 @@ class CrudSchedule extends _$CrudSchedule {
     state = AsyncData([...?state.value, todo]);
   }
 
-  void editTodoTitle(String id, String chat) async {
+  void editScheduleTitle(String id, String chat) async {
     await ref
         .read(scheduleRepositoryProvider)
         .editTodoTitle(id: id, desc: chat);
@@ -38,7 +38,7 @@ class CrudSchedule extends _$CrudSchedule {
     ]);
   }
 
-  void deleteTodo(String id) async {
+  void deleteSchedule(String id) async {
     await ref.read(scheduleRepositoryProvider).removeTodo(id: id);
     state = AsyncData([
       for (final todo in state.value ?? [])

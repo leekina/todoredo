@@ -22,7 +22,9 @@ class EditTodoDialog extends HookConsumerWidget {
         TextButton(
             onPressed: () {
               todo.type == TodoType.schedule.name
-                  ? ref.read(crudScheduleProvider.notifier).deleteTodo(todo.id)
+                  ? ref
+                      .read(crudScheduleProvider.notifier)
+                      .deleteSchedule(todo.id)
                   : ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
               Navigator.pop(context);
             },

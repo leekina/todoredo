@@ -17,32 +17,41 @@ class TodoRepository extends TodoRepositoryScheme {
   @override
   Future<List<Todo>> getTodos({TodoType? type}) async {
     try {
+      final todoList = todoBox.values
+          .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+      todoList.sort(
+        (a, b) {
+          if (a.type == TodoType.schedule.name && a.completeDate != null) {
+            return a.completeDate!.compareTo(b.createDate);
+          }
+          if (b.type == TodoType.schedule.name && b.completeDate != null) {
+            return a.createDate.compareTo(b.completeDate!);
+          }
+          return a.createDate.compareTo(b.createDate);
+        },
+      );
+
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
       switch (type) {
         case TodoType.todo:
           return [
-            for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.todo.name)
-                Todo.fromJson(Map<String, dynamic>.from(todo))
+            for (final todo in todoList)
+              if (todo.type == TodoType.todo.name) todo
           ];
         case TodoType.schedule:
           return [
-            for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.schedule.name)
-                Todo.fromJson(Map<String, dynamic>.from(todo))
+            for (final todo in todoList)
+              if (todo.type == TodoType.schedule.name) todo
           ];
         case TodoType.redo:
           return [
-            for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.redo.name)
-                Todo.fromJson(Map<String, dynamic>.from(todo))
+            for (final todo in todoList)
+              if (todo.type == TodoType.redo.name) todo
           ];
         default:
-          return [
-            for (final todo in todoBox.values)
-              Todo.fromJson(Map<String, dynamic>.from(todo))
-          ];
+          return todoList;
       }
     } catch (e) {
       rethrow;
@@ -62,7 +71,7 @@ class TodoRepository extends TodoRepositoryScheme {
   Future<void> editTodoTitle({required String id, required String desc}) async {
     try {
       final todoMap = todoBox.get(id);
-      todoMap['desc'] = desc;
+      todoMap['title'] = desc;
       await todoBox.put(id, todoMap);
     } catch (e) {
       rethrow;
@@ -89,12 +98,9 @@ class TodoRepository extends TodoRepositoryScheme {
     }
   }
 
-  Future<void> toogleTodoComplete({required String id}) async {
+  Future<void> toogleTodoComplete({required Todo entity}) async {
     try {
-      final todoMap = Todo.fromJson(todoBox.get(id));
-      final completedTodo = todoMap.copyWith(
-          complete: !todoMap.complete, completeDate: DateTime.now());
-      await todoBox.put(id, completedTodo.toJson());
+      await todoBox.put(entity.id, entity.toJson());
     } catch (e) {
       rethrow;
     }

@@ -12,15 +12,15 @@ ScheduleRepository scheduleRepository(ScheduleRepositoryRef ref) {
 }
 
 class ScheduleRepository extends TodoRepositoryScheme {
-  final Box scheduleBox = Hive.box('schedule');
+  final Box scheduleBox = Hive.box('schedules');
 
   @override
   Future<List<Todo>> getTodos({TodoType? type}) async {
     try {
-      return [
-        for (final todo in scheduleBox.values)
-          Todo.fromJson(Map<String, dynamic>.from(todo))
-      ];
+      final scheduleList = scheduleBox.values
+          .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+      return scheduleList;
     } catch (e) {
       rethrow;
     }
@@ -39,7 +39,7 @@ class ScheduleRepository extends TodoRepositoryScheme {
   Future<void> editTodoTitle({required String id, required String desc}) async {
     try {
       final todoMap = scheduleBox.get(id);
-      todoMap['desc'] = desc;
+      todoMap['title'] = desc;
       await scheduleBox.put(id, todoMap);
     } catch (e) {
       rethrow;

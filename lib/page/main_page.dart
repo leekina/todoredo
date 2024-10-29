@@ -23,7 +23,6 @@ class MainPage extends HookConsumerWidget {
       crudTodoProvider,
       (previous, next) {
         //if add todo scroll down until bottom
-
         if (!previous!.isLoading) {
           if (next.value!.length > previous.value!.length) {
             Future.delayed(
@@ -57,19 +56,6 @@ class MainPage extends HookConsumerWidget {
               Expanded(
                 child: todos.maybeWhen(
                   data: (todoList) {
-                    todoList.sort(
-                      (a, b) {
-                        if (a.type == TodoType.schedule.name &&
-                            a.completeDate != null) {
-                          return a.completeDate!.compareTo(b.createDate);
-                        }
-                        if (b.type == TodoType.schedule.name &&
-                            b.completeDate != null) {
-                          return a.createDate.compareTo(b.completeDate!);
-                        }
-                        return a.createDate.compareTo(b.createDate);
-                      },
-                    );
                     return ListView.builder(
                       controller: scrollController,
                       itemCount: todoList.length,

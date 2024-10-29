@@ -23,14 +23,17 @@ class TodoWidget extends HookConsumerWidget {
       child: Dismissible(
         key: ValueKey(todo.id),
         direction: todo.complete
-            ? DismissDirection.startToEnd
+            ? todo.type == TodoType.todo.name
+                ? DismissDirection.startToEnd
+                : DismissDirection.endToStart
             : DismissDirection.horizontal,
         onDismissed: (direction) {
           //스케쥴 추가후 삭제
-          if (direction == DismissDirection.endToStart) {
+          if (direction == DismissDirection.endToStart &&
+              todo.type == TodoType.todo.name) {
             ref.read(crudScheduleProvider.notifier).addSchedule(
                   chat: todo.title,
-                  createDate: DateTime.now(),
+                  createDate: todo.createDate,
                 );
           }
           ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
@@ -68,19 +71,12 @@ class TodoView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSchedule = todo.type == TodoType.schedule.name;
-    final time = DateFormat('hh:mm').format(todo.createDate);
+    final date = DateFormat('MM.dd').format(todo.createDate);
     return Row(
       mainAxisAlignment:
           isSchedule ? MainAxisAlignment.start : MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        isSchedule
-            ? const SizedBox()
-            : Text(
-                time,
-                style: const TextStyle(color: Colors.grey),
-              ),
-        const SizedBox(width: 4),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
@@ -97,7 +93,7 @@ class TodoView extends HookConsumerWidget {
         const SizedBox(width: 4),
         isSchedule
             ? Text(
-                time,
+                "created\n$date",
                 style: const TextStyle(color: Colors.grey),
               )
             : const SizedBox(),
