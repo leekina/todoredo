@@ -46,7 +46,7 @@ class MainPage extends HookConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
-          title: const Text('logo'),
+          title: const Text('ChatTodo'),
           centerTitle: false,
           actions: const [],
         ),
