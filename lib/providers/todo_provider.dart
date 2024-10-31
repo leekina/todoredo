@@ -17,7 +17,7 @@ class CrudTodo extends _$CrudTodo {
   void addTodo({required String chat, DateTime? date, TodoType? type}) async {
     final newTodo = Todo.add(
       todo: chat,
-      createDate: date ?? DateTime.now(),
+      createDate: date ?? now,
       type: type ?? TodoType.todo,
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
@@ -25,7 +25,7 @@ class CrudTodo extends _$CrudTodo {
   }
 
   void addTodoFromSchedule(Todo todo) async {
-    final newTodo = todo.copyWith(complete: true, completeDate: DateTime.now());
+    final newTodo = todo.copyWith(complete: true, completeDate: now);
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
   }
@@ -49,7 +49,7 @@ class CrudTodo extends _$CrudTodo {
   void toogleTodoComplete(Todo entity) async {
     final fixedTodo = entity.complete
         ? entity.copyWith(complete: false, completeDate: null)
-        : entity.copyWith(complete: true, completeDate: DateTime.now());
+        : entity.copyWith(complete: true, completeDate: now);
     //스케쥴 일 경우에는 완료안된 스케쥴로 복귀
     if (entity.type == TodoType.schedule.name) {
       ref.read(crudScheduleProvider.notifier).addScheduleFromTodo(fixedTodo);

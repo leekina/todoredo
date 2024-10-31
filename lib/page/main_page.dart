@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todoredo/page/schedule_list.dart';
 
 import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/util/weekday_convertor.dart';
 import 'package:todoredo/widget/add_todo_widget.dart';
-import 'package:todoredo/widget/schedule_list_widget.dart';
+import 'package:todoredo/widget/schedule_widget.dart';
 
 import 'package:todoredo/widget/todo_widget.dart';
 
@@ -63,8 +64,6 @@ class MainPage extends HookConsumerWidget {
                         final todo = todoList[index];
                         final date =
                             DateFormat('MM. dd').format(todo.createDate);
-                        final today =
-                            DateFormat('MM. dd').format(DateTime.now());
                         final isTodayAndNoTodo =
                             (todoList.length - 1 == index && date != today);
 
@@ -77,7 +76,7 @@ class MainPage extends HookConsumerWidget {
                                     .format(todoList[index - 1].createDate))
                               DateView(todo.createDate),
                             TodoWidget(todo: todo),
-                            if (isTodayAndNoTodo) DateView(DateTime.now())
+                            if (isTodayAndNoTodo) DateView(now)
                           ],
                         );
                       },
@@ -103,7 +102,6 @@ class DateView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = DateFormat('MM. dd').format(todoDate);
-    final today = DateFormat('MM. dd').format(DateTime.now());
     return Column(
       children: [
         Padding(
@@ -119,7 +117,7 @@ class DateView extends HookConsumerWidget {
             child: Text('$date ${weekdayConvertor(todoDate.weekday)}'),
           ),
         ),
-        if (today == date) const ScheduleListWidget(),
+        if (today == date) const ScheduleList(),
       ],
     );
   }

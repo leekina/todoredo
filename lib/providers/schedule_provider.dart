@@ -14,9 +14,7 @@ class CrudSchedule extends _$CrudSchedule {
 
   void addSchedule({required String chat, DateTime? createDate}) async {
     final newTodo = Todo.add(
-        todo: chat,
-        createDate: createDate ?? DateTime.now(),
-        type: TodoType.schedule);
+        todo: chat, createDate: createDate ?? now, type: TodoType.schedule);
     await ref.read(scheduleRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
   }
