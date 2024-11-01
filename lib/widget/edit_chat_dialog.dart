@@ -7,8 +7,10 @@ import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 
 class EditTodoDialog extends HookConsumerWidget {
-  final Todo todo;
   const EditTodoDialog(this.todo, {super.key});
+
+  final Todo todo;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController(text: todo.title);
@@ -35,13 +37,14 @@ class EditTodoDialog extends HookConsumerWidget {
             },
             child: const Text('취소')),
         TextButton(
-            onPressed: () {
-              ref
-                  .read(crudTodoProvider.notifier)
-                  .editTodoTitle(todo.id, controller.text);
-              Navigator.pop(context);
-            },
-            child: const Text('확인')),
+          onPressed: () {
+            ref
+                .read(crudTodoProvider.notifier)
+                .editTodoTitle(todo.id, controller.text);
+            Navigator.pop(context);
+          },
+          child: const Text('확인'),
+        ),
       ],
     );
   }

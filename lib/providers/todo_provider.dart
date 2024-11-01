@@ -9,11 +9,6 @@ part 'todo_provider.g.dart';
 
 @riverpod
 class CrudTodo extends _$CrudTodo {
-  @override
-  FutureOr<List<Todo>> build() async {
-    return ref.read(todoRepositoryProvider).getTodos();
-  }
-
   void addTodo({required String chat, DateTime? date, TodoType? type}) async {
     final newTodo = Todo.add(
       todo: chat,
@@ -71,6 +66,11 @@ class CrudTodo extends _$CrudTodo {
       for (final todo in state.value ?? [])
         if (todo.id != id) todo
     ]);
+  }
+
+  @override
+  FutureOr<List<Todo>> build() async {
+    return ref.read(todoRepositoryProvider).getTodos();
   }
 }
 

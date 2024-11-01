@@ -7,11 +7,6 @@ part 'schedule_provider.g.dart';
 
 @riverpod
 class CrudSchedule extends _$CrudSchedule {
-  @override
-  FutureOr<List<Todo>> build() {
-    return ref.read(scheduleRepositoryProvider).getTodos();
-  }
-
   void addSchedule({required String chat, DateTime? createDate}) async {
     final newTodo = Todo.add(
         todo: chat, createDate: createDate ?? now, type: TodoType.schedule);
@@ -42,5 +37,10 @@ class CrudSchedule extends _$CrudSchedule {
       for (final todo in state.value ?? [])
         if (todo.id != id) todo
     ]);
+  }
+
+  @override
+  FutureOr<List<Todo>> build() {
+    return ref.read(scheduleRepositoryProvider).getTodos();
   }
 }

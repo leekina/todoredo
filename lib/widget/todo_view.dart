@@ -5,11 +5,13 @@ import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/util/common.dart';
 
 class TodoView extends HookConsumerWidget {
-  final Todo todo;
   const TodoView({
     super.key,
     required this.todo,
   });
+
+  final Todo todo;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSchedule = todo.type == TodoType.schedule.name;

@@ -8,6 +8,7 @@ import 'package:todoredo/widget/add_todo_widget.dart';
 
 class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();

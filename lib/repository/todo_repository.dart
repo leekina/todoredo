@@ -15,6 +15,26 @@ class TodoRepository extends TodoRepositoryScheme {
   final Box todoBox = Hive.box('todos');
 
   @override
+  Future<void> addTodo({required Todo todo}) async {
+    try {
+      todoBox.put(todo.id, todo.toJson());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> editTodoTitle({required String id, required String desc}) async {
+    try {
+      final todoMap = todoBox.get(id);
+      todoMap['title'] = desc;
+      await todoBox.put(id, todoMap);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<Todo>> getTodos({TodoType? type}) async {
     try {
       final todoList = todoBox.values
@@ -59,20 +79,9 @@ class TodoRepository extends TodoRepositoryScheme {
   }
 
   @override
-  Future<void> addTodo({required Todo todo}) async {
+  Future<void> removeTodo({required String id}) async {
     try {
-      todoBox.put(todo.id, todo.toJson());
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> editTodoTitle({required String id, required String desc}) async {
-    try {
-      final todoMap = todoBox.get(id);
-      todoMap['title'] = desc;
-      await todoBox.put(id, todoMap);
+      await todoBox.delete(id);
     } catch (e) {
       rethrow;
     }
@@ -84,15 +93,6 @@ class TodoRepository extends TodoRepositoryScheme {
       final todoMap = todoBox.get(id);
       todoMap['type'] = type.name;
       await todoBox.put(id, todoMap);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> removeTodo({required String id}) async {
-    try {
-      await todoBox.delete(id);
     } catch (e) {
       rethrow;
     }

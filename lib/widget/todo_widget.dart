@@ -9,12 +9,12 @@ import 'package:todoredo/widget/edit_chat_dialog.dart';
 import 'package:todoredo/widget/todo_view.dart';
 
 class TodoWidget extends HookConsumerWidget {
-  final Todo todo;
-
   const TodoWidget({
     super.key,
     required this.todo,
   });
+
+  final Todo todo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

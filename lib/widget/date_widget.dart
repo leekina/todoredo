@@ -6,8 +6,10 @@ import 'package:todoredo/util/common.dart';
 import 'package:todoredo/util/weekday_convertor.dart';
 
 class DateView extends HookConsumerWidget {
-  final DateTime todoDate;
   const DateView(this.todoDate, {super.key});
+
+  final DateTime todoDate;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = DateFormat('MM. dd').format(todoDate);

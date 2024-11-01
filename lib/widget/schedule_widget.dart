@@ -8,11 +8,13 @@ import 'package:todoredo/widget/edit_chat_dialog.dart';
 import 'package:todoredo/widget/todo_view.dart';
 
 class ScheduleWidget extends HookConsumerWidget {
-  final Todo schedule;
   const ScheduleWidget({
     super.key,
     required this.schedule,
   });
+
+  final Todo schedule;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
