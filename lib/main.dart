@@ -7,6 +7,7 @@ import 'package:todoredo/repository/schedule_repository.dart';
 import 'package:todoredo/repository/todo_repository.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('todos');
   await Hive.openBox('schedules');
