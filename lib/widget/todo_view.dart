@@ -53,6 +53,7 @@ class TodoView extends HookConsumerWidget {
                 padding: const EdgeInsets.only(right: 20),
                 child: Text(
                   "created\n$date",
+                  // "created$date\ncomplate${todo.completeDate?.day ?? 'x'}",
                   style: const TextStyle(color: Colors.grey),
                 ),
               )

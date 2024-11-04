@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/date_widget.dart';
@@ -37,6 +38,18 @@ class ChatView extends HookConsumerWidget {
       },
     );
 
+    String getDateFormat(Todo todo) {
+      return todo.type == TodoType.schedule.name
+          ? DateFormat('MM. dd').format(todo.completeDate!)
+          : DateFormat('MM. dd').format(todo.createDate);
+    }
+
+    DateTime getDate(Todo todo) {
+      return todo.type == TodoType.schedule.name
+          ? todo.completeDate!
+          : todo.createDate;
+    }
+
     return ColoredBox(
       color: const Color(0xffeeeeee),
       child: todos.maybeWhen(
@@ -46,18 +59,17 @@ class ChatView extends HookConsumerWidget {
             itemCount: todoList.length,
             itemBuilder: (context, index) {
               final todo = todoList[index];
-              final date = DateFormat('MM. dd').format(todo.createDate);
+              final date = getDate(todo);
+              final dateforamt = getDateFormat(todo);
               final isTodayAndNoTodo =
-                  (todoList.length - 1 == index && date != today);
+                  (todoList.length - 1 == index && dateforamt != today);
 
               return Column(
                 children: [
                   if (index == 0)
-                    DateView(todo.createDate)
-                  else if (date !=
-                      DateFormat('MM. dd')
-                          .format(todoList[index - 1].createDate))
-                    DateView(todo.createDate),
+                    DateView(date)
+                  else if (dateforamt != getDateFormat(todoList[index - 1]))
+                    DateView(date),
                   TodoWidget(todo: todo),
                   if (isTodayAndNoTodo) DateView(now)
                 ],

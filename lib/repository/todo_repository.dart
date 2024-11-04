@@ -42,13 +42,16 @@ class TodoRepository extends TodoRepositoryScheme {
           .toList();
       todoList.sort(
         (a, b) {
-          if (a.type == TodoType.schedule.name && a.completeDate != null) {
-            return a.completeDate!.compareTo(b.createDate);
-          }
-          if (b.type == TodoType.schedule.name && b.completeDate != null) {
-            return a.createDate.compareTo(b.completeDate!);
-          }
-          return a.createDate.compareTo(b.createDate);
+          final adate =
+              a.type == TodoType.schedule.name && a.completeDate != null
+                  ? a.completeDate!
+                  : a.createDate;
+          final bdate =
+              b.type == TodoType.schedule.name && b.completeDate != null
+                  ? b.completeDate!
+                  : b.createDate;
+
+          return adate.compareTo(bdate);
         },
       );
 
