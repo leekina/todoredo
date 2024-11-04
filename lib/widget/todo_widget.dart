@@ -21,6 +21,17 @@ class TodoWidget extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Dismissible(
+        //TODO : background 추가
+        background: const ColoredBox(
+          color: Colors.red,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text('data'),
+            ),
+          ),
+        ),
         key: ValueKey(todo.id),
         direction: todo.complete
             ? todo.type == TodoType.todo.name

@@ -18,25 +18,31 @@ class ChatView extends HookConsumerWidget {
     final todos = ref.watch(crudTodoProvider);
     final scrollController = useScrollController();
 
-    ref.listen(
-      crudTodoProvider,
-      (previous, next) {
-        //if add todo scroll down until bottom
-        if (!previous!.isLoading) {
-          if (next.value!.length > previous.value!.length) {
-            Future.delayed(
-              Duration.zero,
-              () {
-                scrollController.animateTo(
-                    scrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeOut);
-              },
-            );
+    useEffect(() {
+      ref.listen(
+        crudTodoProvider,
+        (previous, next) async {
+          // if init
+          if (previous?.value == null) {
+            await Future.delayed(Duration.zero, () {
+              scrollController
+                  .jumpTo(scrollController.position.maxScrollExtent);
+            });
           }
-        }
-      },
-    );
+          //if add todo scroll down until bottom
+
+          else if (next.value!.length > previous!.value!.length) {
+            await Future.delayed(Duration.zero, () {
+              scrollController.animateTo(
+                  scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeOut);
+            });
+          }
+        },
+      );
+      return;
+    }, [todos]);
 
     String getDateFormat(Todo todo) {
       return todo.type == TodoType.schedule.name

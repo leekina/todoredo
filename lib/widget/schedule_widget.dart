@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/providers/schedule_provider.dart';
@@ -17,6 +18,18 @@ class ScheduleWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useAnimationController(
+      duration: const Duration(seconds: 1),
+    );
+    final curve =
+        CurvedAnimation(parent: controller, curve: Curves.easeOutExpo);
+    final animation =
+        useAnimation(Tween<double>(begin: -200, end: 0).animate(curve));
+    useEffect(() {
+      controller.forward();
+
+      return;
+    }, [schedule]);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Dismissible(
@@ -42,6 +55,7 @@ class ScheduleWidget extends HookConsumerWidget {
               );
             }
           },
+
           onTap: () {
             //완료
             //투두에 추가하고 스케쥴에서는 제거
@@ -51,8 +65,17 @@ class ScheduleWidget extends HookConsumerWidget {
             //언포커스
             addTodoNode.unfocus();
           },
-          child: TodoView(
-            todo: schedule,
+          child: AnimatedBuilder(
+            animation: controller,
+            builder: (context, child) {
+              return Transform(
+                transform: Matrix4.translationValues(animation, 0, 0),
+                child: child,
+              );
+            },
+            child: TodoView(
+              todo: schedule,
+            ),
           ),
         ),
       ),
