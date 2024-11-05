@@ -17,7 +17,7 @@ class AddTodoWidget extends HookConsumerWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
       child: Row(
         children: [
           Expanded(
