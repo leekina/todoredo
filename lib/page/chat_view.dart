@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todoredo/models/todo.model.dart';
+
 import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/date_widget.dart';
@@ -30,14 +31,15 @@ class ChatView extends HookConsumerWidget {
             });
           }
           //if add todo scroll down until bottom
-
-          else if (next.value!.length > previous!.value!.length) {
-            await Future.delayed(Duration.zero, () {
-              scrollController.animateTo(
-                  scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOut);
-            });
+          if (previous?.hasValue ?? false) {
+            if (next.value!.length > previous!.value!.length) {
+              await Future.delayed(const Duration(milliseconds: 100), () {
+                scrollController.animateTo(
+                    scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOut);
+              });
+            }
           }
         },
       );
@@ -60,27 +62,40 @@ class ChatView extends HookConsumerWidget {
       color: const Color(0xffeeeeee),
       child: todos.maybeWhen(
         data: (todoList) {
-          return ListView.builder(
+          return CustomScrollView(
             controller: scrollController,
-            itemCount: todoList.length,
-            itemBuilder: (context, index) {
-              final todo = todoList[index];
-              final date = getDate(todo);
-              final dateforamt = getDateFormat(todo);
-              final isTodayAndNoTodo =
-                  (todoList.length - 1 == index && dateforamt != today);
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    ...List.generate(
+                      todoList.length,
+                      (index) {
+                        final todo = todoList[index];
+                        final date = getDate(todo);
+                        final dateforamt = getDateFormat(todo);
+                        final isTodayAndNoTodo =
+                            (todoList.length - 1 == index &&
+                                dateforamt != today);
 
-              return Column(
-                children: [
-                  if (index == 0)
-                    DateView(date)
-                  else if (dateforamt != getDateFormat(todoList[index - 1]))
-                    DateView(date),
-                  TodoWidget(todo: todo),
-                  if (isTodayAndNoTodo) DateView(now)
-                ],
-              );
-            },
+                        return Column(
+                          children: [
+                            if (index == 0)
+                              DateView(date)
+                            else if (dateforamt !=
+                                getDateFormat(todoList[index - 1]))
+                              DateView(date),
+                            TodoWidget(todo: todo),
+                            if (isTodayAndNoTodo) DateView(now),
+                            // if (todoList.length - 1 == index) const SizedBox(height: 40),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           );
         },
         orElse: () => const Center(
