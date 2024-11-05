@@ -21,14 +21,29 @@ class TodoWidget extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Dismissible(
-        //TODO : background 추가
-        background: const ColoredBox(
-          color: Colors.red,
+        secondaryBackground: const ColoredBox(
+          color: Colors.blue,
           child: Align(
             alignment: Alignment.centerRight,
             child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('data'),
+              child: Text(
+                'move to left',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+        background: const ColoredBox(
+          color: Colors.red,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'delete',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ),
@@ -61,7 +76,7 @@ class TodoWidget extends HookConsumerWidget {
               );
             }
           },
-          onTap: () {
+          onDoubleTap: () {
             ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo);
             //언포커스
             addTodoNode.unfocus();
