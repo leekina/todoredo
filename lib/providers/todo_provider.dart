@@ -20,9 +20,10 @@ class CrudTodo extends _$CrudTodo {
   }
 
   void addTodoFromSchedule(Todo todo) async {
-    final newTodo = todo.copyWith(complete: true, completeDate: now);
+    final newTodo = todo.copyWith(
+        complete: true, completeDate: DateTime(now.year, now.month, now.day));
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
-    state = AsyncData([...?state.value, newTodo]);
+    state = AsyncData([...?state.value, newTodo]..sort(dateCompare));
   }
 
   void editTodoTitle(String id, String chat) async {

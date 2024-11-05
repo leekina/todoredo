@@ -40,21 +40,8 @@ class TodoRepository extends TodoRepositoryScheme {
       final todoList = todoBox.values
           .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-      todoList.sort(
-        (a, b) {
-          final adate =
-              a.type == TodoType.schedule.name && a.completeDate != null
-                  ? a.completeDate!
-                  : a.createDate;
-          final bdate =
-              b.type == TodoType.schedule.name && b.completeDate != null
-                  ? b.completeDate!
-                  : b.createDate;
 
-          return adate.compareTo(bdate);
-        },
-      );
-
+      todoList.sort(dateCompare);
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
       switch (type) {
