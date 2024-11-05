@@ -24,12 +24,14 @@ class ChatView extends HookConsumerWidget {
         crudTodoProvider,
         (previous, next) async {
           // if init
+
           if (previous?.value == null) {
-            await Future.delayed(Duration.zero, () {
+            await Future.delayed(const Duration(milliseconds: 200), () {
               scrollController
                   .jumpTo(scrollController.position.maxScrollExtent);
             });
           }
+
           //if add todo scroll down until bottom
           if (previous?.hasValue ?? false) {
             if (next.value!.length > previous!.value!.length) {
@@ -87,7 +89,6 @@ class ChatView extends HookConsumerWidget {
                               DateView(date),
                             TodoWidget(todo: todo),
                             if (isTodayAndNoTodo) DateView(now),
-                            // if (todoList.length - 1 == index) const SizedBox(height: 40),
                           ],
                         );
                       },
