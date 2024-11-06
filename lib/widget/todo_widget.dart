@@ -18,38 +18,26 @@ class TodoWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Dismissible(
-      secondaryBackground: const ColoredBox(
-        color: Colors.blue,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'move to left',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-      ),
       background: const ColoredBox(
         color: Colors.red,
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 20),
+            Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            SizedBox(width: 4),
+            Text(
               'delete',
               style: TextStyle(color: Colors.white),
             ),
-          ),
+          ],
         ),
       ),
       key: ValueKey(todo.id),
-      direction: todo.complete
-          ? todo.type == TodoType.todo.name
-              ? DismissDirection.startToEnd
-              : DismissDirection.endToStart
-          : DismissDirection.horizontal,
+      direction: DismissDirection.startToEnd,
       onDismissed: (direction) {
         ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
       },

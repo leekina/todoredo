@@ -34,22 +34,28 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        //상태바 색 -> 근데 ios에는 적용 안됨
         statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-
-        // 상태바 글자색
-        // For Android.
-        // Use [light] for white status bar and [dark] for black status bar.
         statusBarIconBrightness: Brightness.light,
-        // For iOS.
-        // Use [dark] for white status bar and [light] for black status bar.
         statusBarBrightness: Brightness.dark,
       ),
     );
+    //TODO 스타일 잡기
     return MaterialApp(
-      title: 'Flutter Demo',
-      darkTheme: ThemeData.dark(),
-      theme: ThemeData.light(),
+      title: 'ChatTodo',
+      theme: ThemeData(
+        fontFamily: "NotoSansKR",
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.light,
+        // extensions: const [BeautyTheme.light],
+      ),
+      darkTheme: ThemeData(
+        fontFamily: "NotoSansKR",
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.dark,
+        // extensions: const [BeautyTheme.dark],
+      ),
       themeMode: ref.watch(themeModeProvider),
       home: const MainPage(),
     );

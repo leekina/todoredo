@@ -20,11 +20,16 @@ class DateView extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: date == today
-                  ? Colors.lightGreenAccent.withOpacity(0.7)
+                  ? Theme.of(context).secondaryHeaderColor
                   : Theme.of(context).focusColor,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text('$date ${weekdayConvertor(todoDate.weekday)}'),
+            child: Text(
+              '$date ${weekdayConvertor(todoDate.weekday)}',
+              style: date == today
+                  ? Theme.of(context).textTheme.titleSmall
+                  : Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
         ),
       ],
