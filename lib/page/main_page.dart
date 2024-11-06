@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/page/chat_view.dart';
+import 'package:todoredo/page/setting_page.dart';
 
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/add_todo_widget.dart';
@@ -24,7 +25,11 @@ class MainPage extends HookConsumerWidget {
           centerTitle: false,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SettingPage(),
+                ));
+              },
               icon: const Icon(Icons.settings),
             ),
             const SizedBox(width: 8)
