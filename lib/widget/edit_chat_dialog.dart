@@ -38,9 +38,13 @@ class EditTodoDialog extends HookConsumerWidget {
             child: const Text('취소')),
         TextButton(
           onPressed: () {
-            ref
-                .read(crudTodoProvider.notifier)
-                .editTodoTitle(todo.id, controller.text);
+            todo.type == TodoType.schedule.name
+                ? ref
+                    .read(crudScheduleProvider.notifier)
+                    .editScheduleTitle(todo.id, controller.text)
+                : ref
+                    .read(crudTodoProvider.notifier)
+                    .editTodoTitle(todo.id, controller.text);
             Navigator.pop(context);
           },
           child: const Text('확인'),

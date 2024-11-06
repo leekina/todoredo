@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/providers/schedule_provider.dart';
 import 'package:todoredo/providers/todo_provider.dart';
+
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
 import 'package:todoredo/widget/todo_view.dart';
@@ -27,9 +28,8 @@ class ScheduleWidget extends HookConsumerWidget {
         useAnimation(Tween<double>(begin: -200, end: 0).animate(curve));
     useEffect(() {
       controller.forward();
-
       return;
-    }, [schedule]);
+    }, []);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Dismissible(
