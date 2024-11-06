@@ -17,10 +17,10 @@ class MainPage extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => addTodoNode.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          surfaceTintColor: Theme.of(context).secondaryHeaderColor,
           title: const Text('ChatTodo'),
           centerTitle: false,
           actions: [

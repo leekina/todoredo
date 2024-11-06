@@ -14,8 +14,8 @@ class AddTodoWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).secondaryHeaderColor,
       ),
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
       child: Row(
@@ -32,7 +32,7 @@ class AddTodoWidget extends HookConsumerWidget {
               },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                fillColor: Colors.grey.shade300,
+                fillColor: Theme.of(context).canvasColor,
                 filled: true,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -49,8 +49,10 @@ class AddTodoWidget extends HookConsumerWidget {
                   .addTodo(chat: controller.text);
               controller.clear();
             },
-            child: const CircleAvatar(
-                backgroundColor: Colors.greenAccent, child: Icon(Icons.send)),
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).cardColor,
+              child: const Icon(Icons.send),
+            ),
           ),
         ],
       ),

@@ -49,19 +49,15 @@ class ChatView extends HookConsumerWidget {
     }, [todos]);
 
     String getDateFormat(Todo todo) {
-      return todo.type == TodoType.schedule.name
-          ? DateFormat('MM. dd').format(todo.completeDate!)
-          : DateFormat('MM. dd').format(todo.createDate);
+      return DateFormat('MM. dd').format(todo.createDate);
     }
 
     DateTime getDate(Todo todo) {
-      return todo.type == TodoType.schedule.name
-          ? todo.completeDate!
-          : todo.createDate;
+      return todo.createDate;
     }
 
     return ColoredBox(
-      color: const Color(0xffeeeeee),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: todos.maybeWhen(
         data: (todoList) {
           return CustomScrollView(

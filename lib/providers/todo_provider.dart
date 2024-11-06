@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/schedule_provider.dart';
 
 import 'package:todoredo/repository/todo_repository.dart';
 import 'package:todoredo/util/common.dart';
@@ -17,13 +16,6 @@ class CrudTodo extends _$CrudTodo {
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
-  }
-
-  void addTodoFromSchedule(Todo todo) async {
-    final newTodo = todo.copyWith(
-        complete: true, completeDate: DateTime(now.year, now.month, now.day));
-    await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
-    state = AsyncData([...?state.value, newTodo]..sort(dateCompare));
   }
 
   void editTodoTitle(String id, String chat) async {
@@ -48,7 +40,6 @@ class CrudTodo extends _$CrudTodo {
         : entity.copyWith(complete: true, completeDate: now);
     //스케쥴 일 경우에는 완료안된 스케쥴로 복귀
     if (entity.type == TodoType.schedule.name) {
-      ref.read(crudScheduleProvider.notifier).addScheduleFromTodo(fixedTodo);
       deleteTodo(entity.id);
     } else {
       await ref

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todoredo/page/schedule_list.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/util/weekday_convertor.dart';
 
@@ -22,13 +21,12 @@ class DateView extends HookConsumerWidget {
             decoration: BoxDecoration(
               color: date == today
                   ? Colors.lightGreenAccent.withOpacity(0.7)
-                  : Colors.white,
+                  : Theme.of(context).focusColor,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text('$date ${weekdayConvertor(todoDate.weekday)}'),
           ),
         ),
-        if (today == date) const ScheduleList(),
       ],
     );
   }

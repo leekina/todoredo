@@ -12,7 +12,6 @@ class SettingPage extends HookConsumerWidget {
         ),
         body: ListView(
           children: [
-            //TODO switch로 변경
             ListTile(
               leading: const Icon(Icons.dark_mode),
               trailing: DropdownButton(

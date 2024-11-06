@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/schedule_provider.dart';
 import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 import 'package:todoredo/widget/edit_chat_dialog.dart';
@@ -18,71 +17,60 @@ class TodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      child: Dismissible(
-        secondaryBackground: const ColoredBox(
-          color: Colors.blue,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'move to left',
-                style: TextStyle(color: Colors.white),
-              ),
+    return Dismissible(
+      secondaryBackground: const ColoredBox(
+        color: Colors.blue,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'move to left',
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ),
-        background: const ColoredBox(
-          color: Colors.red,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'delete',
-                style: TextStyle(color: Colors.white),
-              ),
+      ),
+      background: const ColoredBox(
+        color: Colors.red,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'delete',
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ),
-        key: ValueKey(todo.id),
-        direction: todo.complete
-            ? todo.type == TodoType.todo.name
-                ? DismissDirection.startToEnd
-                : DismissDirection.endToStart
-            : DismissDirection.horizontal,
-        onDismissed: (direction) {
-          //스케쥴 추가후 삭제
-          if (direction == DismissDirection.endToStart &&
-              todo.type == TodoType.todo.name) {
-            ref.read(crudScheduleProvider.notifier).addSchedule(
-                  chat: todo.title,
-                  createDate: todo.createDate,
-                );
+      ),
+      key: ValueKey(todo.id),
+      direction: todo.complete
+          ? todo.type == TodoType.todo.name
+              ? DismissDirection.startToEnd
+              : DismissDirection.endToStart
+          : DismissDirection.horizontal,
+      onDismissed: (direction) {
+        ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
+      },
+      child: GestureDetector(
+        //길게 누르면 수정
+        onLongPress: () {
+          if (!todo.complete) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return EditTodoDialog(todo);
+              },
+            );
           }
-          ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
         },
-        child: GestureDetector(
-          //길게 누르면 수정
-          onLongPress: () {
-            if (!todo.complete) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return EditTodoDialog(todo);
-                },
-              );
-            }
-          },
-          onDoubleTap: () {
-            ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo);
-            //언포커스
-            addTodoNode.unfocus();
-          },
-          child: TodoView(todo: todo),
-        ),
+        onDoubleTap: () {
+          ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo);
+          //언포커스
+          addTodoNode.unfocus();
+        },
+        child: TodoView(todo: todo),
       ),
     );
   }
