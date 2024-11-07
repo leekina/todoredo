@@ -48,26 +48,7 @@ flutter:
     - family: JuaRegular
       fonts:
         - asset: assets/font/Jua-Regular.ttf
-    - family: NotoSansKR
-      fonts:
-        - asset: assets/font/NotoSansKR/NotoSansKR-Thin.ttf
-          weight: 100
-        - asset: assets/font/NotoSansKR/NotoSansKR-ExtraLight.ttf
-          weight: 200
-        - asset: assets/font/NotoSansKR/NotoSansKR-Light.ttf
-          weight: 300
-        - asset: assets/font/NotoSansKR/NotoSansKR-Regular.ttf
-          weight: 400
-        - asset: assets/font/NotoSansKR/NotoSansKR-Medium.ttf
-          weight: 500
-        - asset: assets/font/NotoSansKR/NotoSansKR-SemiBold.ttf
-          weight: 600
-        - asset: assets/font/NotoSansKR/NotoSansKR-Bold.ttf
-          weight: 700
-        - asset: assets/font/NotoSansKR/NotoSansKR-ExtraBold.ttf
-          weight: 800
-        - asset: assets/font/NotoSansKR/NotoSansKR-Black.ttf
-          weight: 900
+
     - family: Paperlogy
       fonts:
         - asset: assets/font/Paperlogy/Paperlogy-1Thin.ttf
