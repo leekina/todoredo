@@ -7,19 +7,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoredo/app/state/app.state.dart';
 import 'package:todoredo/page/main_page.dart';
 import 'package:todoredo/repository/todo_repository.dart';
+import 'package:todoredo/style/app.theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
   await Hive.initFlutter();
   await Hive.openBox('todos');
-  // await Hive.openBox('schedules');
 
   runApp(
     ProviderScope(
       overrides: [
         todoRepositoryProvider.overrideWithValue(TodoRepository()),
-        // scheduleRepositoryProvider.overrideWithValue(ScheduleRepository()),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
       child: const MyApp(),
@@ -39,23 +38,23 @@ class MyApp extends HookConsumerWidget {
         statusBarBrightness: Brightness.dark,
       ),
     );
-    //TODO 스타일 잡기
+    ref.read(mainColorProvider);
+
     return MaterialApp(
       title: 'ChatTodo',
       theme: ThemeData(
-        fontFamily: "Paperlogy",
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
-        brightness: Brightness.light,
-        // extensions: const [BeautyTheme.light],
-      ),
+          scaffoldBackgroundColor: Colors.white,
+          fontFamily: "Paperlogy",
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+          brightness: Brightness.light,
+          extensions: const [ThemeExtensionX.light]),
       darkTheme: ThemeData(
-        fontFamily: "Paperlogy",
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
-        brightness: Brightness.dark,
-        // extensions: const [BeautyTheme.dark],
-      ),
+          fontFamily: "Paperlogy",
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+          brightness: Brightness.dark,
+          extensions: const [ThemeExtensionX.dark]),
       themeMode: ref.watch(themeModeProvider),
       home: const MainPage(),
     );
