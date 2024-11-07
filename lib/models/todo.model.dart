@@ -12,6 +12,7 @@ class Todo with _$Todo {
     required String type,
     required DateTime createDate,
     DateTime? completeDate,
+    bool? important,
     @Default(false) bool complete,
   }) = _Todo;
 

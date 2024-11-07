@@ -8,8 +8,8 @@ abstract class TodoRepositoryScheme {
 
   Future<void> removeTodo({required String id});
 
-  Future<void> editTodoTitle({
+  Future<void> editTodo({
     required String id,
-    required String desc,
+    required Todo editTodo,
   });
 }

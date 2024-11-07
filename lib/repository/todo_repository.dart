@@ -24,11 +24,11 @@ class TodoRepository extends TodoRepositoryScheme {
   }
 
   @override
-  Future<void> editTodoTitle({required String id, required String desc}) async {
+  Future<void> editTodo({required String id, required Todo editTodo}) async {
     try {
-      final todoMap = todoBox.get(id);
-      todoMap['title'] = desc;
-      await todoBox.put(id, todoMap);
+      //double check
+      final todo = Todo.fromJson(Map<String, dynamic>.from(todoBox.get(id)));
+      if (todo.id == editTodo.id) await todoBox.put(id, editTodo.toJson());
     } catch (e) {
       rethrow;
     }
@@ -72,25 +72,6 @@ class TodoRepository extends TodoRepositoryScheme {
   Future<void> removeTodo({required String id}) async {
     try {
       await todoBox.delete(id);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> editTodoType(
-      {required String id, required TodoType type}) async {
-    try {
-      final todoMap = todoBox.get(id);
-      todoMap['type'] = type.name;
-      await todoBox.put(id, todoMap);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> toogleTodoComplete({required Todo entity}) async {
-    try {
-      await todoBox.put(entity.id, entity.toJson());
     } catch (e) {
       rethrow;
     }

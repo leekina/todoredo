@@ -89,6 +89,7 @@ class ChatView extends HookConsumerWidget {
                         );
                       },
                     ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),

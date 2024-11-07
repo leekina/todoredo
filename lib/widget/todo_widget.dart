@@ -54,10 +54,15 @@ class TodoWidget extends HookConsumerWidget {
           }
         },
         onDoubleTap: () {
-          ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo);
+          ref.read(crudTodoProvider.notifier).toggleTodoComplete(todo);
           //언포커스
           addTodoNode.unfocus();
         },
+        onTap: todo.complete == true
+            ? null
+            : () {
+                ref.read(crudTodoProvider.notifier).toggleTodoImportant(todo);
+              },
         child: TodoView(todo: todo),
       ),
     );

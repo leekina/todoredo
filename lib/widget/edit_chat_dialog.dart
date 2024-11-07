@@ -13,7 +13,7 @@ class EditTodoDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController(text: todo.title);
     return AlertDialog(
-      title: const Text('Edit Todo'),
+      title: const Text('수정하기'),
       content: TextField(
         controller: controller,
         autofocus: true,
@@ -23,17 +23,12 @@ class EditTodoDialog extends HookConsumerWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('삭제')),
-        TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
             child: const Text('취소')),
         TextButton(
           onPressed: () {
             ref
                 .read(crudTodoProvider.notifier)
-                .editTodoTitle(todo.id, controller.text);
+                .editTodoTitle(todo, controller.text);
             Navigator.pop(context);
           },
           child: const Text('확인'),
