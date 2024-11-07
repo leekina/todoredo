@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todoredo/app/state/app.state.dart';
 import 'package:todoredo/models/todo.model.dart';
 import 'package:todoredo/util/common.dart';
 
@@ -37,12 +38,12 @@ class TodoView extends HookConsumerWidget {
             decoration: BoxDecoration(
                 border: todo.complete
                     ? Border.all(
-                        color: Colors.green.shade800.withOpacity(0.8),
+                        color: ref.watch(mainColorProvider),
                         width: 4,
                         strokeAlign: BorderSide.strokeAlignOutside)
                     : Border.all(
                         color: todo.important == true
-                            ? Colors.blue
+                            ? ref.watch(mainColorProvider)
                             : Theme.of(context).focusColor,
                         width: 4,
                         strokeAlign: BorderSide.strokeAlignOutside),
@@ -52,9 +53,17 @@ class TodoView extends HookConsumerWidget {
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(0)),
                 color: todo.complete
-                    ? Colors.green.shade800.withOpacity(0.8)
+                    ? ref.watch(mainColorProvider)
                     : Theme.of(context).focusColor),
-            child: Text(todo.title),
+            child: Text(
+              todo.title,
+              style: todo.complete
+                  ? Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Colors.white)
+                  : null,
+            ),
           ),
           const SizedBox(width: 8),
         ],

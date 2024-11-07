@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todoredo/app/state/app.state.dart';
 import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/util/common.dart';
 
@@ -13,11 +14,12 @@ class AddTodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mainColor = ref.watch(mainColorProvider);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).secondaryHeaderColor,
+        color: mainColor.withOpacity(0.3),
       ),
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Row(
         children: [
           Expanded(

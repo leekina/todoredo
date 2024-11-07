@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todoredo/app/state/app.state.dart';
 import 'package:todoredo/page/chat_view.dart';
 import 'package:todoredo/page/setting_page.dart';
 
@@ -12,16 +13,22 @@ class MainPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mainColor = ref.watch(mainColorProvider);
     final controller = useTextEditingController();
 
     return GestureDetector(
       onTap: () => addTodoNode.unfocus(),
       child: Scaffold(
-        backgroundColor: Theme.of(context).secondaryHeaderColor,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).secondaryHeaderColor,
-          surfaceTintColor: Theme.of(context).secondaryHeaderColor,
-          title: const Text('ChatTodo'),
+          backgroundColor: mainColor.withOpacity(0.15),
+          surfaceTintColor: mainColor.withOpacity(0.15),
+          title: Text(
+            'ChatTodo',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: mainColor,
+                ),
+          ),
           centerTitle: false,
           actions: [
             IconButton(
@@ -36,6 +43,7 @@ class MainPage extends HookConsumerWidget {
           ],
         ),
         body: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               const Expanded(child: ChatView()),
