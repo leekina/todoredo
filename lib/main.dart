@@ -43,14 +43,14 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp(
       title: 'ChatTodo',
       theme: ThemeData(
-        fontFamily: "NotoSansKR",
+        fontFamily: "Paperlogy",
         useMaterial3: true,
         colorSchemeSeed: Colors.blue,
         brightness: Brightness.light,
         // extensions: const [BeautyTheme.light],
       ),
       darkTheme: ThemeData(
-        fontFamily: "NotoSansKR",
+        fontFamily: "Paperlogy",
         useMaterial3: true,
         colorSchemeSeed: Colors.blue,
         brightness: Brightness.dark,
