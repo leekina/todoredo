@@ -27,21 +27,6 @@ int dateCompare(a, b) {
   return adate.compareTo(bdate);
 }
 
-enum ThemeColor {
-  blue("블루", Colors.blue),
-  purple("퍼플", Colors.purple),
-  pink("핑크", Colors.pink),
-  orange("오렌지", Colors.orange),
-  brown("브라운", Colors.brown),
-  green("그린", Colors.green),
-  ;
-
-  final String name;
-  final Color color;
-
-  const ThemeColor(this.name, this.color);
-}
-
 List<Todo> tutorial = [
   Todo.add(
     todo: "안녕하세요!",
