@@ -31,3 +31,17 @@ final mainColorProvider = StateProvider<Color>(
         : ThemeExtensionX.light.defaultColor;
   },
 );
+
+final checkFirstConnectionProvider = StateProvider<bool>(
+  (ref) {
+    ref.listenSelf((previous, next) async {
+      await ref
+          .read(sharedPreferencesProvider)
+          .setBool("checkFirstConnection", next);
+    });
+    final checkFirstConnection =
+        ref.read(sharedPreferencesProvider).getBool("checkFirstConnection");
+
+    return checkFirstConnection == true ? true : false;
+  },
+);

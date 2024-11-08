@@ -31,14 +31,18 @@ class AddTodoWidget extends HookConsumerWidget {
                       chat: value,
                     );
                 controller.clear();
+                addTodoNode.requestFocus();
               },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                 fillColor: Theme.of(context).canvasColor,
                 filled: true,
                 border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
               ),
             ),
           ),
@@ -50,6 +54,7 @@ class AddTodoWidget extends HookConsumerWidget {
                   .read(crudTodoProvider.notifier)
                   .addTodo(chat: controller.text);
               controller.clear();
+              addTodoNode.unfocus();
             },
             child: CircleAvatar(
               backgroundColor: Theme.of(context).cardColor,

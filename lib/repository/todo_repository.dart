@@ -40,7 +40,6 @@ class TodoRepository extends TodoRepositoryScheme {
       final todoList = todoBox.values
           .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-
       todoList.sort(dateCompare);
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
@@ -74,6 +73,12 @@ class TodoRepository extends TodoRepositoryScheme {
       await todoBox.delete(id);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> addTutorial() async {
+    for (final todo in tutorial) {
+      await addTodo(todo: todo);
     }
   }
 }

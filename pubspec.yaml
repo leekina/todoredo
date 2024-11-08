@@ -45,10 +45,6 @@ flutter:
 
 
   fonts:
-    - family: JuaRegular
-      fonts:
-        - asset: assets/font/Jua-Regular.ttf
-
     - family: Paperlogy
       fonts:
         - asset: assets/font/Paperlogy/Paperlogy-1Thin.ttf

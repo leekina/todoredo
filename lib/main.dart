@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todoredo/app/state/app.state.dart';
 import 'package:todoredo/page/main_page.dart';
+import 'package:todoredo/providers/todo_provider.dart';
 import 'package:todoredo/repository/todo_repository.dart';
 import 'package:todoredo/style/app.theme.dart';
 
@@ -38,8 +41,22 @@ class MyApp extends HookConsumerWidget {
         statusBarBrightness: Brightness.dark,
       ),
     );
-    ref.read(mainColorProvider);
 
+    void firstConnetionCheck() async {
+      await Future.delayed(
+        Duration.zero,
+        () {
+          final checkFirstConnetion = ref.watch(checkFirstConnectionProvider);
+          if (checkFirstConnetion != true) {
+            ref.read(todoRepositoryProvider).addTutorial();
+            ref.invalidate(crudTodoProvider);
+            ref.read(checkFirstConnectionProvider.notifier).state = true;
+          }
+        },
+      );
+    }
+
+    firstConnetionCheck();
     return MaterialApp(
       title: 'ChatTodo',
       theme: ThemeData(
