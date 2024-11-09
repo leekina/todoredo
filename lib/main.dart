@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todoredo/app/state/app.state.dart';
-import 'package:todoredo/page/main_page.dart';
-import 'package:todoredo/providers/todo_provider.dart';
-import 'package:todoredo/repository/todo_repository.dart';
-import 'package:todoredo/style/app.theme.dart';
+import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/page/main_page.dart';
+import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/repository/todo_repository.dart';
+import 'package:chattodo/style/app.theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,4 +1,4 @@
-package com.example.todoredo
+package com.example.chattodo
 
 import io.flutter.embedding.android.FlutterActivity
 

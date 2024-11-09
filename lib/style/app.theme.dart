@@ -11,11 +11,11 @@ class ThemeExtensionX extends ThemeExtension<ThemeExtensionX> {
   });
 
   static const light = ThemeExtensionX(
-    defaultColor: Colors.blue,
+    defaultColor: Color(0xff88b04b),
     pointColor: Color(0xFFFF1A8D),
   );
   static const dark = ThemeExtensionX(
-    defaultColor: Colors.blue,
+    defaultColor: Color(0xff88b04b),
     pointColor: Color(0xFFFF1A8D),
   );
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todoredo/app/state/app.state.dart';
-import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/util/common.dart';
 
 class TodoView extends HookConsumerWidget {
   const TodoView({

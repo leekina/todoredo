@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todoredo/app/state/app.state.dart';
-import 'package:todoredo/style/app_color.dart';
+import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/style/app_color.dart';
 
 class SettingPage extends HookConsumerWidget {
   const SettingPage({super.key});

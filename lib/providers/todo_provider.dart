@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todoredo/models/todo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 
-import 'package:todoredo/repository/todo_repository.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/repository/todo_repository.dart';
+import 'package:chattodo/util/common.dart';
 
 part 'todo_provider.g.dart';
 

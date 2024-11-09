@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/util/common.dart';
 
 part 'todo.model.g.dart';
 part 'todo.model.freezed.dart';

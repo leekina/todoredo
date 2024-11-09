@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todoredo/models/todo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 
 import 'package:uuid/uuid.dart';
 

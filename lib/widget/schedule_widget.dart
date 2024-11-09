@@ -4,12 +4,12 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_hooks/flutter_hooks.dart';
 // import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:todoredo/models/todo.model.dart';
-// import 'package:todoredo/providers/todo_provider.dart';
+// import 'package:chattodo/models/todo.model.dart';
+// import 'package:chattodo/providers/todo_provider.dart';
 
-// import 'package:todoredo/util/common.dart';
-// import 'package:todoredo/widget/edit_chat_dialog.dart';
-// import 'package:todoredo/widget/todo_view.dart';
+// import 'package:chattodo/util/common.dart';
+// import 'package:chattodo/widget/edit_chat_dialog.dart';
+// import 'package:chattodo/widget/todo_view.dart';
 
 // class ScheduleWidget extends HookConsumerWidget {
 //   const ScheduleWidget({

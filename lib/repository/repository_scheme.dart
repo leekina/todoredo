@@ -1,5 +1,5 @@
-import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/util/common.dart';
 
 abstract class TodoRepositoryScheme {
   Future<List<Todo>> getTodos({TodoType? type});

@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:todoredo/models/todo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todoredo/repository/repository_scheme.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/repository/repository_scheme.dart';
+import 'package:chattodo/util/common.dart';
 part 'todo_repository.g.dart';
 
 @riverpod
