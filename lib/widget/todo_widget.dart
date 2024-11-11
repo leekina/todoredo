@@ -20,7 +20,7 @@ class TodoWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSchedule = todo.type == TodoType.schedule.name;
-    final time = DateFormat('hh:mm').format(todo.createDate);
+    final time = DateFormat('HH:mm').format(todo.createDate);
     //ChatLine
     return Dismissible(
       background: const ColoredBox(

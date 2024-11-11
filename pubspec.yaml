@@ -9,6 +9,7 @@ environment:
   sdk: '>=3.4.4 <4.0.0'
 dependencies:
   cupertino_icons: ^1.0.6
+  dropdown_button2: ^2.3.9
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5

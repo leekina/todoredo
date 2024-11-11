@@ -22,13 +22,7 @@ class MainPage extends HookConsumerWidget {
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text(
-            'ChatTodo',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: mainColor,
-                ),
-          ),
+          title: const Text('ChatTodo'),
           centerTitle: false,
           actions: [
             IconButton(

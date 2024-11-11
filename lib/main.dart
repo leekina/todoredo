@@ -60,14 +60,25 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp(
       title: 'ChatTodo',
       theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: ref.watch(mainColorProvider),
+                ),
+          ),
           scaffoldBackgroundColor: Colors.white,
-          //TODO : 이상한 글자(Ex. 똛)이런거 씹힘
           fontFamily: "Pretendard",
           useMaterial3: true,
           colorSchemeSeed: Colors.blue,
           brightness: Brightness.light,
           extensions: const [ThemeExtensionX.light]),
       darkTheme: ThemeData(
+          appBarTheme: AppBarTheme(
+            titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: ref.watch(mainColorProvider),
+                ),
+          ),
           fontFamily: "Pretendard",
           useMaterial3: true,
           colorSchemeSeed: Colors.blue,
