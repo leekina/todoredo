@@ -13,6 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
+  flutter_launcher_icons: ^0.14.1
+  flutter_native_splash: ^2.4.1
   flutter_riverpod: ^2.5.1
   freezed_annotation: ^2.4.4
   go_router: ^14.2.1
@@ -43,6 +45,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/icon/
 
   fonts:
     - family: Paperlogy
@@ -87,4 +92,20 @@ flutter:
         - asset: assets/fonts/Pretendard/Pretendard-Black.ttf
           weight: 900
 
-   
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon/icon.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  color_dark: "#303030"
+  image: assets/icon/splash_icon.png
+  android_12:
+    color: "#ffffff"
+    color_dark: "#303030"
+    image: assets/icon/splash_icon.png
