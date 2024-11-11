@@ -43,27 +43,47 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-
   fonts:
     - family: Paperlogy
       fonts:
-        - asset: assets/font/Paperlogy/Paperlogy-1Thin.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-1Thin.ttf
           weight: 100
-        - asset: assets/font/Paperlogy/Paperlogy-2ExtraLight.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-2ExtraLight.ttf
           weight: 200
-        - asset: assets/font/Paperlogy/Paperlogy-3Light.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-3Light.ttf
           weight: 300
-        - asset: assets/font/Paperlogy/Paperlogy-4Regular.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-4Regular.ttf
           weight: 400
-        - asset: assets/font/Paperlogy/Paperlogy-5Medium.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-5Medium.ttf
           weight: 500
-        - asset: assets/font/Paperlogy/Paperlogy-6SemiBold.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-6SemiBold.ttf
           weight: 600
-        - asset: assets/font/Paperlogy/Paperlogy-7Bold.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-7Bold.ttf
           weight: 700
-        - asset: assets/font/Paperlogy/Paperlogy-8ExtraBold.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-8ExtraBold.ttf
           weight: 800
-        - asset: assets/font/Paperlogy/Paperlogy-9Black.ttf
+        - asset: assets/fonts/Paperlogy/Paperlogy-9Black.ttf
+          weight: 900
+
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard/Pretendard-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Pretendard/Pretendard-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Pretendard/Pretendard-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Pretendard/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Pretendard/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Pretendard/Pretendard-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Pretendard/Pretendard-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Pretendard/Pretendard-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Pretendard/Pretendard-Black.ttf
           weight: 900
 
    

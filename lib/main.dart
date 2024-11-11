@@ -61,13 +61,14 @@ class MyApp extends HookConsumerWidget {
       title: 'ChatTodo',
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
+          //TODO : 이상한 글자(Ex. 똛)이런거 씹힘
           fontFamily: "Paperlogy",
           useMaterial3: true,
           colorSchemeSeed: Colors.blue,
           brightness: Brightness.light,
           extensions: const [ThemeExtensionX.light]),
       darkTheme: ThemeData(
-          fontFamily: "Paperlogy",
+          fontFamily: "Pretendard",
           useMaterial3: true,
           colorSchemeSeed: Colors.blue,
           brightness: Brightness.dark,
