@@ -39,13 +39,13 @@ class TodoView extends HookConsumerWidget {
                 border: todo.complete
                     ? Border.all(
                         color: ref.watch(mainColorProvider),
-                        width: 4,
+                        width: 2,
                         strokeAlign: BorderSide.strokeAlignOutside)
                     : Border.all(
                         color: todo.important == true
                             ? ref.watch(mainColorProvider)
                             : Theme.of(context).focusColor,
-                        width: 4,
+                        width: 2,
                         strokeAlign: BorderSide.strokeAlignOutside),
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),

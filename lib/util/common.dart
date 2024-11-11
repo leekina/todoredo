@@ -54,8 +54,8 @@ List<Todo> tutorial = [
     type: TodoType.todo,
   ),
   Todo.add(
-    todo: "컬러 및 모드는 오른쪽 위 설정 페이지에서 설정가능합니다.",
-    createDate: now.subtract(const Duration(days: 1)).copyWith(second: 6),
+    todo: "완료되지 않은 투두를 1초이상 누르면 수정할 수 있습니다.",
+    createDate: now.subtract(const Duration(days: 1)).copyWith(second: 5),
     type: TodoType.todo,
   ),
 ];

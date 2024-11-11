@@ -1,3 +1,4 @@
+import 'package:chattodo/app/state/app.state.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:chattodo/providers/todo_provider.dart';
@@ -15,7 +16,7 @@ class BottomWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).focusColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Row(
@@ -25,6 +26,8 @@ class BottomWidget extends HookConsumerWidget {
               controller: controller,
               focusNode: addTodoNode,
               onFieldSubmitted: (value) {
+                if (value == "") return;
+
                 ref.read(crudTodoProvider.notifier).addTodo(
                       chat: value,
                     );
@@ -33,7 +36,7 @@ class BottomWidget extends HookConsumerWidget {
               },
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                fillColor: Theme.of(context).canvasColor,
+                fillColor: Theme.of(context).focusColor,
                 filled: true,
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -48,6 +51,7 @@ class BottomWidget extends HookConsumerWidget {
           InkWell(
             borderRadius: BorderRadius.circular(20),
             onTap: () {
+              if (controller.text == "") return;
               ref
                   .read(crudTodoProvider.notifier)
                   .addTodo(chat: controller.text);
@@ -55,7 +59,7 @@ class BottomWidget extends HookConsumerWidget {
               addTodoNode.unfocus();
             },
             child: CircleAvatar(
-              backgroundColor: Theme.of(context).cardColor,
+              backgroundColor: Theme.of(context).focusColor,
               child: const Icon(Icons.send),
             ),
           ),

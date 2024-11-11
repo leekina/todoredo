@@ -62,7 +62,7 @@ class MyApp extends HookConsumerWidget {
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           //TODO : 이상한 글자(Ex. 똛)이런거 씹힘
-          fontFamily: "Paperlogy",
+          fontFamily: "Pretendard",
           useMaterial3: true,
           colorSchemeSeed: Colors.blue,
           brightness: Brightness.light,
