@@ -9,6 +9,9 @@ class SettingPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          foregroundColor: ref.watch(mainColorProvider),
           title: const Text('설정'),
         ),
         body: ListView(

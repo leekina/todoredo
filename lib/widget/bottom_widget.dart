@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/providers/todo_provider.dart';
 import 'package:chattodo/util/common.dart';
 
-class AddTodoWidget extends HookConsumerWidget {
-  const AddTodoWidget({
+class BottomWidget extends HookConsumerWidget {
+  const BottomWidget({
     super.key,
     required this.controller,
   });
@@ -14,10 +13,9 @@ class AddTodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainColor = ref.watch(mainColorProvider);
     return Container(
       decoration: BoxDecoration(
-        color: mainColor.withOpacity(0.3),
+        color: Theme.of(context).focusColor,
       ),
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Row(

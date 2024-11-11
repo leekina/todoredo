@@ -6,7 +6,7 @@ import 'package:chattodo/page/chat_view.dart';
 import 'package:chattodo/page/setting_page.dart';
 
 import 'package:chattodo/util/common.dart';
-import 'package:chattodo/widget/add_todo_widget.dart';
+import 'package:chattodo/widget/bottom_widget.dart';
 
 class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
@@ -20,8 +20,8 @@ class MainPage extends HookConsumerWidget {
       onTap: () => addTodoNode.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: mainColor.withOpacity(0.15),
-          surfaceTintColor: mainColor.withOpacity(0.15),
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(
             'ChatTodo',
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -37,7 +37,7 @@ class MainPage extends HookConsumerWidget {
                   builder: (context) => const SettingPage(),
                 ));
               },
-              icon: const Icon(Icons.settings),
+              icon: Icon(Icons.settings, color: mainColor),
             ),
             const SizedBox(width: 8)
           ],
@@ -47,7 +47,7 @@ class MainPage extends HookConsumerWidget {
           child: Column(
             children: [
               const Expanded(child: ChatView()),
-              AddTodoWidget(controller: controller),
+              BottomWidget(controller: controller),
             ],
           ),
         ),
