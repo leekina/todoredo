@@ -14,16 +14,31 @@ class Todo with _$Todo {
     DateTime? completeDate,
     bool? important,
     @Default(false) bool complete,
+    String? redoId,
   }) = _Todo;
 
-  factory Todo.add(
-      {required String todo,
-      required DateTime createDate,
-      required TodoType type}) {
+  factory Todo.addTodo({
+    required String todo,
+    required DateTime createDate,
+  }) {
     return Todo(
       id: uuid.v4(),
       title: todo,
-      type: type.name,
+      type: TodoType.todo.name,
+      createDate: createDate,
+    );
+  }
+
+  factory Todo.addReTodo({
+    required String todo,
+    required DateTime createDate,
+    required String redoId,
+  }) {
+    return Todo(
+      id: uuid.v4(),
+      redoId: redoId,
+      title: todo,
+      type: TodoType.redo.name,
       createDate: createDate,
     );
   }

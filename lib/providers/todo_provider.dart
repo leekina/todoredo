@@ -8,11 +8,21 @@ part 'todo_provider.g.dart';
 
 @riverpod
 class CrudTodo extends _$CrudTodo {
-  void addTodo({required String chat, DateTime? date, TodoType? type}) async {
-    final newTodo = Todo.add(
+  void addTodo({required String chat, DateTime? date}) async {
+    final newTodo = Todo.addTodo(
       todo: chat,
       createDate: date ?? now,
-      type: type ?? TodoType.todo,
+    );
+    await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
+    state = AsyncData([...?state.value, newTodo]);
+  }
+
+  void addRedo(
+      {required String chat, required String redoId, DateTime? date}) async {
+    final newTodo = Todo.addReTodo(
+      todo: chat,
+      redoId: redoId,
+      createDate: date ?? now,
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
