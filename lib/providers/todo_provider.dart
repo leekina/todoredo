@@ -6,8 +6,18 @@ import 'package:chattodo/util/common.dart';
 
 part 'todo_provider.g.dart';
 
+/*
+모든 상태변경은 provider에서 일어남
+Repository에서는 상태변경이 일어나지 않음
+ */
+
 @riverpod
 class CrudTodo extends _$CrudTodo {
+  @override
+  FutureOr<List<Todo>> build() async {
+    return ref.read(todoRepositoryProvider).getTodos();
+  }
+
   void addTodo({required String chat, DateTime? date}) async {
     final newTodo = Todo.addTodo(
       todo: chat,
@@ -17,7 +27,7 @@ class CrudTodo extends _$CrudTodo {
     state = AsyncData([...?state.value, newTodo]);
   }
 
-  void addRedo(
+  void addReTodo(
       {required String chat, required String redoId, DateTime? date}) async {
     final newTodo = Todo.addReTodo(
       todo: chat,
@@ -76,16 +86,11 @@ class CrudTodo extends _$CrudTodo {
     ]);
   }
 
-  void deleteTodo(String id) async {
-    await ref.read(todoRepositoryProvider).removeTodo(id: id);
+  void deleteTodo(Todo entity) async {
+    await ref.read(todoRepositoryProvider).removeTodo(id: entity.id);
     state = AsyncData([
       for (final todo in state.value ?? [])
-        if (todo.id != id) todo
+        if (todo.id != entity.id) todo
     ]);
-  }
-
-  @override
-  FutureOr<List<Todo>> build() async {
-    return ref.read(todoRepositoryProvider).getTodos();
   }
 }

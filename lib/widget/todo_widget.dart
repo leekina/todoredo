@@ -44,7 +44,7 @@ class TodoWidget extends HookConsumerWidget {
       key: ValueKey(todo.id),
       direction: DismissDirection.startToEnd,
       onDismissed: (direction) {
-        ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
+        ref.read(crudTodoProvider.notifier).deleteTodo(todo);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
