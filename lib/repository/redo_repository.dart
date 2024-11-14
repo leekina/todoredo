@@ -34,6 +34,15 @@ class RedoRepository extends RedoRepositoryScheme {
     }
   }
 
+  Future<Redo?> getRedo(String id) async {
+    try {
+      final redo = redoBox.get(id);
+      return Redo.fromJson(Map<String, dynamic>.from(redo));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   @override
   Future<void> removeRedo({required String id}) async {
     try {

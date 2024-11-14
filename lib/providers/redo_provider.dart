@@ -26,6 +26,22 @@ class CrudRedo extends _$CrudRedo {
     ]);
   }
 
+  void redoComplete(String redoId) async {
+    //TODO : 리투두 삭제, 컴플리트 변경될때 최근 날짜 수정하려면 구조차제가 변경되야함, 혹은 리투두들을 따로 가지고 있거나, 변경할 점이 필요함
+    final redo = await ref.read(redoRepositoryProvider).getRedo(redoId);
+    if (redo != null) {
+      final editRedo = redo.copyWith(
+          completeCount: redo.completeCount + 1, lastCompleteDate: now);
+      await ref
+          .read(redoRepositoryProvider)
+          .editRedo(id: redoId, editRedo: editRedo);
+      state = AsyncData([
+        for (final redo in state.value ?? [])
+          redo.id == redoId ? editRedo : redo
+      ]);
+    }
+  }
+
   void editRedo({required Redo entity, required String title}) async {
     final newRedo = entity.copyWith(title: title);
     await ref

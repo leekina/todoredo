@@ -1,3 +1,4 @@
+import 'package:chattodo/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/models/todo.model.dart';
 
@@ -5,11 +6,6 @@ import 'package:chattodo/repository/todo_repository.dart';
 import 'package:chattodo/util/common.dart';
 
 part 'todo_provider.g.dart';
-
-/*
-모든 상태변경은 provider에서 일어남
-Repository에서는 상태변경이 일어나지 않음
- */
 
 @riverpod
 class CrudTodo extends _$CrudTodo {
@@ -64,6 +60,10 @@ class CrudTodo extends _$CrudTodo {
     final fixedTodo = entity.complete
         ? entity.copyWith(complete: false, completeDate: null)
         : entity.copyWith(complete: true, completeDate: now);
+
+    if (entity.type == 'redo') {
+      ref.read(crudRedoProvider.notifier).redoComplete(entity.redoId!);
+    }
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: fixedTodo.id, editTodo: fixedTodo);
