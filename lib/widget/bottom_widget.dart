@@ -1,8 +1,10 @@
-import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/page/main_page.dart';
+import 'package:chattodo/page/redo_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:chattodo/providers/todo_provider.dart';
 import 'package:chattodo/util/common.dart';
+import 'package:page_transition/page_transition.dart';
 
 class BottomWidget extends HookConsumerWidget {
   const BottomWidget({
@@ -21,6 +23,22 @@ class BottomWidget extends HookConsumerWidget {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Row(
         children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () {
+              Navigator.of(context).push(
+                PageTransition(
+                    child: const RedoListPage(),
+                    childCurrent: const MainPage(),
+                    type: PageTransitionType.leftToRightPop,
+                    fullscreenDialog: true),
+              );
+            },
+            child: const CircleAvatar(
+              backgroundColor: Colors.transparent,
+              child: Icon(Icons.list_alt_rounded),
+            ),
+          ),
           Expanded(
             child: TextFormField(
               controller: controller,

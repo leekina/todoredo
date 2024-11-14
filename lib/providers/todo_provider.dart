@@ -38,8 +38,8 @@ class CrudTodo extends _$CrudTodo {
     state = AsyncData([...?state.value, newTodo]);
   }
 
-  void editTodoTitle(Todo entity, String chat) async {
-    final newTodo = entity.copyWith(title: chat);
+  void editTodoTitle(Todo entity, String title) async {
+    final newTodo = entity.copyWith(title: title);
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: entity.id, editTodo: newTodo);

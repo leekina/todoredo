@@ -27,9 +27,11 @@ class MainPage extends HookConsumerWidget {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SettingPage(),
-                ));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SettingPage(),
+                  ),
+                );
               },
               icon: Icon(Icons.settings, color: mainColor),
             ),
