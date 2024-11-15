@@ -30,7 +30,7 @@ class BottomWidget extends HookConsumerWidget {
                 PageTransition(
                     child: const RedoListPage(),
                     childCurrent: const MainPage(),
-                    type: PageTransitionType.leftToRightPop,
+                    type: PageTransitionType.leftToRightJoined,
                     fullscreenDialog: true),
               );
             },

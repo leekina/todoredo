@@ -11,7 +11,6 @@ class RedoListPage extends HookConsumerWidget {
   const RedoListPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO : 뒤로가기 추가 필요
     final mainColor = ref.watch(mainColorProvider);
     final redos = ref.watch(crudRedoProvider);
 
@@ -19,9 +18,14 @@ class RedoListPage extends HookConsumerWidget {
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        centerTitle: true,
         title: const Text('Redo List'),
-        leadingWidth: 0,
-        leading: const SizedBox(),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.close_rounded, color: ref.read(mainColorProvider)),
+        ),
         actions: [
           IconButton(
             onPressed: () async {
