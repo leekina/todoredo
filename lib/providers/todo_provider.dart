@@ -17,7 +17,7 @@ class CrudTodo extends _$CrudTodo {
   void addTodo({required String chat, DateTime? date}) async {
     final newTodo = Todo.addTodo(
       todo: chat,
-      createDate: date ?? now,
+      createDate: date ?? DateTime.now(),
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
@@ -28,7 +28,7 @@ class CrudTodo extends _$CrudTodo {
     final newTodo = Todo.addReTodo(
       todo: chat,
       redoId: redoId,
-      createDate: date ?? now,
+      createDate: date ?? DateTime.now(),
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
@@ -59,7 +59,7 @@ class CrudTodo extends _$CrudTodo {
   void toggleTodoComplete(Todo entity) async {
     final fixedTodo = entity.complete
         ? entity.copyWith(complete: false, completeDate: null)
-        : entity.copyWith(complete: true, completeDate: now);
+        : entity.copyWith(complete: true, completeDate: DateTime.now());
 
     if (entity.type == 'redo') {
       ref.read(crudRedoProvider.notifier).redoComplete(entity.redoId!);

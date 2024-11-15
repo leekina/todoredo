@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:chattodo/app/state/app.state.dart';
-import 'package:chattodo/util/common.dart';
 import 'package:chattodo/util/weekday_convertor.dart';
 
 class DateView extends HookConsumerWidget {
@@ -13,6 +12,8 @@ class DateView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = DateFormat('MM. dd').format(todoDate);
+    final today = DateFormat('MM. dd').format(DateTime.now());
+
     return Column(
       children: [
         Padding(

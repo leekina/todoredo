@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:chattodo/models/todo.model.dart';
 
 import 'package:chattodo/providers/todo_provider.dart';
-import 'package:chattodo/util/common.dart';
 import 'package:chattodo/widget/date_widget.dart';
 import 'package:chattodo/widget/todo_widget.dart';
 
@@ -18,6 +17,7 @@ class ChatView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todos = ref.watch(crudTodoProvider);
     final scrollController = useScrollController();
+    final today = DateFormat('MM. dd').format(DateTime.now());
 
     useEffect(() {
       ref.listen(
@@ -84,7 +84,7 @@ class ChatView extends HookConsumerWidget {
                                 getDateFormat(todoList[index - 1]))
                               DateView(date),
                             TodoWidget(todo: todo),
-                            if (isTodayAndNoTodo) DateView(now),
+                            if (isTodayAndNoTodo) DateView(DateTime.now()),
                           ],
                         );
                       },

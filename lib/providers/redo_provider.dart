@@ -1,6 +1,5 @@
 import 'package:chattodo/models/redo.model.dart';
 import 'package:chattodo/repository/redo_repository.dart';
-import 'package:chattodo/util/common.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'redo_provider.g.dart';
@@ -13,7 +12,7 @@ class CrudRedo extends _$CrudRedo {
   }
 
   void addRedo({required String title}) async {
-    final newRedo = Redo.add(title: title, createDate: now);
+    final newRedo = Redo.add(title: title, createDate: DateTime.now());
     await ref.read(redoRepositoryProvider).addRedo(redo: newRedo);
     state = AsyncData([...?state.value, newRedo]);
   }
@@ -31,7 +30,8 @@ class CrudRedo extends _$CrudRedo {
     final redo = await ref.read(redoRepositoryProvider).getRedo(redoId);
     if (redo != null) {
       final editRedo = redo.copyWith(
-          completeCount: redo.completeCount + 1, lastCompleteDate: now);
+          completeCount: redo.completeCount + 1,
+          lastCompleteDate: DateTime.now());
       await ref
           .read(redoRepositoryProvider)
           .editRedo(id: redoId, editRedo: editRedo);
