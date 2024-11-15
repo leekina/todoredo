@@ -62,7 +62,9 @@ class CrudTodo extends _$CrudTodo {
         : entity.copyWith(complete: true, completeDate: DateTime.now());
 
     if (entity.type == 'redo') {
-      ref.read(crudRedoProvider.notifier).redoComplete(entity.redoId!);
+      entity.complete
+          ? ref.read(crudRedoProvider.notifier).redoUpdateUncomplete(entity)
+          : ref.read(crudRedoProvider.notifier).redoUpdateComplete(entity);
     }
     await ref
         .read(todoRepositoryProvider)
@@ -88,9 +90,22 @@ class CrudTodo extends _$CrudTodo {
 
   void deleteTodo(Todo entity) async {
     await ref.read(todoRepositoryProvider).removeTodo(id: entity.id);
+    if (entity.type == 'redo') {
+      if (entity.complete) {
+        ref.read(crudRedoProvider.notifier).redoUpdateUncomplete(entity);
+      }
+    }
     state = AsyncData([
       for (final todo in state.value ?? [])
         if (todo.id != entity.id) todo
     ]);
+  }
+}
+
+@riverpod
+class GetTodo extends _$GetTodo {
+  @override
+  FutureOr<Todo?> build(String id) {
+    return ref.read(todoRepositoryProvider).getTedo(id);
   }
 }

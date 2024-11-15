@@ -67,6 +67,15 @@ class TodoRepository extends TodoRepositoryScheme {
     }
   }
 
+  Future<Todo?> getTedo(String id) async {
+    try {
+      final todo = todoBox.get(id);
+      return Todo.fromJson(Map<String, dynamic>.from(todo));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   @override
   Future<void> removeTodo({required String id}) async {
     try {

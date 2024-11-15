@@ -10,7 +10,7 @@ class Redo with _$Redo {
     required String id,
     required String title,
     required DateTime createDate,
-    DateTime? lastCompleteDate,
+    required List<String> retodoList,
     @Default(false) bool pin,
     @Default(0) int completeCount,
     String? redoId,
@@ -24,6 +24,7 @@ class Redo with _$Redo {
       id: uuid.v4(),
       title: title,
       createDate: createDate,
+      retodoList: [],
     );
   }
 

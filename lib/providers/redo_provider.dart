@@ -1,4 +1,5 @@
 import 'package:chattodo/models/redo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 import 'package:chattodo/repository/redo_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,19 +26,36 @@ class CrudRedo extends _$CrudRedo {
     ]);
   }
 
-  void redoComplete(String redoId) async {
-    //TODO : 리투두 삭제, 컴플리트 변경될때 최근 날짜 수정하려면 구조차제가 변경되야함, 혹은 리투두들을 따로 가지고 있거나, 변경할 점이 필요함
-    final redo = await ref.read(redoRepositoryProvider).getRedo(redoId);
+  void redoUpdateComplete(Todo todo) async {
+    final redo = await ref.read(redoRepositoryProvider).getRedo(todo.redoId!);
     if (redo != null) {
       final editRedo = redo.copyWith(
           completeCount: redo.completeCount + 1,
-          lastCompleteDate: DateTime.now());
+          retodoList: [...redo.retodoList, todo.id]);
       await ref
           .read(redoRepositoryProvider)
-          .editRedo(id: redoId, editRedo: editRedo);
+          .editRedo(id: todo.redoId!, editRedo: editRedo);
       state = AsyncData([
         for (final redo in state.value ?? [])
-          redo.id == redoId ? editRedo : redo
+          redo.id == todo.redoId! ? editRedo : redo
+      ]);
+    }
+  }
+
+  void redoUpdateUncomplete(Todo todo) async {
+    final redo = await ref.read(redoRepositoryProvider).getRedo(todo.redoId!);
+    if (redo != null) {
+      final editRedo =
+          redo.copyWith(completeCount: redo.completeCount - 1, retodoList: [
+        for (final todoId in redo.retodoList)
+          if (todoId != todo.id) todoId
+      ]);
+      await ref
+          .read(redoRepositoryProvider)
+          .editRedo(id: todo.redoId!, editRedo: editRedo);
+      state = AsyncData([
+        for (final redo in state.value ?? [])
+          redo.id == todo.redoId! ? editRedo : redo
       ]);
     }
   }

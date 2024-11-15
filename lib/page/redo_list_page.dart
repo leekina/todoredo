@@ -60,13 +60,44 @@ class RedoListPage extends HookConsumerWidget {
                         child: Text(
                             'Start: ${DateFormat('MM. dd').format(redo.createDate)}'),
                       ),
-                      Expanded(
-                        child: Text(
-                            'Resent:  ${redo.lastCompleteDate != null ? DateFormat('MM. dd').format(redo.lastCompleteDate!) : "Nope"}'),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          if (redo.retodoList.isNotEmpty) {
+                            final resentCompleteTodo = ref
+                                .watch(getTodoProvider(redo.retodoList.last));
+
+                            return resentCompleteTodo.maybeWhen(
+                              data: (resentTodo) {
+                                final date = resentTodo != null
+                                    ? DateFormat('MM. dd')
+                                        .format(resentTodo.completeDate!)
+                                    : "Nope";
+                                return Expanded(
+                                  child: Text('Recent: $date'),
+                                );
+                              },
+                              orElse: () {
+                                return const Expanded(
+                                  child: Text('Recent: Nope'),
+                                );
+                              },
+                            );
+                          } else {
+                            return const Expanded(
+                              child: Text('Recent: Nope'),
+                            );
+                          }
+                        },
                       ),
-                      Expanded(child: Text('Count:  ${redo.completeCount}')),
+                      Expanded(
+                          child: Text('Count:  ${redo.retodoList.length}')),
                     ],
                   ),
+                  trailing: IconButton(
+                      onPressed: () {
+                        ref.read(crudRedoProvider.notifier).deleteRedo(redo);
+                      },
+                      icon: const Icon(Icons.close_rounded)),
                 );
               },
             ).toList(),
