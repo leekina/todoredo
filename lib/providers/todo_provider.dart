@@ -1,4 +1,5 @@
 import 'package:chattodo/models/common.dart';
+import 'package:chattodo/page/chat_view.state.dart';
 import 'package:chattodo/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/models/todo.model.dart';
@@ -21,6 +22,7 @@ class CrudTodo extends _$CrudTodo {
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
+    ref.read(myScrollControllerProvider.notifier).moveToBottom();
   }
 
   void addReTodo(
