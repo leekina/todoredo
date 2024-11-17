@@ -26,6 +26,7 @@ class BottomWidget extends HookConsumerWidget {
           InkWell(
             borderRadius: BorderRadius.circular(20),
             onTap: () {
+              addTodoNode.unfocus();
               Navigator.of(context).push(
                 PageTransition(
                     child: const RedoListPage(),
