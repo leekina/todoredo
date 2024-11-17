@@ -1,3 +1,4 @@
+import 'package:chattodo/models/common.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chattodo/models/todo.model.dart';
@@ -9,12 +10,6 @@ const uuid = Uuid();
 FocusNode addTodoNode = FocusNode();
 // final now = DateTime.now();
 // final today = DateFormat('MM. dd').format(DateTime.now());
-
-enum TodoType {
-  todo,
-  schedule,
-  redo,
-}
 
 int dateCompare(a, b) {
   final adate = a.type == TodoType.schedule.name && a.completeDate != null

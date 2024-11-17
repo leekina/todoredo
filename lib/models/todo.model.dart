@@ -1,3 +1,4 @@
+import 'package:chattodo/models/common.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:chattodo/util/common.dart';
 
@@ -7,9 +8,10 @@ part 'todo.model.freezed.dart';
 @freezed
 class Todo with _$Todo {
   const factory Todo({
+    //default
     required String id,
     required String title,
-    required String type,
+    required TodoType type,
     required DateTime createDate,
     DateTime? completeDate,
     bool? important,
@@ -24,7 +26,7 @@ class Todo with _$Todo {
     return Todo(
       id: uuid.v4(),
       title: todo,
-      type: TodoType.todo.name,
+      type: TodoType.todo,
       createDate: createDate,
     );
   }
@@ -38,7 +40,7 @@ class Todo with _$Todo {
       id: uuid.v4(),
       redoId: redoId,
       title: todo,
-      type: TodoType.redo.name,
+      type: TodoType.redo,
       createDate: createDate,
     );
   }

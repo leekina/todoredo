@@ -1,4 +1,5 @@
 import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/models/common.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,7 +20,7 @@ class TodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isRedo = todo.type == TodoType.redo.name;
+    final isRedo = todo.type == TodoType.redo;
     final time = DateFormat('HH:mm').format(todo.createDate);
     //ChatLine
     return Dismissible(

@@ -1,9 +1,9 @@
+import 'package:chattodo/models/common.dart';
 import 'package:chattodo/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/models/todo.model.dart';
 
 import 'package:chattodo/repository/todo_repository.dart';
-import 'package:chattodo/util/common.dart';
 
 part 'todo_provider.g.dart';
 
@@ -46,7 +46,7 @@ class CrudTodo extends _$CrudTodo {
   }
 
   void editTodoType(Todo entity, TodoType type) async {
-    final newtodo = entity.copyWith(type: type.name);
+    final newtodo = entity.copyWith(type: type);
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: entity.id, editTodo: newtodo);
@@ -61,7 +61,7 @@ class CrudTodo extends _$CrudTodo {
         ? entity.copyWith(complete: false, completeDate: null)
         : entity.copyWith(complete: true, completeDate: DateTime.now());
 
-    if (entity.type == 'redo') {
+    if (entity.type == TodoType.redo) {
       entity.complete
           ? ref.read(crudRedoProvider.notifier).redoUpdateUncomplete(entity)
           : ref.read(crudRedoProvider.notifier).redoUpdateComplete(entity);
@@ -90,7 +90,7 @@ class CrudTodo extends _$CrudTodo {
 
   void deleteTodo(Todo entity) async {
     await ref.read(todoRepositoryProvider).removeTodo(id: entity.id);
-    if (entity.type == 'redo') {
+    if (entity.type == TodoType.redo) {
       if (entity.complete) {
         ref.read(crudRedoProvider.notifier).redoUpdateUncomplete(entity);
       }
