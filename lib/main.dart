@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chattodo/repository/redo_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,14 +15,19 @@ import 'package:chattodo/style/app.theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final sharedPreferences = await SharedPreferences.getInstance();
   await Hive.initFlutter();
+  //TodoBox
   await Hive.openBox('todos');
+  //RedoBox
+  await Hive.openBox('redos');
+  //SettingBox
+  final sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(
     ProviderScope(
       overrides: [
         todoRepositoryProvider.overrideWithValue(TodoRepository()),
+        redoRepositoryProvider.overrideWithValue(RedoRepository()),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
       child: const MyApp(),
@@ -34,6 +40,7 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //스테이터스바 픽스
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).scaffoldBackgroundColor,
@@ -42,6 +49,7 @@ class MyApp extends HookConsumerWidget {
       ),
     );
 
+    //첫 접속인 경우 튜토리얼 추가
     void firstConnetionCheck() async {
       await Future.delayed(
         Duration.zero,
@@ -56,7 +64,9 @@ class MyApp extends HookConsumerWidget {
       );
     }
 
+    //첫 접속 체크
     firstConnetionCheck();
+
     return MaterialApp(
       title: 'ChatTodo',
       theme: ThemeData(

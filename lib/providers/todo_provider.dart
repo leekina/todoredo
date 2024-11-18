@@ -1,25 +1,43 @@
+import 'package:chattodo/models/common.dart';
+import 'package:chattodo/page/chat_view.state.dart';
+import 'package:chattodo/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/models/todo.model.dart';
 
 import 'package:chattodo/repository/todo_repository.dart';
-import 'package:chattodo/util/common.dart';
 
 part 'todo_provider.g.dart';
 
 @riverpod
 class CrudTodo extends _$CrudTodo {
-  void addTodo({required String chat, DateTime? date, TodoType? type}) async {
-    final newTodo = Todo.add(
+  @override
+  FutureOr<List<Todo>> build() async {
+    return ref.read(todoRepositoryProvider).getTodos();
+  }
+
+  void addTodo({required String chat, DateTime? date}) async {
+    final newTodo = Todo.addTodo(
       todo: chat,
-      createDate: date ?? now,
-      type: type ?? TodoType.todo,
+      createDate: date ?? DateTime.now(),
+    );
+    await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
+    state = AsyncData([...?state.value, newTodo]);
+    ref.read(myScrollControllerProvider.notifier).moveToBottom();
+  }
+
+  void addReTodo(
+      {required String chat, required String redoId, DateTime? date}) async {
+    final newTodo = Todo.addReTodo(
+      todo: chat,
+      redoId: redoId,
+      createDate: date ?? DateTime.now(),
     );
     await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
     state = AsyncData([...?state.value, newTodo]);
   }
 
-  void editTodoTitle(Todo entity, String chat) async {
-    final newTodo = entity.copyWith(title: chat);
+  void editTodoTitle(Todo entity, String title) async {
+    final newTodo = entity.copyWith(title: title);
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: entity.id, editTodo: newTodo);
@@ -30,7 +48,7 @@ class CrudTodo extends _$CrudTodo {
   }
 
   void editTodoType(Todo entity, TodoType type) async {
-    final newtodo = entity.copyWith(type: type.name);
+    final newtodo = entity.copyWith(type: type);
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: entity.id, editTodo: newtodo);
@@ -43,7 +61,13 @@ class CrudTodo extends _$CrudTodo {
   void toggleTodoComplete(Todo entity) async {
     final fixedTodo = entity.complete
         ? entity.copyWith(complete: false, completeDate: null)
-        : entity.copyWith(complete: true, completeDate: now);
+        : entity.copyWith(complete: true, completeDate: DateTime.now());
+
+    if (entity.type == TodoType.redo) {
+      entity.complete
+          ? ref.read(crudRedoProvider.notifier).redoUpdateUncomplete(entity)
+          : ref.read(crudRedoProvider.notifier).redoUpdateComplete(entity);
+    }
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: fixedTodo.id, editTodo: fixedTodo);
@@ -66,16 +90,24 @@ class CrudTodo extends _$CrudTodo {
     ]);
   }
 
-  void deleteTodo(String id) async {
-    await ref.read(todoRepositoryProvider).removeTodo(id: id);
+  void deleteTodo(Todo entity) async {
+    await ref.read(todoRepositoryProvider).removeTodo(id: entity.id);
+    if (entity.type == TodoType.redo) {
+      if (entity.complete) {
+        ref.read(crudRedoProvider.notifier).redoUpdateUncomplete(entity);
+      }
+    }
     state = AsyncData([
       for (final todo in state.value ?? [])
-        if (todo.id != id) todo
+        if (todo.id != entity.id) todo
     ]);
   }
+}
 
+@riverpod
+class GetTodo extends _$GetTodo {
   @override
-  FutureOr<List<Todo>> build() async {
-    return ref.read(todoRepositoryProvider).getTodos();
+  FutureOr<Todo?> build(String id) {
+    return ref.read(todoRepositoryProvider).getTedo(id);
   }
 }

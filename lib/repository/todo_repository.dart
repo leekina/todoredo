@@ -1,3 +1,4 @@
+import 'package:chattodo/models/common.dart';
 import 'package:hive/hive.dart';
 import 'package:chattodo/models/todo.model.dart';
 
@@ -47,21 +48,30 @@ class TodoRepository extends TodoRepositoryScheme {
         case TodoType.todo:
           return [
             for (final todo in todoList)
-              if (todo.type == TodoType.todo.name) todo
+              if (todo.type == TodoType.todo) todo
           ];
         case TodoType.schedule:
           return [
             for (final todo in todoList)
-              if (todo.type == TodoType.schedule.name) todo
+              if (todo.type == TodoType.schedule) todo
           ];
         case TodoType.redo:
           return [
             for (final todo in todoList)
-              if (todo.type == TodoType.redo.name) todo
+              if (todo.type == TodoType.redo) todo
           ];
         default:
           return todoList;
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Todo?> getTedo(String id) async {
+    try {
+      final todo = todoBox.get(id);
+      return Todo.fromJson(Map<String, dynamic>.from(todo));
     } catch (e) {
       rethrow;
     }

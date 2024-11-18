@@ -1,4 +1,5 @@
 import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/models/common.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,7 +20,7 @@ class TodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSchedule = todo.type == TodoType.schedule.name;
+    final isRedo = todo.type == TodoType.redo;
     final time = DateFormat('HH:mm').format(todo.createDate);
     //ChatLine
     return Dismissible(
@@ -44,21 +45,23 @@ class TodoWidget extends HookConsumerWidget {
       key: ValueKey(todo.id),
       direction: DismissDirection.startToEnd,
       onDismissed: (direction) {
-        ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
+        ref.read(crudTodoProvider.notifier).deleteTodo(todo);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment:
-              isSchedule ? MainAxisAlignment.start : MainAxisAlignment.end,
+              isRedo ? MainAxisAlignment.start : MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                time,
-              ),
-            ),
+            isRedo
+                ? const SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      time,
+                    ),
+                  ),
             const SizedBox(width: 8),
             //ChatView
             Material(
@@ -101,10 +104,15 @@ class TodoWidget extends HookConsumerWidget {
                                   : Theme.of(context).focusColor,
                               width: 2,
                               strokeAlign: BorderSide.strokeAlignOutside),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8),
-                        bottomLeft: Radius.circular(8),
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(8),
+                        topRight: const Radius.circular(8),
+                        bottomLeft: isRedo
+                            ? const Radius.circular(0)
+                            : const Radius.circular(8),
+                        bottomRight: isRedo
+                            ? const Radius.circular(8)
+                            : const Radius.circular(0),
                       ),
                       color: todo.complete
                           ? ref.watch(mainColorProvider)
@@ -124,6 +132,16 @@ class TodoWidget extends HookConsumerWidget {
               ),
             ),
             const SizedBox(width: 8),
+            isRedo
+                ? Padding(
+                    padding: isRedo
+                        ? const EdgeInsets.only(right: 20)
+                        : const EdgeInsets.only(left: 20),
+                    child: Text(
+                      time,
+                    ),
+                  )
+                : const SizedBox(),
           ],
         ),
       ),
