@@ -1,6 +1,6 @@
 {
-    "name": "todoredo",
-    "short_name": "todoredo",
+    "name": "chattodo",
+    "short_name": "chattodo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

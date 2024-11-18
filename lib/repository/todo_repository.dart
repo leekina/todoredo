@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:todoredo/models/todo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todoredo/repository/repository_scheme.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/repository/repository_scheme.dart';
+import 'package:chattodo/util/common.dart';
 part 'todo_repository.g.dart';
 
 @riverpod
@@ -24,11 +24,11 @@ class TodoRepository extends TodoRepositoryScheme {
   }
 
   @override
-  Future<void> editTodoTitle({required String id, required String desc}) async {
+  Future<void> editTodo({required String id, required Todo editTodo}) async {
     try {
-      final todoMap = todoBox.get(id);
-      todoMap['title'] = desc;
-      await todoBox.put(id, todoMap);
+      //double check
+      final todo = Todo.fromJson(Map<String, dynamic>.from(todoBox.get(id)));
+      if (todo.id == editTodo.id) await todoBox.put(id, editTodo.toJson());
     } catch (e) {
       rethrow;
     }
@@ -40,7 +40,6 @@ class TodoRepository extends TodoRepositoryScheme {
       final todoList = todoBox.values
           .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-
       todoList.sort(dateCompare);
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
@@ -77,22 +76,9 @@ class TodoRepository extends TodoRepositoryScheme {
     }
   }
 
-  Future<void> editTodoType(
-      {required String id, required TodoType type}) async {
-    try {
-      final todoMap = todoBox.get(id);
-      todoMap['type'] = type.name;
-      await todoBox.put(id, todoMap);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> toogleTodoComplete({required Todo entity}) async {
-    try {
-      await todoBox.put(entity.id, entity.toJson());
-    } catch (e) {
-      rethrow;
+  Future<void> addTutorial() async {
+    for (final todo in tutorial) {
+      await addTodo(todo: todo);
     }
   }
 }

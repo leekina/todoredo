@@ -1,17 +1,20 @@
-name: todoredo
+name: chattodo
 description: "A new Flutter project."
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
 dependencies:
   cupertino_icons: ^1.0.6
+  dropdown_button2: ^2.3.9
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
+  flutter_launcher_icons: ^0.14.1
+  flutter_native_splash: ^2.4.1
   flutter_riverpod: ^2.5.1
   freezed_annotation: ^2.4.4
   go_router: ^14.2.1
@@ -42,3 +45,67 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/icon/
+
+  fonts:
+    - family: Paperlogy
+      fonts:
+        - asset: assets/fonts/Paperlogy/Paperlogy-1Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Paperlogy/Paperlogy-2ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Paperlogy/Paperlogy-3Light.ttf
+          weight: 300
+        - asset: assets/fonts/Paperlogy/Paperlogy-4Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Paperlogy/Paperlogy-5Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Paperlogy/Paperlogy-6SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Paperlogy/Paperlogy-7Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Paperlogy/Paperlogy-8ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Paperlogy/Paperlogy-9Black.ttf
+          weight: 900
+
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard/Pretendard-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Pretendard/Pretendard-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Pretendard/Pretendard-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Pretendard/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Pretendard/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Pretendard/Pretendard-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Pretendard/Pretendard-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Pretendard/Pretendard-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Pretendard/Pretendard-Black.ttf
+          weight: 900
+
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon/icon.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  color_dark: "#303030"
+  image: assets/icon/splash_icon.png
+  android_12:
+    color: "#ffffff"
+    color_dark: "#303030"
+    image: assets/icon/splash_icon.png

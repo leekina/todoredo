@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todoredo/models/todo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 
-import 'package:todoredo/providers/todo_provider.dart';
-import 'package:todoredo/util/common.dart';
-import 'package:todoredo/widget/date_widget.dart';
-import 'package:todoredo/widget/todo_widget.dart';
+import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/util/common.dart';
+import 'package:chattodo/widget/date_widget.dart';
+import 'package:chattodo/widget/todo_widget.dart';
 
 class ChatView extends HookConsumerWidget {
   const ChatView({
@@ -49,19 +49,15 @@ class ChatView extends HookConsumerWidget {
     }, [todos]);
 
     String getDateFormat(Todo todo) {
-      return todo.type == TodoType.schedule.name
-          ? DateFormat('MM. dd').format(todo.completeDate!)
-          : DateFormat('MM. dd').format(todo.createDate);
+      return DateFormat('MM. dd').format(todo.createDate);
     }
 
     DateTime getDate(Todo todo) {
-      return todo.type == TodoType.schedule.name
-          ? todo.completeDate!
-          : todo.createDate;
+      return todo.createDate;
     }
 
     return ColoredBox(
-      color: const Color(0xffeeeeee),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: todos.maybeWhen(
         data: (todoList) {
           return CustomScrollView(
@@ -93,6 +89,7 @@ class ChatView extends HookConsumerWidget {
                         );
                       },
                     ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),

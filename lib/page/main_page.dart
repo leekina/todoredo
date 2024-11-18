@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todoredo/page/chat_view.dart';
-import 'package:todoredo/page/setting_page.dart';
+import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/page/chat_view.dart';
+import 'package:chattodo/page/setting_page.dart';
 
-import 'package:todoredo/util/common.dart';
-import 'package:todoredo/widget/add_todo_widget.dart';
+import 'package:chattodo/util/common.dart';
+import 'package:chattodo/widget/bottom_widget.dart';
 
 class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mainColor = ref.watch(mainColorProvider);
     final controller = useTextEditingController();
 
     return GestureDetector(
       onTap: () => addTodoNode.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: const Text('ChatTodo'),
           centerTitle: false,
           actions: [
@@ -30,16 +31,17 @@ class MainPage extends HookConsumerWidget {
                   builder: (context) => const SettingPage(),
                 ));
               },
-              icon: const Icon(Icons.settings),
+              icon: Icon(Icons.settings, color: mainColor),
             ),
             const SizedBox(width: 8)
           ],
         ),
         body: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               const Expanded(child: ChatView()),
-              AddTodoWidget(controller: controller),
+              BottomWidget(controller: controller),
             ],
           ),
         ),

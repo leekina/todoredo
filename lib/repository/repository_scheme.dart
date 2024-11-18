@@ -1,5 +1,5 @@
-import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/util/common.dart';
 
 abstract class TodoRepositoryScheme {
   Future<List<Todo>> getTodos({TodoType? type});
@@ -8,8 +8,8 @@ abstract class TodoRepositoryScheme {
 
   Future<void> removeTodo({required String id});
 
-  Future<void> editTodoTitle({
+  Future<void> editTodo({
     required String id,
-    required String desc,
+    required Todo editTodo,
   });
 }

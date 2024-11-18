@@ -1,9 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/schedule_provider.dart';
+import 'package:chattodo/models/todo.model.dart';
 
-import 'package:todoredo/repository/todo_repository.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/repository/todo_repository.dart';
+import 'package:chattodo/util/common.dart';
 
 part 'todo_provider.g.dart';
 
@@ -19,46 +18,52 @@ class CrudTodo extends _$CrudTodo {
     state = AsyncData([...?state.value, newTodo]);
   }
 
-  void addTodoFromSchedule(Todo todo) async {
-    final newTodo = todo.copyWith(
-        complete: true, completeDate: DateTime(now.year, now.month, now.day));
-    await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
-    state = AsyncData([...?state.value, newTodo]..sort(dateCompare));
-  }
-
-  void editTodoTitle(String id, String chat) async {
-    await ref.read(todoRepositoryProvider).editTodoTitle(id: id, desc: chat);
+  void editTodoTitle(Todo entity, String chat) async {
+    final newTodo = entity.copyWith(title: chat);
+    await ref
+        .read(todoRepositoryProvider)
+        .editTodo(id: entity.id, editTodo: newTodo);
     state = AsyncData([
       for (final todo in state.value ?? [])
-        todo.id == id ? todo.copyWith(title: chat) : todo
+        todo.id == entity.id ? newTodo : todo
     ]);
   }
 
-  void editTodoType(String id, TodoType type) async {
-    await ref.read(todoRepositoryProvider).editTodoType(id: id, type: type);
+  void editTodoType(Todo entity, TodoType type) async {
+    final newtodo = entity.copyWith(type: type.name);
+    await ref
+        .read(todoRepositoryProvider)
+        .editTodo(id: entity.id, editTodo: newtodo);
     state = AsyncData([
       for (final todo in state.value ?? [])
-        todo.id == id ? todo.copyWith(type: type.name) : todo
+        todo.id == entity.id ? newtodo : todo
     ]);
   }
 
-  void toogleTodoComplete(Todo entity) async {
+  void toggleTodoComplete(Todo entity) async {
     final fixedTodo = entity.complete
         ? entity.copyWith(complete: false, completeDate: null)
         : entity.copyWith(complete: true, completeDate: now);
-    //스케쥴 일 경우에는 완료안된 스케쥴로 복귀
-    if (entity.type == TodoType.schedule.name) {
-      ref.read(crudScheduleProvider.notifier).addScheduleFromTodo(fixedTodo);
-      deleteTodo(entity.id);
-    } else {
-      await ref
-          .read(todoRepositoryProvider)
-          .toogleTodoComplete(entity: fixedTodo);
-      state = AsyncData([
-        for (final todo in state.value ?? [])
-          todo.id == entity.id ? fixedTodo : todo
-      ]);
-    }
+    await ref
+        .read(todoRepositoryProvider)
+        .editTodo(id: fixedTodo.id, editTodo: fixedTodo);
+    state = AsyncData([
+      for (final todo in state.value ?? [])
+        todo.id == entity.id ? fixedTodo : todo
+    ]);
+  }
+
+  void toggleTodoImportant(Todo entity) async {
+    final fixedTodo =
+        entity.copyWith(important: entity.important == true ? false : true);
+
+    await ref
+        .read(todoRepositoryProvider)
+        .editTodo(id: fixedTodo.id, editTodo: fixedTodo);
+    state = AsyncData([
+      for (final todo in state.value ?? [])
+        todo.id == entity.id ? fixedTodo : todo
+    ]);
   }
 
   void deleteTodo(String id) async {
@@ -72,29 +77,5 @@ class CrudTodo extends _$CrudTodo {
   @override
   FutureOr<List<Todo>> build() async {
     return ref.read(todoRepositoryProvider).getTodos();
-  }
-}
-
-@riverpod
-class GetTodosOnly extends _$GetTodosOnly {
-  @override
-  FutureOr<List<Todo>> build() async {
-    return ref.read(todoRepositoryProvider).getTodos(type: TodoType.todo);
-  }
-}
-
-@riverpod
-class GetSchedulesOnly extends _$GetSchedulesOnly {
-  @override
-  FutureOr<List<Todo>> build() {
-    return ref.read(todoRepositoryProvider).getTodos(type: TodoType.schedule);
-  }
-}
-
-@riverpod
-class GetRedoOnly extends _$GetRedoOnly {
-  @override
-  FutureOr<List<Todo>> build() {
-    return ref.read(todoRepositoryProvider).getTodos(type: TodoType.redo);
   }
 }
