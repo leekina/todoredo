@@ -14,6 +14,7 @@ class MyScrollController extends _$MyScrollController {
   }
 
   void moveToBottom() async {
+    state.jumpTo(40);
     await state.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
   }
