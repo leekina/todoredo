@@ -40,6 +40,11 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(checkFirstConnectionProvider, (previous, next) async {
+      await ref
+          .read(sharedPreferencesProvider)
+          .setBool("checkFirstConnection", next);
+    });
     //스테이터스바 픽스
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(

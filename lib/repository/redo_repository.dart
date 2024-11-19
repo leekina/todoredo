@@ -1,4 +1,5 @@
 import 'package:chattodo/models/redo.model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/repository/repository_scheme.dart';
@@ -6,7 +7,7 @@ import 'package:chattodo/repository/repository_scheme.dart';
 part 'redo_repository.g.dart';
 
 @riverpod
-RedoRepository redoRepository(RedoRepositoryRef ref) {
+RedoRepository redoRepository(Ref ref) {
   throw UnimplementedError();
 }
 

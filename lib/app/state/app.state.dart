@@ -8,9 +8,6 @@ final sharedPreferencesProvider =
     Provider<SharedPreferences>((_) => throw UnimplementedError());
 
 final themeModeProvider = StateProvider<ThemeMode>((ref) {
-  ref.listenSelf((previous, next) {
-    ref.read(sharedPreferencesProvider).setString("themeMode", next.name);
-  });
   final themeModeName =
       ref.read(sharedPreferencesProvider).getString("themeMode");
   return ThemeMode.values.asNameMap()[themeModeName] ?? ThemeMode.system;
@@ -18,11 +15,6 @@ final themeModeProvider = StateProvider<ThemeMode>((ref) {
 
 final mainColorProvider = StateProvider<Color>(
   (ref) {
-    ref.listenSelf((previous, next) {
-      ref
-          .read(sharedPreferencesProvider)
-          .setString("mainColor", next.value.toString());
-    });
     final mainColor =
         ref.read(sharedPreferencesProvider).getString("mainColor");
 
@@ -34,11 +26,6 @@ final mainColorProvider = StateProvider<Color>(
 
 final checkFirstConnectionProvider = StateProvider<bool>(
   (ref) {
-    ref.listenSelf((previous, next) async {
-      await ref
-          .read(sharedPreferencesProvider)
-          .setBool("checkFirstConnection", next);
-    });
     final checkFirstConnection =
         ref.read(sharedPreferencesProvider).getBool("checkFirstConnection");
 

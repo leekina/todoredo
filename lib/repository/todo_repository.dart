@@ -1,4 +1,5 @@
 import 'package:chattodo/models/common.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:chattodo/models/todo.model.dart';
 
@@ -8,7 +9,7 @@ import 'package:chattodo/util/common.dart';
 part 'todo_repository.g.dart';
 
 @riverpod
-TodoRepository todoRepository(TodoRepositoryRef ref) {
+TodoRepository todoRepository(Ref ref) {
   throw UnimplementedError();
 }
 
