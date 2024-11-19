@@ -23,23 +23,23 @@ class BottomWidget extends HookConsumerWidget {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Row(
         children: [
-          // InkWell(
-          //   borderRadius: BorderRadius.circular(20),
-          //   onTap: () {
-          //     addTodoNode.unfocus();
-          //     Navigator.of(context).push(
-          //       PageTransition(
-          //           child: const RedoListPage(),
-          //           childCurrent: const MainPage(),
-          //           type: PageTransitionType.leftToRightJoined,
-          //           fullscreenDialog: true),
-          //     );
-          //   },
-          //   child: const CircleAvatar(
-          //     backgroundColor: Colors.transparent,
-          //     child: Icon(Icons.list_alt_rounded),
-          //   ),
-          // ),
+          InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () {
+              addTodoNode.unfocus();
+              Navigator.of(context).push(
+                PageTransition(
+                    child: const RedoListPage(),
+                    childCurrent: const MainPage(),
+                    type: PageTransitionType.leftToRightJoined,
+                    fullscreenDialog: true),
+              );
+            },
+            child: const CircleAvatar(
+              backgroundColor: Colors.transparent,
+              child: Icon(Icons.list_alt_rounded),
+            ),
+          ),
           Expanded(
             child: TextFormField(
               controller: controller,
