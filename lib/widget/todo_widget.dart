@@ -1,115 +1,150 @@
+import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/models/common.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/util/common.dart';
+import 'package:chattodo/widget/edit_chat_dialog.dart';
+
 import 'package:intl/intl.dart';
 
-import 'package:todoredo/models/todo.model.dart';
-import 'package:todoredo/providers/todo_providers.dart';
-import 'package:todoredo/util/common.dart';
-import 'package:todoredo/widget/edit_chat_dialog.dart';
-
 class TodoWidget extends HookConsumerWidget {
-  final Todo todo;
-
   const TodoWidget({
     super.key,
     required this.todo,
   });
 
+  final Todo todo;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      child: Dismissible(
-        key: ValueKey(todo.id),
-        direction: todo.complete
-            ? DismissDirection.startToEnd
-            : DismissDirection.horizontal,
-        onDismissed: (direction) {
-          //디스미스
-          if (direction == DismissDirection.endToStart) {
-            ref.read(crudTodoProvider.notifier).addTodo(
-                chat: todo.title,
-                date: todo.createDate,
-                type: TodoType.schedule);
-          }
-          ref.read(crudTodoProvider.notifier).deleteTodo(todo.id);
-        },
-        child: GestureDetector(
-          //길게 누르면 수정
-          onLongPress: () {
-            if (!todo.complete) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return EditTodoDialog(todo);
-                },
-              );
-            }
-          },
-          onTap: () {
-            //오늘이전꺼만 컴플리트 가능
-            if (todo.createDate.isBefore(DateTime.now())) {
-              ref.read(crudTodoProvider.notifier).toogleTodoComplete(todo.id);
-            }
-
-            //언포커스
-            addTodoNode.unfocus();
-          },
-          child: TodoView(todo: todo),
+    final isRedo = todo.type == TodoType.redo;
+    final time = DateFormat('HH:mm').format(todo.createDate);
+    //ChatLine
+    return Dismissible(
+      background: const ColoredBox(
+        color: Colors.red,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 20),
+            Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            SizedBox(width: 4),
+            Text(
+              'delete',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
         ),
       ),
-    );
-  }
-}
-
-class TodoView extends HookConsumerWidget {
-  final Todo todo;
-  const TodoView({
-    super.key,
-    required this.todo,
-  });
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isSchedule = todo.type == TodoType.schedule;
-    final time = DateFormat('hh:mm').format(todo.createDate);
-    return Row(
-      mainAxisAlignment:
-          isSchedule ? MainAxisAlignment.start : MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        isSchedule
-            ? const SizedBox()
-            : Text(
-                time,
-                style: const TextStyle(color: Colors.grey),
+      key: ValueKey(todo.id),
+      direction: DismissDirection.startToEnd,
+      onDismissed: (direction) {
+        ref.read(crudTodoProvider.notifier).deleteTodo(todo);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          mainAxisAlignment:
+              isRedo ? MainAxisAlignment.start : MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            isRedo
+                ? const SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      time,
+                    ),
+                  ),
+            const SizedBox(width: 8),
+            //ChatView
+            Material(
+              child: InkWell(
+                //길게 누르면 수정
+                onLongPress: () {
+                  if (!todo.complete) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return EditTodoDialog(todo);
+                      },
+                    );
+                  }
+                },
+                onDoubleTap: () {
+                  ref.read(crudTodoProvider.notifier).toggleTodoComplete(todo);
+                  //언포커스
+                  addTodoNode.unfocus();
+                },
+                onTap: todo.complete == true
+                    ? null
+                    : () {
+                        ref
+                            .read(crudTodoProvider.notifier)
+                            .toggleTodoImportant(todo);
+                      },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                      border: todo.complete
+                          ? Border.all(
+                              color: ref.watch(mainColorProvider),
+                              width: 2,
+                              strokeAlign: BorderSide.strokeAlignOutside)
+                          : Border.all(
+                              color: todo.important == true
+                                  ? ref.watch(mainColorProvider)
+                                  : Theme.of(context).focusColor,
+                              width: 2,
+                              strokeAlign: BorderSide.strokeAlignOutside),
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(8),
+                        topRight: const Radius.circular(8),
+                        bottomLeft: isRedo
+                            ? const Radius.circular(0)
+                            : const Radius.circular(8),
+                        bottomRight: isRedo
+                            ? const Radius.circular(8)
+                            : const Radius.circular(0),
+                      ),
+                      color: todo.complete
+                          ? ref.watch(mainColorProvider)
+                          : Theme.of(context).focusColor),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.6),
+                  child: Text(
+                    todo.title,
+                    style: todo.complete
+                        ? Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.white)
+                        : null,
+                  ),
+                ),
               ),
-        const SizedBox(width: 4),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: todo.complete
-                  ? Colors.green.shade900.withOpacity(0.8)
-                  : Colors.white),
-          child: Text(
-            todo.title,
-            style: TextStyle(
-              color: todo.createDate.isBefore(DateTime.now())
-                  ? todo.complete
-                      ? Colors.white
-                      : Colors.black
-                  : Colors.grey,
             ),
-          ),
+            const SizedBox(width: 8),
+            isRedo
+                ? Padding(
+                    padding: isRedo
+                        ? const EdgeInsets.only(right: 20)
+                        : const EdgeInsets.only(left: 20),
+                    child: Text(
+                      time,
+                    ),
+                  )
+                : const SizedBox(),
+          ],
         ),
-        const SizedBox(width: 4),
-        isSchedule
-            ? Text(
-                time,
-                style: const TextStyle(color: Colors.grey),
-              )
-            : const SizedBox(),
-      ],
+      ),
     );
   }
 }

@@ -1,68 +1,19 @@
+import 'package:chattodo/models/common.dart';
 import 'package:hive/hive.dart';
-import 'package:todoredo/models/todo.model.dart';
+import 'package:chattodo/models/todo.model.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:todoredo/util/common.dart';
+import 'package:chattodo/repository/repository_scheme.dart';
+import 'package:chattodo/util/common.dart';
 part 'todo_repository.g.dart';
 
 @riverpod
-TodosRepository todosRepository(TodosRepositoryRef ref) {
+TodoRepository todoRepository(TodoRepositoryRef ref) {
   throw UnimplementedError();
 }
 
-abstract class TodosRepository {
-  Future<List<Todo>> getTodos({TodoType? type});
-  Future<void> addTodo({required Todo todo});
-  Future<void> removeTodo({required String id});
-  Future<void> editTodoTitle({
-    required String id,
-    required String desc,
-  });
-  Future<void> editTodoType({
-    required String id,
-    required TodoType type,
-  });
-  Future<void> toogleTodoComplete({required String id});
-}
-
-class HiveTodoRepository extends TodosRepository {
+class TodoRepository extends TodoRepositoryScheme {
   final Box todoBox = Hive.box('todos');
-
-  @override
-  Future<List<Todo>> getTodos({TodoType? type}) async {
-    try {
-      //Type 정의되면 타입에 해당하는것만
-      //default : 전체
-
-      switch (type) {
-        case TodoType.todo:
-          return [
-            for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.todo.name)
-                Todo.fromJson(Map<String, dynamic>.from(todo))
-          ];
-        case TodoType.schedule:
-          return [
-            for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.schedule.name)
-                Todo.fromJson(Map<String, dynamic>.from(todo))
-          ];
-        case TodoType.redo:
-          return [
-            for (final todo in todoBox.values)
-              if (todo['type'] == TodoType.redo.name)
-                Todo.fromJson(Map<String, dynamic>.from(todo))
-          ];
-        default:
-          return [
-            for (final todo in todoBox.values)
-              Todo.fromJson(Map<String, dynamic>.from(todo))
-          ];
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   @override
   Future<void> addTodo({required Todo todo}) async {
@@ -74,23 +25,53 @@ class HiveTodoRepository extends TodosRepository {
   }
 
   @override
-  Future<void> editTodoTitle({required String id, required String desc}) async {
+  Future<void> editTodo({required String id, required Todo editTodo}) async {
     try {
-      final todoMap = todoBox.get(id);
-      todoMap['desc'] = desc;
-      await todoBox.put(id, todoMap);
+      //double check
+      final todo = Todo.fromJson(Map<String, dynamic>.from(todoBox.get(id)));
+      if (todo.id == editTodo.id) await todoBox.put(id, editTodo.toJson());
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<void> editTodoType(
-      {required String id, required TodoType type}) async {
+  Future<List<Todo>> getTodos({TodoType? type}) async {
     try {
-      final todoMap = todoBox.get(id);
-      todoMap['type'] = type.name;
-      await todoBox.put(id, todoMap);
+      final todoList = todoBox.values
+          .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+      todoList.sort(dateCompare);
+      //Type 정의되면 타입에 해당하는것만
+      //default : 전체
+      switch (type) {
+        case TodoType.todo:
+          return [
+            for (final todo in todoList)
+              if (todo.type == TodoType.todo) todo
+          ];
+        case TodoType.schedule:
+          return [
+            for (final todo in todoList)
+              if (todo.type == TodoType.schedule) todo
+          ];
+        case TodoType.redo:
+          return [
+            for (final todo in todoList)
+              if (todo.type == TodoType.redo) todo
+          ];
+        default:
+          return todoList;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Todo?> getTedo(String id) async {
+    try {
+      final todo = todoBox.get(id);
+      return Todo.fromJson(Map<String, dynamic>.from(todo));
     } catch (e) {
       rethrow;
     }
@@ -105,15 +86,9 @@ class HiveTodoRepository extends TodosRepository {
     }
   }
 
-  @override
-  Future<void> toogleTodoComplete({required String id}) async {
-    try {
-      final todoMap = Todo.fromJson(todoBox.get(id));
-      final completedTodo = todoMap.copyWith(
-          complete: !todoMap.complete, completeDate: DateTime.now());
-      await todoBox.put(id, completedTodo.toJson());
-    } catch (e) {
-      rethrow;
+  Future<void> addTutorial() async {
+    for (final todo in tutorial) {
+      await addTodo(todo: todo);
     }
   }
 }
