@@ -48,9 +48,10 @@ class RedoListPage extends HookConsumerWidget {
               (redo) {
                 return ListTile(
                   onTap: () {
-                    ref
-                        .read(crudTodoProvider.notifier)
-                        .addReTodo(chat: redo.title, redoId: redo.id);
+                    ref.read(crudTodoProvider.notifier).addReTodo(
+                          chat: redo.title,
+                          redoId: redo.id,
+                        );
                     Navigator.pop(context);
                   },
                   title: Text(redo.title),

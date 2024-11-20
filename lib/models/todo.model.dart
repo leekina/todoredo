@@ -11,6 +11,7 @@ class Todo with _$Todo {
     //default
     required String id,
     required String title,
+    String? comment,
     required TodoType type,
     required DateTime createDate,
     DateTime? completeDate,
