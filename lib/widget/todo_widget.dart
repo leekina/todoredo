@@ -57,6 +57,7 @@ class TodoWidget extends HookConsumerWidget {
         motion: CustomMotion(
             onOpen: (context) async {
               ref.read(commentTodoProvider.notifier).setTodo(todo);
+              addTodoNode.requestFocus();
             },
             motionWidget: BehindMotion()),
         children: [
@@ -73,15 +74,15 @@ class TodoWidget extends HookConsumerWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: ChatWidget(isRedo: isRedo, todo: todo),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: TodoTile(isRedo: isRedo, todo: todo),
       ),
     );
   }
 }
 
-class ChatWidget extends HookConsumerWidget {
-  const ChatWidget({
+class TodoTile extends HookConsumerWidget {
+  const TodoTile({
     super.key,
     required this.isRedo,
     required this.todo,
@@ -115,15 +116,17 @@ class ChatWidget extends HookConsumerWidget {
               : () {
                   ref.read(crudTodoProvider.notifier).toggleTodoImportant(todo);
                 },
-          child: ChatView(todo: todo, isRedo: isRedo),
+          child: todo.comment == null
+              ? TodoView(todo: todo, isRedo: isRedo)
+              : TodoViewWithComment(todo: todo, isRedo: isRedo),
         ),
       ),
     );
   }
 }
 
-class ChatView extends ConsumerWidget {
-  const ChatView({
+class TodoView extends ConsumerWidget {
+  const TodoView({
     super.key,
     required this.todo,
     required this.isRedo,
@@ -135,6 +138,7 @@ class ChatView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainColor = ref.watch(mainColorProvider);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
@@ -173,10 +177,75 @@ class ChatView extends ConsumerWidget {
   }
 }
 
-class CommentWidget extends HookConsumerWidget {
-  const CommentWidget({super.key});
+class TodoViewWithComment extends ConsumerWidget {
+  const TodoViewWithComment({
+    super.key,
+    required this.todo,
+    required this.isRedo,
+  });
+
+  final Todo todo;
+  final bool isRedo;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Text('↳↪', style: Theme.of(context).textTheme.headlineSmall);
+    final mainColor = ref.watch(mainColorProvider);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+          border: todo.complete
+              ? Border.all(
+                  color: mainColor,
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside)
+              : Border.all(
+                  color: todo.important == true
+                      ? mainColor
+                      : Theme.of(context).focusColor,
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside),
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(8),
+            topRight: const Radius.circular(8),
+            bottomLeft:
+                isRedo ? const Radius.circular(0) : const Radius.circular(8),
+            bottomRight:
+                isRedo ? const Radius.circular(8) : const Radius.circular(0),
+          ),
+          color: todo.complete ? mainColor : Theme.of(context).focusColor),
+      constraints:
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            todo.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: todo.complete
+                ? Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.white)
+                : Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: Colors.grey.shade700),
+          ),
+          //TODO : 디바이더 추가 혹은 타이틀과 커밋 분리할수있는 표시 추가
+          Text(
+            todo.comment ?? '',
+            style: todo.complete
+                ? Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.white)
+                : null,
+          ),
+        ],
+      ),
+    );
   }
 }

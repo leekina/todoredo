@@ -25,11 +25,7 @@ class BottomWidget extends HookConsumerWidget {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Column(
         children: [
-          Container(
-            color: Colors.green,
-            height: commentTodo == null ? 0 : 60,
-            child: Text('data'),
-          ),
+          CommentTodoWidget(),
           Row(
             children: [
               InkWell(
@@ -82,10 +78,19 @@ class BottomWidget extends HookConsumerWidget {
               InkWell(
                 borderRadius: BorderRadius.circular(20),
                 onTap: () {
+                  //confirm
                   if (controller.text == "") return;
-                  ref
-                      .read(crudTodoProvider.notifier)
-                      .addTodo(chat: controller.text);
+
+                  //work
+                  if (commentTodo == null) {
+                    ref
+                        .read(crudTodoProvider.notifier)
+                        .addTodo(chat: controller.text);
+                  } else {
+                    ref
+                        .read(crudTodoProvider.notifier)
+                        .editTodoComment(commentTodo, controller.text);
+                  }
 
                   //init state
                   controller.clear();
@@ -100,6 +105,32 @@ class BottomWidget extends HookConsumerWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CommentTodoWidget extends HookConsumerWidget {
+  const CommentTodoWidget({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final commentTodo = ref.watch(commentTodoProvider);
+
+    if (commentTodo == null) return SizedBox();
+    return ListTile(
+      contentPadding: EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      leading: Icon(Icons.arrow_circle_right_rounded),
+      title: Text(commentTodo.title),
+      trailing: IconButton(
+        onPressed: () {
+          ref.read(commentTodoProvider.notifier).initTodo();
+        },
+        icon: Icon(Icons.close),
       ),
     );
   }

@@ -55,16 +55,20 @@ class CrudTodo extends _$CrudTodo {
     await ref
         .read(todoRepositoryProvider)
         .editTodo(id: entity.id, editTodo: newTodo);
+    state = AsyncData([
+      for (final todo in state.value ?? [])
+        todo.id == entity.id ? newTodo : todo
+    ]);
   }
 
   void editTodoType(Todo entity, TodoType type) async {
-    final newtodo = entity.copyWith(type: type);
+    final newTodo = entity.copyWith(type: type);
     await ref
         .read(todoRepositoryProvider)
-        .editTodo(id: entity.id, editTodo: newtodo);
+        .editTodo(id: entity.id, editTodo: newTodo);
     state = AsyncData([
       for (final todo in state.value ?? [])
-        todo.id == entity.id ? newtodo : todo
+        todo.id == entity.id ? newTodo : todo
     ]);
   }
 
