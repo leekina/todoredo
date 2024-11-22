@@ -1,6 +1,5 @@
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/models/common.dart';
-import 'package:chattodo/style/app.theme.dart';
 import 'package:chattodo/util/custom_motion.dart';
 import 'package:chattodo/widget/bottom_widget.state.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +163,7 @@ class TodoView extends ConsumerWidget {
           ),
           color: todo.complete ? mainColor : Theme.of(context).focusColor),
       constraints:
-          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
       child: Text(
         todo.title,
         style: todo.complete
@@ -217,7 +216,7 @@ class TodoViewWithComment extends ConsumerWidget {
           ),
           color: todo.complete ? mainColor : Theme.of(context).focusColor),
       constraints:
-          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
