@@ -1,5 +1,6 @@
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/models/common.dart';
+import 'package:chattodo/style/app.theme.dart';
 import 'package:chattodo/util/custom_motion.dart';
 import 'package:chattodo/widget/bottom_widget.state.dart';
 import 'package:flutter/material.dart';
@@ -190,6 +191,7 @@ class TodoViewWithComment extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainColor = ref.watch(mainColorProvider);
+    final todoTextstyle = Theme.of(context).textTheme.bodySmall;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -225,14 +227,10 @@ class TodoViewWithComment extends ConsumerWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: todo.complete
-                ? Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Colors.white)
-                : Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: Colors.grey.shade700),
+                ? todoTextstyle!.copyWith(color: Colors.white54)
+                : todoTextstyle!.copyWith(
+                    color: todoTextstyle.color!.withOpacity(0.54),
+                  ),
           ),
           //TODO : 디바이더 추가 혹은 타이틀과 커밋 분리할수있는 표시 추가
           Text(
