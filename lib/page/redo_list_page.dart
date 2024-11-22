@@ -54,13 +54,24 @@ class RedoListPage extends HookConsumerWidget {
                         );
                     Navigator.pop(context);
                   },
+                  onLongPress: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return EditRedoDialog.edit(redo);
+                      },
+                    );
+                  },
                   title: Text(redo.title),
                   subtitle: Row(
                     children: [
                       Expanded(
                         child: Text(
-                            'Start: ${DateFormat('MM. dd').format(redo.createDate)}'),
+                            '추가: ${DateFormat('MM. dd').format(redo.createDate)}'),
                       ),
+                      Expanded(
+                          child: Text(
+                              '회차:  ${redo.retodoList.isEmpty ? "-" : redo.retodoList.length}')),
                       Consumer(
                         builder: (context, ref, child) {
                           if (redo.retodoList.isNotEmpty) {
@@ -74,29 +85,63 @@ class RedoListPage extends HookConsumerWidget {
                                         .format(resentTodo.completeDate!)
                                     : "Nope";
                                 return Expanded(
-                                  child: Text('Recent: $date'),
+                                  child: Text('최근 완료: $date'),
                                 );
                               },
                               orElse: () {
                                 return const Expanded(
-                                  child: Text('Recent: Nope'),
+                                  child: Text(''),
                                 );
                               },
                             );
                           } else {
                             return const Expanded(
-                              child: Text('Recent: Nope'),
+                              child: Text(''),
                             );
                           }
                         },
                       ),
-                      Expanded(
-                          child: Text('Count:  ${redo.retodoList.length}')),
                     ],
                   ),
                   trailing: IconButton(
                       onPressed: () {
-                        ref.read(crudRedoProvider.notifier).deleteRedo(redo);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text('해당 Redo를 삭제하시겠습니까?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    '취소',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(color: Colors.grey),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(crudRedoProvider.notifier)
+                                        .deleteRedo(redo);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    '확인',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(color: mainColor),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       icon: const Icon(Icons.close_rounded)),
                 );
@@ -165,7 +210,13 @@ class EditRedoDialog extends HookConsumerWidget {
         ),
         TextButton(
           onPressed: () {
-            ref.read(crudRedoProvider.notifier).addRedo(title: controller.text);
+            isEdit
+                ? ref
+                    .read(crudRedoProvider.notifier)
+                    .editRedo(entity: redo!, title: controller.text)
+                : ref
+                    .read(crudRedoProvider.notifier)
+                    .addRedo(title: controller.text);
             Navigator.pop(context);
           },
           child: Text(

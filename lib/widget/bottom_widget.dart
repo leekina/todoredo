@@ -1,4 +1,3 @@
-import 'package:chattodo/page/main_page.dart';
 import 'package:chattodo/page/redo_list_page.dart';
 import 'package:chattodo/widget/bottom_widget.state.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,7 @@ class BottomWidget extends HookConsumerWidget {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Column(
         children: [
-          CommentTodoWidget(),
+          CommentTodoWidget(controller: controller),
           Row(
             children: [
               InkWell(
@@ -35,8 +34,7 @@ class BottomWidget extends HookConsumerWidget {
                   Navigator.of(context).push(
                     PageTransition(
                         child: const RedoListPage(),
-                        childCurrent: const MainPage(),
-                        type: PageTransitionType.leftToRightJoined,
+                        type: PageTransitionType.leftToRight,
                         fullscreenDialog: true),
                   );
                 },
@@ -111,7 +109,12 @@ class BottomWidget extends HookConsumerWidget {
 }
 
 class CommentTodoWidget extends HookConsumerWidget {
-  const CommentTodoWidget({super.key});
+  const CommentTodoWidget({
+    super.key,
+    required this.controller,
+  });
+
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final commentTodo = ref.watch(commentTodoProvider);
@@ -129,6 +132,7 @@ class CommentTodoWidget extends HookConsumerWidget {
       trailing: IconButton(
         onPressed: () {
           ref.read(commentTodoProvider.notifier).initTodo();
+          addTodoNode.unfocus();
         },
         icon: Icon(Icons.close),
       ),
