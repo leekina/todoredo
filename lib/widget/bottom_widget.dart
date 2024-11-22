@@ -9,14 +9,12 @@ import 'package:page_transition/page_transition.dart';
 class BottomWidget extends HookConsumerWidget {
   const BottomWidget({
     super.key,
-    required this.controller,
   });
-
-  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final commentTodo = ref.watch(commentTodoProvider);
+    final controller = ref.watch(todoTextfieldControllerProvider);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -129,12 +127,32 @@ class CommentTodoWidget extends HookConsumerWidget {
       ),
       leading: Icon(Icons.arrow_circle_right_rounded),
       title: Text(commentTodo.title),
-      trailing: IconButton(
-        onPressed: () {
-          ref.read(commentTodoProvider.notifier).initTodo();
-          addTodoNode.unfocus();
-        },
-        icon: Icon(Icons.close),
+      trailing: Wrap(
+        children: [
+          IconButton(
+            onPressed: () {
+              ref
+                  .read(crudTodoProvider.notifier)
+                  .editTodoComment(commentTodo, null);
+              ref.read(commentTodoProvider.notifier).initTodo();
+
+              //init state
+              controller.clear();
+              addTodoNode.unfocus();
+            },
+            icon: Icon(Icons.comments_disabled),
+          ),
+          IconButton(
+            onPressed: () {
+              ref.read(commentTodoProvider.notifier).initTodo();
+
+              //init state
+              controller.clear();
+              addTodoNode.unfocus();
+            },
+            icon: Icon(Icons.close),
+          ),
+        ],
       ),
     );
   }

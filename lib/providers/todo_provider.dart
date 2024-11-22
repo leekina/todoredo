@@ -50,7 +50,7 @@ class CrudTodo extends _$CrudTodo {
     ]);
   }
 
-  void editTodoComment(Todo entity, String comment) async {
+  void editTodoComment(Todo entity, String? comment) async {
     final newTodo = entity.copyWith(comment: comment);
     await ref
         .read(todoRepositoryProvider)
