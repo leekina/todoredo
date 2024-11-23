@@ -33,7 +33,7 @@ class TodoWidget extends HookConsumerWidget {
         extentRatio: 0.3,
         motion: BehindMotion(),
         dismissible: DismissiblePane(
-          dismissThreshold: 0.2,
+          dismissThreshold: 0.6,
           onDismissed: () {
             ref.read(crudTodoProvider.notifier).deleteTodo(todo);
           },
