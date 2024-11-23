@@ -1,4 +1,5 @@
 import 'package:chattodo/models/common.dart';
+import 'package:chattodo/models/redo.model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chattodo/models/todo.model.dart';
@@ -22,7 +23,7 @@ int dateCompare(a, b) {
   return adate.compareTo(bdate);
 }
 
-List<Todo> tutorial = [
+List<Todo> tutorialTodo = [
   Todo.addTodo(
     todo: "안녕하세요!",
     createDate:
@@ -49,8 +50,31 @@ List<Todo> tutorial = [
         DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 5),
   ),
   Todo.addTodo(
+    todo: "입력된 투두를 화면 왼쪽으로 슬라이드하면 투두에 메모를 남길 수 있습니다.",
+    createDate:
+        DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 6),
+  ),
+  Todo.addTodo(
     todo: "완료되지 않은 투두를 1초이상 누르면 수정할 수 있습니다.",
     createDate:
-        DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 5),
+        DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 7),
+  ),
+  Todo.addTodo(
+    todo: "채팅 치는곳의 왼쪽을 누르면 리두페이지로 이동합니다.",
+    createDate:
+        DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 8),
+  ),
+];
+
+final List<Redo> tutorialRedo = [
+  Redo.add(
+    title: '상단의 + 버튼을 클릭하여 리두를 등록하세요!',
+    createDate:
+        DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 1),
+  ),
+  Redo.add(
+    title: '리두는 완료한 회차와 마지막 완료 날짜를 기록합니다!',
+    createDate:
+        DateTime.now().subtract(const Duration(days: 1)).copyWith(second: 2),
   ),
 ];

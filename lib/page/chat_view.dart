@@ -28,7 +28,7 @@ class ChatView extends HookConsumerWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 12),
       child: todos.maybeWhen(
         data: (todoList) {
           return CustomScrollView(

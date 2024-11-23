@@ -46,6 +46,7 @@ class TodoWidget extends HookConsumerWidget {
             },
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
+            borderRadius: BorderRadius.circular(8),
             icon: Icons.delete,
             label: 'Delete',
           ),
@@ -74,7 +75,7 @@ class TodoWidget extends HookConsumerWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         child: TodoTile(isRedo: isRedo, todo: todo),
       ),
     );
@@ -223,10 +224,11 @@ class TodoViewWithComment extends ConsumerWidget {
         children: [
           Text(
             todo.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             style: todo.complete
-                ? todoTextstyle!.copyWith(color: Colors.white54)
+                ? todoTextstyle!.copyWith(
+                    color: Colors.white54,
+                    decoration: TextDecoration.underline,
+                  )
                 : todoTextstyle!.copyWith(
                     color: todoTextstyle.color!.withOpacity(0.54),
                   ),

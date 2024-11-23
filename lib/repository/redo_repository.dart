@@ -1,4 +1,5 @@
 import 'package:chattodo/models/redo.model.dart';
+import 'package:chattodo/util/common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -63,6 +64,12 @@ class RedoRepository extends RedoRepositoryScheme {
       if (redo.id == editRedo.id) await redoBox.put(id, editRedo.toJson());
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> addRedoTutorial() async {
+    for (final redo in tutorialRedo) {
+      await addRedo(redo: redo);
     }
   }
 }

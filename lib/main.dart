@@ -61,7 +61,8 @@ class MyApp extends HookConsumerWidget {
         () {
           final checkFirstConnetion = ref.watch(checkFirstConnectionProvider);
           if (checkFirstConnetion != true) {
-            ref.read(todoRepositoryProvider).addTutorial();
+            ref.read(todoRepositoryProvider).addTodoTutorial();
+            ref.read(redoRepositoryProvider).addRedoTutorial();
             ref.invalidate(crudTodoProvider);
             ref.read(checkFirstConnectionProvider.notifier).state = true;
           }

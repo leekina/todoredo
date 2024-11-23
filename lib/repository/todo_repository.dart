@@ -87,8 +87,8 @@ class TodoRepository extends TodoRepositoryScheme {
     }
   }
 
-  Future<void> addTutorial() async {
-    for (final todo in tutorial) {
+  Future<void> addTodoTutorial() async {
+    for (final todo in tutorialTodo) {
       await addTodo(todo: todo);
     }
   }
