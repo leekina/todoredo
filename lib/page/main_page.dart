@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/page/chat_view.dart';
@@ -14,7 +13,6 @@ class MainPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainColor = ref.watch(mainColorProvider);
-    final controller = useTextEditingController();
 
     return GestureDetector(
       onTap: () => addTodoNode.unfocus(),
@@ -22,20 +20,35 @@ class MainPage extends HookConsumerWidget {
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: const Text('ChatTodo'),
+          title: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SettingPage(),
+                ),
+              );
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text('Chat Todo'),
+                Icon(Icons.arrow_forward_ios, color: mainColor),
+              ],
+            ),
+          ),
           centerTitle: false,
           actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const SettingPage(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.settings, color: mainColor),
-            ),
-            const SizedBox(width: 8)
+            // IconButton(
+            //   onPressed: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (context) => const SettingPage(),
+            //       ),
+            //     );
+            //   },
+            //   icon: Icon(Icons.settings, color: mainColor),
+            // ),
+            // const SizedBox(width: 8)
           ],
         ),
         body: SafeArea(
@@ -43,7 +56,7 @@ class MainPage extends HookConsumerWidget {
           child: Column(
             children: [
               const Expanded(child: ChatView()),
-              BottomWidget(controller: controller),
+              BottomWidget(),
             ],
           ),
         ),

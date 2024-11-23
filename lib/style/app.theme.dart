@@ -61,8 +61,8 @@ class ThemeExtensionX extends ThemeExtension<ThemeExtensionX> {
   }
 }
 
-extension BeautyThemeBuildContextProps on BuildContext {
-  ThemeExtensionX get appTheme => Theme.of(this).extension<ThemeExtensionX>()!;
-  Color get mainColor => appTheme.defaultColor;
-  Color get pointColor => appTheme.pointColor;
-}
+// extension BeautyThemeBuildContextProps on BuildContext {
+//   ThemeExtensionX get appTheme => Theme.of(this).extension<ThemeExtensionX>()!;
+//   Color get mainColor => appTheme.defaultColor;
+//   Color get pointColor => appTheme.pointColor;
+// }

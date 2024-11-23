@@ -25,8 +25,11 @@ class CrudTodo extends _$CrudTodo {
     ref.read(myScrollControllerProvider.notifier).moveToBottom();
   }
 
-  void addReTodo(
-      {required String chat, required String redoId, DateTime? date}) async {
+  void addReTodo({
+    required String chat,
+    required String redoId,
+    DateTime? date,
+  }) async {
     final newTodo = Todo.addReTodo(
       todo: chat,
       redoId: redoId,
@@ -47,14 +50,25 @@ class CrudTodo extends _$CrudTodo {
     ]);
   }
 
-  void editTodoType(Todo entity, TodoType type) async {
-    final newtodo = entity.copyWith(type: type);
+  void editTodoComment(Todo entity, String? comment) async {
+    final newTodo = entity.copyWith(comment: comment);
     await ref
         .read(todoRepositoryProvider)
-        .editTodo(id: entity.id, editTodo: newtodo);
+        .editTodo(id: entity.id, editTodo: newTodo);
     state = AsyncData([
       for (final todo in state.value ?? [])
-        todo.id == entity.id ? newtodo : todo
+        todo.id == entity.id ? newTodo : todo
+    ]);
+  }
+
+  void editTodoType(Todo entity, TodoType type) async {
+    final newTodo = entity.copyWith(type: type);
+    await ref
+        .read(todoRepositoryProvider)
+        .editTodo(id: entity.id, editTodo: newTodo);
+    state = AsyncData([
+      for (final todo in state.value ?? [])
+        todo.id == entity.id ? newTodo : todo
     ]);
   }
 

@@ -40,6 +40,11 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(checkFirstConnectionProvider, (previous, next) async {
+      await ref
+          .read(sharedPreferencesProvider)
+          .setBool("checkFirstConnection", next);
+    });
     //스테이터스바 픽스
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
@@ -56,7 +61,8 @@ class MyApp extends HookConsumerWidget {
         () {
           final checkFirstConnetion = ref.watch(checkFirstConnectionProvider);
           if (checkFirstConnetion != true) {
-            ref.read(todoRepositoryProvider).addTutorial();
+            ref.read(todoRepositoryProvider).addTodoTutorial();
+            ref.read(redoRepositoryProvider).addRedoTutorial();
             ref.invalidate(crudTodoProvider);
             ref.read(checkFirstConnectionProvider.notifier).state = true;
           }
