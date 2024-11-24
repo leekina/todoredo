@@ -13,10 +13,10 @@ FocusNode addTodoNode = FocusNode();
 // final today = DateFormat('MM. dd').format(DateTime.now());
 
 int dateCompare(a, b) {
-  final adate = a.type == TodoType.schedule.name && a.completeDate != null
+  final adate = a.type == TodoType.duedo.name && a.completeDate != null
       ? a.completeDate!
       : a.createDate;
-  final bdate = b.type == TodoType.schedule.name && b.completeDate != null
+  final bdate = b.type == TodoType.duedo.name && b.completeDate != null
       ? b.completeDate!
       : b.createDate;
 
