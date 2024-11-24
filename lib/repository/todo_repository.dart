@@ -51,10 +51,10 @@ class TodoRepository extends TodoRepositoryScheme {
             for (final todo in todoList)
               if (todo.type == TodoType.todo) todo
           ];
-        case TodoType.schedule:
+        case TodoType.duedo:
           return [
             for (final todo in todoList)
-              if (todo.type == TodoType.schedule) todo
+              if (todo.type == TodoType.duedo) todo
           ];
         case TodoType.redo:
           return [
