@@ -1,4 +1,4 @@
-import 'package:chattodo/page/calender_page.dart';
+import 'package:chattodo/page/calendar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +44,7 @@ class DateWidget extends HookConsumerWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const CalenderPage(),
+                        builder: (context) => const CalendarPage(),
                       ),
                     );
                   },
@@ -61,7 +61,7 @@ class DateWidget extends HookConsumerWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const CalenderPage(),
+                    builder: (context) => const CalendarPage(),
                   ),
                 );
               },
