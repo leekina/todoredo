@@ -225,15 +225,11 @@ class TodoViewWithComment extends ConsumerWidget {
           Text(
             todo.title,
             style: todo.complete
-                ? todoTextstyle!.copyWith(
-                    color: Colors.white54,
-                    decoration: TextDecoration.underline,
-                  )
+                ? todoTextstyle!.copyWith(color: Colors.white54)
                 : todoTextstyle!.copyWith(
                     color: todoTextstyle.color!.withOpacity(0.54),
                   ),
           ),
-          //TODO : 디바이더 추가 혹은 타이틀과 커밋 분리할수있는 표시 추가
           Text(
             todo.comment ?? '',
             style: todo.complete
