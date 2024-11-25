@@ -50,12 +50,12 @@ class ChatView extends HookConsumerWidget {
                         return Column(
                           children: [
                             if (index == 0)
-                              DateView(date)
+                              DateWidget(date)
                             else if (dateforamt !=
                                 getDateFormat(todoList[index - 1]))
-                              DateView(date),
+                              DateWidget(date),
                             TodoWidget(todo: todo),
-                            if (isTodayAndNoTodo) DateView(DateTime.now()),
+                            if (isTodayAndNoTodo) DateWidget(DateTime.now()),
                           ],
                         );
                       },

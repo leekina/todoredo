@@ -31,9 +31,13 @@ class BottomWidget extends HookConsumerWidget {
                   addTodoNode.unfocus();
                   Navigator.of(context).push(
                     PageTransition(
-                        child: const RedoListPage(),
-                        type: PageTransitionType.leftToRight,
-                        fullscreenDialog: true),
+                      child: const RedoListPage(),
+                      type: PageTransitionType.leftToRight,
+                      duration: Duration(milliseconds: 160),
+                      reverseDuration: Duration(milliseconds: 160),
+                      fullscreenDialog: true,
+                      isIos: true,
+                    ),
                   );
                 },
                 child: const CircleAvatar(
