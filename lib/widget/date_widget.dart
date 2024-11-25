@@ -13,31 +13,50 @@ class DateView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final date = DateFormat('MM. dd').format(todoDate);
     final today = DateFormat('MM. dd').format(DateTime.now());
+    final mainColor = ref.watch(mainColorProvider);
+    final isToday = date == today;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: date == today
-                  ? ref.watch(mainColorProvider)
-                  : Theme.of(context).focusColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              '$date ${weekdayConvertor(todoDate.weekday)}',
-              style: date == today
-                  ? Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(color: Colors.white)
-                  : Theme.of(context).textTheme.bodyMedium!,
-            ),
-          ),
-        ),
-      ],
+    return ExpansionTile(
+      minTileHeight: 48,
+      backgroundColor: isToday ? mainColor : Theme.of(context).focusColor,
+      iconColor: isToday ? Colors.white : mainColor,
+      collapsedIconColor: isToday ? Colors.white : mainColor,
+      collapsedBackgroundColor:
+          isToday ? mainColor : Theme.of(context).focusColor,
+      title: Text(
+        '$date ${weekdayConvertor(todoDate.weekday)}',
+        style: isToday
+            ? Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(color: Colors.white)
+            : Theme.of(context).textTheme.bodyMedium!,
+      ),
     );
   }
 }
+
+/*
+ Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: date == today
+                ? ref.watch(mainColorProvider)
+                : Theme.of(context).focusColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            '$date ${weekdayConvertor(todoDate.weekday)}',
+            style: date == today
+                ? Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Colors.white)
+                : Theme.of(context).textTheme.bodyMedium!,
+          ),
+        ),
+      ),
+
+ */
