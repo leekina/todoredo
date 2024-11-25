@@ -1,11 +1,12 @@
+import 'package:chattodo/page/calender_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/util/weekday_convertor.dart';
 
-class DateView extends HookConsumerWidget {
-  const DateView(this.todoDate, {super.key});
+class DateWidget extends HookConsumerWidget {
+  const DateWidget(this.todoDate, {super.key});
 
   final DateTime todoDate;
 
@@ -15,48 +16,86 @@ class DateView extends HookConsumerWidget {
     final today = DateFormat('MM. dd').format(DateTime.now());
     final mainColor = ref.watch(mainColorProvider);
     final isToday = date == today;
+    final todayTextstyle =
+        Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white);
+    final todayTextstylesub =
+        Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white);
 
-    return ExpansionTile(
-      minTileHeight: 48,
-      backgroundColor: isToday ? mainColor : Theme.of(context).focusColor,
-      iconColor: isToday ? Colors.white : mainColor,
-      collapsedIconColor: isToday ? Colors.white : mainColor,
-      collapsedBackgroundColor:
-          isToday ? mainColor : Theme.of(context).focusColor,
-      title: Text(
-        '$date ${weekdayConvertor(todoDate.weekday)}',
-        style: isToday
-            ? Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(color: Colors.white)
-            : Theme.of(context).textTheme.bodyMedium!,
+    return isToday
+        ? ListTile(
+            horizontalTitleGap: 0,
+            contentPadding: EdgeInsets.symmetric(horizontal: 4),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            tileColor: mainColor,
+            minTileHeight: 48,
+            leading: DateView(todoDate),
+            title: Row(
+              children: [
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '듀두 개발 마무리하기 ~ 11.30',
+                    style: todayTextstyle,
+                  ),
+                ),
+                SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const CalenderPage(),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Text('W : 3', style: todayTextstylesub),
+                      Text('M : 10', style: todayTextstylesub),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            trailing: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const CalenderPage(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+                size: 32,
+              ),
+            ),
+          )
+        : DateView(todoDate);
+  }
+}
+
+class DateView extends HookConsumerWidget {
+  final DateTime date;
+  const DateView(this.date, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dateString = DateFormat('MM. dd').format(date);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).focusColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          '$dateString ${weekdayConvertor(date.weekday)}',
+          style: Theme.of(context).textTheme.bodyMedium!,
+        ),
       ),
     );
   }
 }
-
-/*
- Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: date == today
-                ? ref.watch(mainColorProvider)
-                : Theme.of(context).focusColor,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            '$date ${weekdayConvertor(todoDate.weekday)}',
-            style: date == today
-                ? Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: Colors.white)
-                : Theme.of(context).textTheme.bodyMedium!,
-          ),
-        ),
-      ),
-
- */
