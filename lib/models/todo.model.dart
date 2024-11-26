@@ -11,6 +11,7 @@ class Todo with _$Todo {
     //default
     required String id,
     required String title,
+    String? comment,
     required TodoType type,
     required DateTime createDate,
     DateTime? completeDate,
@@ -22,12 +23,14 @@ class Todo with _$Todo {
   factory Todo.addTodo({
     required String todo,
     required DateTime createDate,
+    String? comment,
   }) {
     return Todo(
       id: uuid.v4(),
       title: todo,
       type: TodoType.todo,
       createDate: createDate,
+      comment: comment,
     );
   }
 

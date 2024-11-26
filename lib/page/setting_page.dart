@@ -8,6 +8,15 @@ class SettingPage extends HookConsumerWidget {
   const SettingPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(themeModeProvider, (previous, next) {
+      ref.read(sharedPreferencesProvider).setString("themeMode", next.name);
+    });
+
+    ref.listen(mainColorProvider, (previous, next) {
+      ref
+          .read(sharedPreferencesProvider)
+          .setString("mainColor", next.value.toString());
+    });
     return Scaffold(
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
