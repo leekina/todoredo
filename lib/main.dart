@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chattodo/repository/duedo_repository.dart';
 import 'package:chattodo/repository/redo_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +21,8 @@ void main() async {
   await Hive.openBox('todos');
   //RedoBox
   await Hive.openBox('redos');
+  //Duedo
+  await Hive.openBox('duedos');
   //SettingBox
   final sharedPreferences = await SharedPreferences.getInstance();
 
@@ -28,6 +31,7 @@ void main() async {
       overrides: [
         todoRepositoryProvider.overrideWithValue(TodoRepository()),
         redoRepositoryProvider.overrideWithValue(RedoRepository()),
+        duedoRepositoryProvider.overrideWithValue(DuedoRepository()),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
       child: const MyApp(),
