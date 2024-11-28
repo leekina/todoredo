@@ -1,4 +1,5 @@
 import 'package:chattodo/models/duedo.model.dart';
+import 'package:chattodo/util/common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -26,7 +27,7 @@ class DuedoRepository {
       final duedoList = duedoBox.values
           .map((e) => Duedo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-
+      duedoList.sort(dateCompare);
       return duedoList;
     } catch (e) {
       rethrow;
