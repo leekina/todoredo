@@ -27,23 +27,25 @@ class CrudRedo extends _$CrudRedo {
   }
 
   void redoUpdateComplete(Todo todo) async {
-    final redo = await ref.read(redoRepositoryProvider).getRedo(todo.redoId!);
+    final redo =
+        await ref.read(redoRepositoryProvider).getRedo(todo.connectedId!);
     if (redo != null) {
       final editRedo = redo.copyWith(
           completeCount: redo.completeCount + 1,
           retodoList: [...redo.retodoList, todo.id]);
       await ref
           .read(redoRepositoryProvider)
-          .editRedo(id: todo.redoId!, editRedo: editRedo);
+          .editRedo(id: todo.connectedId!, editRedo: editRedo);
       state = AsyncData([
         for (final redo in state.value ?? [])
-          redo.id == todo.redoId! ? editRedo : redo
+          redo.id == todo.connectedId! ? editRedo : redo
       ]);
     }
   }
 
   void redoUpdateUncomplete(Todo todo) async {
-    final redo = await ref.read(redoRepositoryProvider).getRedo(todo.redoId!);
+    final redo =
+        await ref.read(redoRepositoryProvider).getRedo(todo.connectedId!);
     if (redo != null) {
       final editRedo =
           redo.copyWith(completeCount: redo.completeCount - 1, retodoList: [
@@ -52,10 +54,10 @@ class CrudRedo extends _$CrudRedo {
       ]);
       await ref
           .read(redoRepositoryProvider)
-          .editRedo(id: todo.redoId!, editRedo: editRedo);
+          .editRedo(id: todo.connectedId!, editRedo: editRedo);
       state = AsyncData([
         for (final redo in state.value ?? [])
-          redo.id == todo.redoId! ? editRedo : redo
+          redo.id == todo.connectedId! ? editRedo : redo
       ]);
     }
   }
