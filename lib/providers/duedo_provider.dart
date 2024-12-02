@@ -1,4 +1,5 @@
 import 'package:chattodo/models/duedo.model.dart';
+
 import 'package:chattodo/repository/duedo_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,8 +8,10 @@ part 'duedo_provider.g.dart';
 @riverpod
 class CrudDuedo extends _$CrudDuedo {
   @override
-  FutureOr<List<Duedo>> build() async {
-    return ref.read(duedoRepositoryProvider).getDuedos();
+  FutureOr<List<Duedo>> build({DateTime? date}) async {
+    ref.keepAlive();
+
+    return ref.read(duedoRepositoryProvider).getDuedos(date: date);
   }
 
   void addDuedo({required String title, required DateTime dueDate}) async {

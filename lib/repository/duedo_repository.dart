@@ -22,13 +22,23 @@ class DuedoRepository {
     }
   }
 
-  Future<List<Duedo>> getDuedos() async {
+  Future<List<Duedo>> getDuedos({DateTime? date}) async {
     try {
-      final duedoList = duedoBox.values
+      final duedoListAll = duedoBox.values
           .map((e) => Duedo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-      duedoList.sort(dateCompare);
-      return duedoList;
+      if (date != null) {
+        final duedoList = [
+          for (final duedo in duedoListAll)
+            if (duedo.dueDate.year == date.year &&
+                duedo.dueDate.month == date.month &&
+                duedo.dueDate.day == date.day)
+              duedo
+        ];
+        duedoList.sort(duedoDateCompare);
+        return duedoList;
+      }
+      return duedoListAll;
     } catch (e) {
       rethrow;
     }

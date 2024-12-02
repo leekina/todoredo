@@ -26,7 +26,7 @@ class DuedoScrollController extends _$DuedoScrollController {
 class DuedoListKeys extends _$DuedoListKeys {
   @override
   List<GlobalKey> build() {
-    final duedoList = ref.watch(crudDuedoProvider);
+    final duedoList = ref.watch(crudDuedoProvider());
 
     // duedoList가 로드되면 각 항목에 대한 GlobalKey 생성
     return duedoList.maybeWhen(
