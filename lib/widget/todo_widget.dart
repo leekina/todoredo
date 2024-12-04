@@ -30,7 +30,7 @@ class TodoWidget extends HookConsumerWidget {
       startActionPane: ActionPane(
         openThreshold: 0.3,
         closeThreshold: 0.4,
-        extentRatio: 0.3,
+        extentRatio: 0.2,
         motion: BehindMotion(),
         dismissible: DismissiblePane(
           dismissThreshold: 0.6,
@@ -40,15 +40,12 @@ class TodoWidget extends HookConsumerWidget {
         ),
         children: [
           SlidableAction(
-            flex: 1,
+            padding: EdgeInsets.all(0),
             onPressed: (context) {
               ref.read(crudTodoProvider.notifier).deleteTodo(todo);
             },
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            foregroundColor: Colors.red,
             icon: Icons.delete,
-            label: 'Delete',
           ),
         ],
       ),
