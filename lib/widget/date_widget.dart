@@ -78,17 +78,19 @@ class DateWidget extends HookConsumerWidget {
 
 class DateView extends HookConsumerWidget {
   final DateTime date;
-  const DateView(this.date, {super.key});
+  final bool isToday;
+  const DateView(this.date, {super.key, this.isToday = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateString = DateFormat('MM. dd').format(date);
+    final maincolor = ref.watch(mainColorProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Theme.of(context).focusColor,
+          color: isToday == true ? maincolor : Theme.of(context).focusColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
