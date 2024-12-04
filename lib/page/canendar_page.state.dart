@@ -1,6 +1,6 @@
-import 'package:chattodo/providers/duedo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 part 'canendar_page.state.g.dart';
 
@@ -8,7 +8,6 @@ part 'canendar_page.state.g.dart';
 class DuedoScrollController extends _$DuedoScrollController {
   @override
   ScrollController build() {
-    ref.onAddListener(() {});
     return ScrollController();
   }
 
@@ -23,35 +22,24 @@ class DuedoScrollController extends _$DuedoScrollController {
 }
 
 @riverpod
-class DuedoListKeys extends _$DuedoListKeys {
-  @override
-  List<GlobalKey> build() {
-    final duedoList = ref.watch(crudDuedoProvider());
-
-    // duedoList가 로드되면 각 항목에 대한 GlobalKey 생성
-    return duedoList.maybeWhen(
-      data: (duedos) => duedos.map((_) => GlobalKey()).toList(),
-      orElse: () => [],
-    );
-  }
-
-  GlobalKey getKey(int index) {
-    if (index >= 0 && index < state.length) {
-      return state[index];
-    }
-    // 인덱스가 범위를 벗어난 경우 새로운 GlobalKey 반환
-    return GlobalKey();
-  }
-}
-
-@riverpod
 class CurrentDate extends _$CurrentDate {
   @override
   DateTime build() {
-    return DateTime.now();
+    return DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day);
   }
 
   void updateCurrentDate(DateTime date) {
     state = date;
+  }
+}
+
+@riverpod
+class CurrentCalendarFormat extends _$CurrentCalendarFormat {
+  @override
+  CalendarFormat build() => CalendarFormat.month;
+
+  void updateCalendarFormat(CalendarFormat format) {
+    state = format;
   }
 }

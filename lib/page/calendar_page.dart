@@ -14,13 +14,25 @@ class CalendarPage extends HookConsumerWidget {
   const CalendarPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final calendarFormat = useState(CalendarFormat.month);
     final mainColor = ref.watch(mainColorProvider);
     final currentDate = ref.watch(currentDateProvider);
+    final calendarFormat = ref.watch(currentCalendarFormatProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calendar'),
+        centerTitle: true,
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: GestureDetector(
+          onTap: () {
+            ref
+                .read(currentDateProvider.notifier)
+                .updateCurrentDate(DateTime.now());
+          },
+          child: Text(
+            DateFormat('yyyy년 MM월').format(currentDate),
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -31,12 +43,30 @@ class CalendarPage extends HookConsumerWidget {
               );
             },
           ),
+          IconButton(
+            onPressed: () {
+              ref
+                  .read(currentCalendarFormatProvider.notifier)
+                  .updateCalendarFormat(
+                    calendarFormat == CalendarFormat.week
+                        ? CalendarFormat.month
+                        : CalendarFormat.week,
+                  );
+            },
+            icon: Icon(
+              calendarFormat == CalendarFormat.week
+                  ? Icons.arrow_downward
+                  : Icons.arrow_upward,
+            ),
+          ),
+          const SizedBox(width: 8)
         ],
       ),
       body: SafeArea(
         child: Column(
           children: [
             TableCalendar(
+              headerVisible: false,
               availableGestures: AvailableGestures.horizontalSwipe,
               // sixWeekMonthsEnforced: true,
               daysOfWeekHeight: 18,
@@ -44,41 +74,30 @@ class CalendarPage extends HookConsumerWidget {
 
               selectedDayPredicate: (day) => isSameDay(day, currentDate),
               onDaySelected: (selectedDay, _) {
-                ref
-                    .read(currentDateProvider.notifier)
-                    .updateCurrentDate(selectedDay);
+                DateTime date = DateTime(
+                    selectedDay.year, selectedDay.month, selectedDay.day);
+
+                ref.read(currentDateProvider.notifier).updateCurrentDate(date);
               },
               onPageChanged: (focusedDay) {
-                ref
-                    .read(currentDateProvider.notifier)
-                    .updateCurrentDate(focusedDay);
+                DateTime date =
+                    DateTime(focusedDay.year, focusedDay.month, focusedDay.day);
+                ref.read(currentDateProvider.notifier).updateCurrentDate(date);
               },
               calendarStyle: getCalendarStyle(mainColor),
-              headerStyle: HeaderStyle(
-                leftChevronVisible: false,
-                rightChevronVisible: false,
-                headerPadding: EdgeInsets.symmetric(horizontal: 16),
-                formatButtonPadding: EdgeInsets.all(8),
-                formatButtonDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).focusColor,
-                ),
-                formatButtonTextStyle: Theme.of(context).textTheme.bodyMedium!,
-              ),
               locale: 'ko_KR',
-              calendarFormat: calendarFormat.value,
-              onFormatChanged: (format) {
-                calendarFormat.value = format;
-              },
+              calendarFormat: calendarFormat,
+
               focusedDay: currentDate,
               firstDay: DateTime.now().subtract(Duration(days: 365)),
               lastDay: DateTime.now().add(Duration(days: 365)),
-              calendarBuilders: CalendarBuilders(
-                markerBuilder: (context, day, events) => _Marker(day),
-              ),
+              calendarBuilders:
+                  CalendarBuilders(markerBuilder: (context, day, events) {
+                DateTime date = DateTime(day.year, day.month, day.day);
+                return _Marker(date);
+              }),
             ),
-            //TODO : 리스트 정렬 및 날짜, 주차별 정리 위젯 설정 or syncfusion_schadule 추가
-            const Divider(),
+            Divider(color: ref.watch(mainColorProvider)),
             Expanded(
               child: ScheduleView(),
             ),
@@ -95,7 +114,7 @@ class _Marker extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final events = ref.watch(crudDuedoProvider(date: date));
+    final events = ref.watch(getDuedoWithDateProvider(date: date));
     final maincolor = ref.watch(mainColorProvider);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 22, 0, 4),
@@ -198,7 +217,8 @@ class AddTodoDialog extends HookConsumerWidget {
           onPressed: () {
             if (titleController.text.isNotEmpty) {
               ref
-                  .read(crudDuedoProvider(date: selectedDate.value).notifier)
+                  .read(getDuedoWithDateProvider(date: selectedDate.value)
+                      .notifier)
                   .addDuedo(
                     title: titleController.text,
                     dueDate: selectedDate.value,
