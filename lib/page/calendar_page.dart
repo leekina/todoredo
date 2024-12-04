@@ -1,7 +1,9 @@
 import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/models/duedo.model.dart';
 import 'package:chattodo/page/canendar_page.state.dart';
 import 'package:chattodo/page/schedule_view.dart';
 import 'package:chattodo/providers/duedo_provider.dart';
+import 'package:chattodo/style/calendar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -36,7 +38,10 @@ class CalendarPage extends HookConsumerWidget {
           children: [
             TableCalendar(
               availableGestures: AvailableGestures.horizontalSwipe,
-              sixWeekMonthsEnforced: true,
+              // sixWeekMonthsEnforced: true,
+              daysOfWeekHeight: 18,
+              rowHeight: 80,
+
               selectedDayPredicate: (day) => isSameDay(day, currentDate),
               onDaySelected: (selectedDay, _) {
                 ref
@@ -48,18 +53,7 @@ class CalendarPage extends HookConsumerWidget {
                     .read(currentDateProvider.notifier)
                     .updateCurrentDate(focusedDay);
               },
-              calendarStyle: CalendarStyle(
-                cellAlignment: Alignment.topCenter,
-                todayTextStyle: TextStyle(color: mainColor),
-                todayDecoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: mainColor),
-                ),
-                selectedDecoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: mainColor,
-                ),
-              ),
+              calendarStyle: getCalendarStyle(mainColor),
               headerStyle: HeaderStyle(
                 leftChevronVisible: false,
                 rightChevronVisible: false,
@@ -84,6 +78,7 @@ class CalendarPage extends HookConsumerWidget {
               ),
             ),
             //TODO : 리스트 정렬 및 날짜, 주차별 정리 위젯 설정 or syncfusion_schadule 추가
+            const Divider(),
             Expanded(
               child: ScheduleView(),
             ),
@@ -101,22 +96,59 @@ class _Marker extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final events = ref.watch(crudDuedoProvider(date: date));
+    final maincolor = ref.watch(mainColorProvider);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.fromLTRB(0, 22, 0, 4),
       child: events.maybeWhen(
-        data: (events) => Wrap(
-          children: events
-              .map((e) => Container(
-                    width: 4,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.red,
-                    ),
-                  ))
-              .toList(),
-        ),
+        data: (events) {
+          if (events.length < 4) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: events
+                  .map(
+                    (e) => dayCellText(maincolor, e, context),
+                  )
+                  .toList(),
+            );
+          } else {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                dayCellText(maincolor, events[0], context),
+                dayCellText(maincolor, events[1], context),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    '+ ${events.length - 2}개',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall!
+                        .copyWith(color: Colors.grey.shade600),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
         orElse: () => const SizedBox(),
+      ),
+    );
+  }
+
+  Container dayCellText(Color maincolor, Duedo e, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(4, 0, 4, 2),
+      padding: EdgeInsets.symmetric(horizontal: 2),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: maincolor.withOpacity(0.7),
+      ),
+      child: Text(
+        e.title,
+        style: Theme.of(context).textTheme.bodySmall,
+        maxLines: 1,
+        softWrap: false,
+        overflow: TextOverflow.fade,
       ),
     );
   }
