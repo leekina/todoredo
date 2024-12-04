@@ -27,5 +27,13 @@ class Duedo with _$Duedo {
     );
   }
 
+  factory Duedo.empty() => Duedo(
+        id: '',
+        title: '',
+        createDate: DateTime.now(),
+        dueDate: DateTime.now(),
+        complete: false,
+      );
+
   factory Duedo.fromJson(Map<String, dynamic> json) => _$DuedoFromJson(json);
 }
