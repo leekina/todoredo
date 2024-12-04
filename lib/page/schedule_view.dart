@@ -14,7 +14,7 @@ class ScheduleView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentDate = ref.watch(currentDateProvider);
-    final duedos = ref.watch(crudDuedoProvider(date: currentDate));
+    final duedos = ref.watch(getDuedoWithDateProvider(date: currentDate));
 
     return duedos.when(
       data: (duedoList) => ListView.builder(
@@ -37,18 +37,46 @@ class ScheduleItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateString = DateFormat('MM. dd').format(duedo.createDate);
-    return ListTile(
-      key: ref.read(duedoListKeysProvider.notifier).getKey(index),
-      leading: DateView(duedo.dueDate, isToday: true),
-      title: Text(duedo.title),
-      subtitle: Text('$dateString 등록'),
-      trailing: IconButton(
-        onPressed: () {
-          ref
-              .read(crudDuedoProvider(date: duedo.dueDate).notifier)
-              .deleteDuedo(duedo);
+    final mainColor = ref.watch(mainColorProvider);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        minTileHeight: 48,
+        tileColor: Theme.of(context).focusColor,
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => EditDuedoDialog.edit(duedo),
+          );
         },
-        icon: const Icon(Icons.close),
+        leading: DateView(duedo.dueDate, colorOn: duedo.complete),
+        title: Text(duedo.title),
+        subtitle: Text('$dateString 등록'),
+        trailing: IconButton.filled(
+          style: IconButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            backgroundColor: duedo.complete
+                ? mainColor
+                : Theme.of(context).scaffoldBackgroundColor,
+          ),
+          padding: EdgeInsets.all(8),
+          onPressed: () {
+            ref
+                .read(getDuedoWithDateProvider(date: duedo.dueDate).notifier)
+                .toggleDuedoComplete(duedo);
+          },
+          icon: Icon(
+            Icons.check,
+            color: duedo.complete
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Theme.of(context).focusColor,
+          ),
+        ),
       ),
     );
   }
@@ -92,6 +120,21 @@ class EditDuedoDialog extends HookConsumerWidget {
       actions: [
         TextButton(
           onPressed: () {
+            ref
+                .read(getDuedoWithDateProvider(date: duedo!.dueDate).notifier)
+                .deleteDuedo(duedo!);
+            Navigator.pop(context);
+          },
+          child: Text(
+            '삭제',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(color: Colors.grey),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
             Navigator.pop(context);
           },
           child: Text(
@@ -105,7 +148,7 @@ class EditDuedoDialog extends HookConsumerWidget {
         TextButton(
           onPressed: () {
             ref
-                .read(crudDuedoProvider(date: duedo!.dueDate).notifier)
+                .read(getDuedoWithDateProvider(date: duedo!.dueDate).notifier)
                 .editDuedo(entity: duedo!, title: controller.text);
 
             Navigator.pop(context);

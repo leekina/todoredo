@@ -1,4 +1,5 @@
 import 'package:chattodo/page/calendar_page.dart';
+import 'package:chattodo/providers/duedo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -18,8 +19,6 @@ class DateWidget extends HookConsumerWidget {
     final isToday = date == today;
     final todayTextstyle =
         Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white);
-    final todayTextstylesub =
-        Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white);
 
     return isToday
         ? ListTile(
@@ -34,27 +33,23 @@ class DateWidget extends HookConsumerWidget {
               children: [
                 SizedBox(width: 8),
                 Expanded(
-                  child: Text(
-                    '듀두 개발 마무리하기 ~ 11.30',
-                    style: todayTextstyle,
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final currentDateDuedo =
+                          ref.watch(getCurrentDateDuedoProvider);
+                      return currentDateDuedo.maybeWhen(
+                        data: (duedo) => duedo == null
+                            ? Text('')
+                            : Text(
+                                '${duedo.title} ~ ${DateFormat('MM. dd').format(duedo.dueDate)}',
+                                style: todayTextstyle,
+                              ),
+                        orElse: () => const Text(''),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const CalendarPage(),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Text('W : 3', style: todayTextstylesub),
-                      Text('M : 10', style: todayTextstylesub),
-                    ],
-                  ),
-                ),
               ],
             ),
             trailing: GestureDetector(
@@ -78,8 +73,8 @@ class DateWidget extends HookConsumerWidget {
 
 class DateView extends HookConsumerWidget {
   final DateTime date;
-  final bool isToday;
-  const DateView(this.date, {super.key, this.isToday = false});
+  final bool colorOn;
+  const DateView(this.date, {super.key, this.colorOn = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,12 +85,12 @@ class DateView extends HookConsumerWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isToday == true ? maincolor : Theme.of(context).focusColor,
+          color: colorOn == true ? maincolor : Theme.of(context).focusColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
           '$dateString ${weekdayConvertor(date.weekday)}',
-          style: Theme.of(context).textTheme.bodyMedium!,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
     );
