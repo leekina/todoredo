@@ -38,6 +38,7 @@ class DuedoRepository {
         duedoList.sort(duedoDateCompare);
         return duedoList;
       }
+      duedoListAll.sort(duedoDateCompare);
       return duedoListAll;
     } catch (e) {
       rethrow;
