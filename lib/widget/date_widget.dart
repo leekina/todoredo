@@ -74,7 +74,9 @@ class DateWidget extends HookConsumerWidget {
 class DateView extends HookConsumerWidget {
   final DateTime date;
   final bool colorOn;
-  const DateView(this.date, {super.key, this.colorOn = false});
+  final bool paddingOn;
+  const DateView(this.date,
+      {super.key, this.colorOn = false, this.paddingOn = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,7 +85,9 @@ class DateView extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: paddingOn
+            ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+            : EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
           color: colorOn == true ? maincolor : Theme.of(context).focusColor,
           borderRadius: BorderRadius.circular(12),

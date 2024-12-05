@@ -1,10 +1,16 @@
+import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/page/redo_list_page.dart';
+import 'package:chattodo/style/calendar_style.dart';
 import 'package:chattodo/widget/bottom_widget.state.dart';
+import 'package:chattodo/widget/date_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:chattodo/providers/todo_provider.dart';
 import 'package:chattodo/util/common.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class BottomWidget extends HookConsumerWidget {
   const BottomWidget({
@@ -13,8 +19,9 @@ class BottomWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commentTodo = ref.watch(commentTodoProvider);
     final controller = ref.watch(todoTextfieldControllerProvider);
+    final commentTodo = ref.watch(commentTodoProvider);
+    final selectedDate = ref.watch(selectedDateProvider);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -45,6 +52,29 @@ class BottomWidget extends HookConsumerWidget {
                   child: Icon(Icons.list_alt_rounded),
                 ),
               ),
+              InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () {
+                  if (selectedDate.selectedDate != null &&
+                      selectedDate.datePickerOn == false) {
+                    ref.read(selectedDateProvider.notifier).deleteDate();
+                  } else {
+                    selectedDate.datePickerOn
+                        ? ref
+                            .read(selectedDateProvider.notifier)
+                            .setDatePickerOn(false)
+                        : ref.read(selectedDateProvider.notifier).initDate();
+                    addTodoNode.unfocus();
+                  }
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: selectedDate.selectedDate != null &&
+                          selectedDate.datePickerOn == false
+                      ? Icon(Icons.close)
+                      : Icon(Icons.edit_calendar),
+                ),
+              ),
               Expanded(
                 child: TextFormField(
                   controller: controller,
@@ -62,6 +92,15 @@ class BottomWidget extends HookConsumerWidget {
                     ref.read(commentTodoProvider.notifier).initTodo();
                   },
                   decoration: InputDecoration(
+                    prefixIcon: selectedDate.selectedDate == null
+                        ? null
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: DateView(
+                              selectedDate.selectedDate!,
+                              paddingOn: false,
+                            ),
+                          ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                     fillColor: Theme.of(context).focusColor,
                     filled: true,
@@ -104,6 +143,7 @@ class BottomWidget extends HookConsumerWidget {
               ),
             ],
           ),
+          DateSelectWidget(controller: controller),
         ],
       ),
     );
@@ -158,6 +198,54 @@ class CommentTodoWidget extends HookConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class DateSelectWidget extends HookConsumerWidget {
+  const DateSelectWidget({super.key, required this.controller});
+  final TextEditingController controller;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDate = ref.watch(selectedDateProvider);
+
+    return AnimatedContainer(
+      height: selectedDate.datePickerOn ? 332 : 0,
+      duration: Duration(milliseconds: 160),
+      child: selectedDate.datePickerOn
+          ? SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: TableCalendar(
+                sixWeekMonthsEnforced: true,
+                rowHeight: 42,
+                headerStyle: HeaderStyle(
+                  titleCentered: true,
+                  titleTextFormatter: (DateTime date, locale) {
+                    return DateFormat('yyyy년 MM월 dd일').format(date);
+                  },
+                ),
+                focusedDay: selectedDate.selectedDate ?? DateTime.now(),
+                firstDay: DateTime.now().subtract(Duration(days: 365)),
+                lastDay: DateTime.now().add(Duration(days: 365)),
+                selectedDayPredicate: (day) =>
+                    isSameDay(day, selectedDate.selectedDate),
+                onDaySelected: (selectedDay, _) {
+                  DateTime date = DateTime(
+                      selectedDay.year, selectedDay.month, selectedDay.day);
+                  ref.read(selectedDateProvider.notifier).setDate(date);
+                  addTodoNode.requestFocus();
+                },
+                onPageChanged: (focusedDay) {
+                  // DateTime date =
+                  //     DateTime(focusedDay.year, focusedDay.month, focusedDay.day);
+                  // ref.read(selectedDateProvider.notifier).setDate(date);
+                },
+                calendarFormat: CalendarFormat.month,
+                availableCalendarFormats: const {CalendarFormat.month: 'Month'},
+                calendarStyle: getCalendarStyle(ref.watch(mainColorProvider)),
+              ),
+            )
+          : SizedBox(),
     );
   }
 }
