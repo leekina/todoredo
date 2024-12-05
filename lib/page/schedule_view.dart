@@ -149,7 +149,7 @@ class EditDuedoDialog extends HookConsumerWidget {
           onPressed: () {
             ref
                 .read(getDuedoWithDateProvider(date: duedo!.dueDate).notifier)
-                .editDuedo(entity: duedo!, title: controller.text);
+                .editDuedoTitle(entity: duedo!, title: controller.text);
 
             Navigator.pop(context);
           },

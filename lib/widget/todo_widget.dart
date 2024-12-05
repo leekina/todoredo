@@ -21,7 +21,8 @@ class TodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isRedo = todo.type == TodoType.redo;
+    final isNotTodo =
+        (todo.type == TodoType.redo) || (todo.type == TodoType.duedo);
     final mainColor = ref.watch(mainColorProvider);
 
     //ChatLine
@@ -73,7 +74,7 @@ class TodoWidget extends HookConsumerWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        child: TodoTile(isRedo: isRedo, todo: todo),
+        child: TodoTile(isRedo: isNotTodo, todo: todo),
       ),
     );
   }

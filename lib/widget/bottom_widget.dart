@@ -1,10 +1,10 @@
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/page/redo_list_page.dart';
+import 'package:chattodo/providers/duedo_provider.dart';
 import 'package:chattodo/style/calendar_style.dart';
 import 'package:chattodo/widget/bottom_widget.state.dart';
 import 'package:chattodo/widget/date_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:chattodo/providers/todo_provider.dart';
 import 'package:chattodo/util/common.dart';
@@ -121,14 +121,18 @@ class BottomWidget extends HookConsumerWidget {
                   if (controller.text == "") return;
 
                   //work
-                  if (commentTodo == null) {
-                    ref
-                        .read(crudTodoProvider.notifier)
-                        .addTodo(chat: controller.text);
-                  } else {
+                  if (commentTodo != null) {
                     ref
                         .read(crudTodoProvider.notifier)
                         .editTodoComment(commentTodo, controller.text);
+                  } else if (selectedDate.selectedDate != null) {
+                    ref.read(crudDuedoProvider.notifier).addDuedo(
+                        title: controller.text,
+                        dueDate: selectedDate.selectedDate!);
+                  } else {
+                    ref
+                        .read(crudTodoProvider.notifier)
+                        .addTodo(chat: controller.text);
                   }
 
                   //init state
@@ -235,11 +239,7 @@ class DateSelectWidget extends HookConsumerWidget {
                   ref.read(selectedDateProvider.notifier).setDate(date);
                   addTodoNode.requestFocus();
                 },
-                onPageChanged: (focusedDay) {
-                  // DateTime date =
-                  //     DateTime(focusedDay.year, focusedDay.month, focusedDay.day);
-                  // ref.read(selectedDateProvider.notifier).setDate(date);
-                },
+                onPageChanged: (focusedDay) {},
                 calendarFormat: CalendarFormat.month,
                 availableCalendarFormats: const {CalendarFormat.month: 'Month'},
                 calendarStyle: getCalendarStyle(ref.watch(mainColorProvider)),

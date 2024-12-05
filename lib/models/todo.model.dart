@@ -48,5 +48,23 @@ class Todo with _$Todo {
     );
   }
 
+  factory Todo.addDueTodo({
+    required String todo,
+    required DateTime createDate,
+    required String duedoId,
+    String? comment,
+    bool? complete,
+  }) {
+    return Todo(
+      id: uuid.v4(),
+      connectedId: duedoId,
+      title: todo,
+      type: TodoType.duedo,
+      createDate: createDate,
+      comment: comment,
+      complete: complete ?? false,
+    );
+  }
+
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 }
