@@ -27,44 +27,49 @@ class CrudRedo extends _$CrudRedo {
   }
 
   void redoUpdateComplete(Todo todo) async {
-    final redo = await ref.read(redoRepositoryProvider).getRedo(todo.redoId!);
+    final redo =
+        await ref.read(redoRepositoryProvider).getRedo(todo.connectedId!);
     if (redo != null) {
       final editRedo = redo.copyWith(
           completeCount: redo.completeCount + 1,
           retodoList: [...redo.retodoList, todo.id]);
-      await ref
-          .read(redoRepositoryProvider)
-          .editRedo(id: todo.redoId!, editRedo: editRedo);
+      await ref.read(redoRepositoryProvider).editRedo(
+            id: todo.connectedId!,
+            editRedo: editRedo,
+          );
       state = AsyncData([
         for (final redo in state.value ?? [])
-          redo.id == todo.redoId! ? editRedo : redo
+          redo.id == todo.connectedId! ? editRedo : redo
       ]);
     }
   }
 
   void redoUpdateUncomplete(Todo todo) async {
-    final redo = await ref.read(redoRepositoryProvider).getRedo(todo.redoId!);
+    final redo =
+        await ref.read(redoRepositoryProvider).getRedo(todo.connectedId!);
     if (redo != null) {
       final editRedo =
           redo.copyWith(completeCount: redo.completeCount - 1, retodoList: [
         for (final todoId in redo.retodoList)
           if (todoId != todo.id) todoId
       ]);
-      await ref
-          .read(redoRepositoryProvider)
-          .editRedo(id: todo.redoId!, editRedo: editRedo);
+      await ref.read(redoRepositoryProvider).editRedo(
+            id: todo.connectedId!,
+            editRedo: editRedo,
+          );
       state = AsyncData([
         for (final redo in state.value ?? [])
-          redo.id == todo.redoId! ? editRedo : redo
+          redo.id == todo.connectedId! ? editRedo : redo
       ]);
     }
   }
 
   void editRedo({required Redo entity, required String title}) async {
     final newRedo = entity.copyWith(title: title);
-    await ref
-        .read(redoRepositoryProvider)
-        .editRedo(id: entity.id, editRedo: newRedo);
+    await ref.read(redoRepositoryProvider).editRedo(
+          id: entity.id,
+          editRedo: newRedo,
+        );
     state = AsyncData([
       for (final redo in state.value ?? [])
         redo.id == entity.id ? newRedo : redo

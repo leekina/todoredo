@@ -42,7 +42,7 @@ class TodoRepository extends TodoRepositoryScheme {
       final todoList = todoBox.values
           .map((e) => Todo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
-      todoList.sort(dateCompare);
+      todoList.sort(todoDateCompare);
       //Type 정의되면 타입에 해당하는것만
       //default : 전체
       switch (type) {
@@ -51,10 +51,10 @@ class TodoRepository extends TodoRepositoryScheme {
             for (final todo in todoList)
               if (todo.type == TodoType.todo) todo
           ];
-        case TodoType.schedule:
+        case TodoType.duedo:
           return [
             for (final todo in todoList)
-              if (todo.type == TodoType.schedule) todo
+              if (todo.type == TodoType.duedo) todo
           ];
         case TodoType.redo:
           return [

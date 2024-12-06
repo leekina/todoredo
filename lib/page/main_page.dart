@@ -37,19 +37,6 @@ class MainPage extends HookConsumerWidget {
             ),
           ),
           centerTitle: false,
-          actions: [
-            // IconButton(
-            //   onPressed: () {
-            //     Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //         builder: (context) => const SettingPage(),
-            //       ),
-            //     );
-            //   },
-            //   icon: Icon(Icons.settings, color: mainColor),
-            // ),
-            // const SizedBox(width: 8)
-          ],
         ),
         body: SafeArea(
           bottom: false,

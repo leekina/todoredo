@@ -25,6 +25,25 @@ class CrudTodo extends _$CrudTodo {
     ref.read(myScrollControllerProvider.notifier).moveToBottom();
   }
 
+  void addDueTodo({
+    required String chat,
+    required String duedoId,
+    DateTime? date,
+    bool? complete,
+    String? comment,
+  }) async {
+    final newTodo = Todo.addDueTodo(
+      todo: chat,
+      createDate: date ?? DateTime.now(),
+      duedoId: duedoId,
+      complete: complete,
+      comment: comment,
+    );
+    await ref.read(todoRepositoryProvider).addTodo(todo: newTodo);
+    state = AsyncData([...?state.value, newTodo]);
+    ref.read(myScrollControllerProvider.notifier).moveToBottom();
+  }
+
   void addReTodo({
     required String chat,
     required String redoId,

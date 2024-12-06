@@ -17,7 +17,7 @@ class Todo with _$Todo {
     DateTime? completeDate,
     bool? important,
     @Default(false) bool complete,
-    String? redoId,
+    String? connectedId,
   }) = _Todo;
 
   factory Todo.addTodo({
@@ -41,10 +41,28 @@ class Todo with _$Todo {
   }) {
     return Todo(
       id: uuid.v4(),
-      redoId: redoId,
+      connectedId: redoId,
       title: todo,
       type: TodoType.redo,
       createDate: createDate,
+    );
+  }
+
+  factory Todo.addDueTodo({
+    required String todo,
+    required DateTime createDate,
+    required String duedoId,
+    String? comment,
+    bool? complete,
+  }) {
+    return Todo(
+      id: uuid.v4(),
+      connectedId: duedoId,
+      title: todo,
+      type: TodoType.duedo,
+      createDate: createDate,
+      comment: comment,
+      complete: complete ?? false,
     );
   }
 

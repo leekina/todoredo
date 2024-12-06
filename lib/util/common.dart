@@ -1,4 +1,5 @@
 import 'package:chattodo/models/common.dart';
+import 'package:chattodo/models/duedo.model.dart';
 import 'package:chattodo/models/redo.model.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +13,20 @@ FocusNode addTodoNode = FocusNode();
 // final now = DateTime.now();
 // final today = DateFormat('MM. dd').format(DateTime.now());
 
-int dateCompare(a, b) {
-  final adate = a.type == TodoType.schedule.name && a.completeDate != null
+int todoDateCompare(a, b) {
+  final adate = a.type == TodoType.duedo.name && a.completeDate != null
       ? a.completeDate!
       : a.createDate;
-  final bdate = b.type == TodoType.schedule.name && b.completeDate != null
+  final bdate = b.type == TodoType.duedo.name && b.completeDate != null
       ? b.completeDate!
       : b.createDate;
+
+  return adate.compareTo(bdate);
+}
+
+int duedoDateCompare(a, b) {
+  final adate = a is Duedo ? a.dueDate : a.createDate;
+  final bdate = b is Duedo ? b.dueDate : b.createDate;
 
   return adate.compareTo(bdate);
 }
