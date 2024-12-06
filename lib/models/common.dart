@@ -1,5 +1,5 @@
 enum TodoType {
   todo,
-  schedule,
+  duedo,
   redo,
 }

@@ -30,3 +30,38 @@ class TodoTextfieldController extends _$TodoTextfieldController {
     return TextEditingController();
   }
 }
+
+@riverpod
+class SelectedDate extends _$SelectedDate {
+  @override
+  DatePickerState build() {
+    return DatePickerState(selectedDate: null, datePickerOn: false);
+  }
+
+  void setDate(DateTime date) {
+    state = DatePickerState(selectedDate: date, datePickerOn: false);
+  }
+
+  void setDatePickerOn(bool datePickerOn) {
+    state = DatePickerState(
+        selectedDate: state.selectedDate, datePickerOn: datePickerOn);
+  }
+
+  void initDate() {
+    state = DatePickerState(selectedDate: DateTime.now(), datePickerOn: true);
+  }
+
+  void deleteDate() {
+    state = DatePickerState.init();
+  }
+}
+
+class DatePickerState {
+  final DateTime? selectedDate;
+  final bool datePickerOn;
+
+  DatePickerState({required this.selectedDate, required this.datePickerOn});
+  factory DatePickerState.init() {
+    return DatePickerState(selectedDate: null, datePickerOn: false);
+  }
+}

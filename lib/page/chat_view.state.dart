@@ -7,15 +7,16 @@ part 'chat_view.state.g.dart';
 class MyScrollController extends _$MyScrollController {
   @override
   ScrollController build() {
-    ref.onAddListener(
-      () {},
-    );
+    ref.onAddListener(() {});
     return ScrollController();
   }
 
   void moveToBottom() async {
     state.jumpTo(40);
-    await state.animateTo(0,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+    await state.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 }

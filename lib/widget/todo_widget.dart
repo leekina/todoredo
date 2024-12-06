@@ -21,7 +21,8 @@ class TodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isRedo = todo.type == TodoType.redo;
+    final isNotTodo =
+        (todo.type == TodoType.redo) || (todo.type == TodoType.duedo);
     final mainColor = ref.watch(mainColorProvider);
 
     //ChatLine
@@ -30,7 +31,7 @@ class TodoWidget extends HookConsumerWidget {
       startActionPane: ActionPane(
         openThreshold: 0.3,
         closeThreshold: 0.4,
-        extentRatio: 0.3,
+        extentRatio: 0.2,
         motion: BehindMotion(),
         dismissible: DismissiblePane(
           dismissThreshold: 0.6,
@@ -40,15 +41,12 @@ class TodoWidget extends HookConsumerWidget {
         ),
         children: [
           SlidableAction(
-            flex: 1,
+            padding: EdgeInsets.all(0),
             onPressed: (context) {
               ref.read(crudTodoProvider.notifier).deleteTodo(todo);
             },
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            foregroundColor: Colors.red,
             icon: Icons.delete,
-            label: 'Delete',
           ),
         ],
       ),
@@ -76,7 +74,7 @@ class TodoWidget extends HookConsumerWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        child: TodoTile(isRedo: isRedo, todo: todo),
+        child: TodoTile(isRedo: isNotTodo, todo: todo),
       ),
     );
   }

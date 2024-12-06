@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:chattodo/repository/duedo_repository.dart';
 import 'package:chattodo/repository/redo_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/page/main_page.dart';
@@ -15,11 +17,15 @@ import 'package:chattodo/style/app.theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
+
   await Hive.initFlutter();
   //TodoBox
   await Hive.openBox('todos');
   //RedoBox
   await Hive.openBox('redos');
+  //Duedo
+  await Hive.openBox('duedos');
   //SettingBox
   final sharedPreferences = await SharedPreferences.getInstance();
 
@@ -28,6 +34,7 @@ void main() async {
       overrides: [
         todoRepositoryProvider.overrideWithValue(TodoRepository()),
         redoRepositoryProvider.overrideWithValue(RedoRepository()),
+        duedoRepositoryProvider.overrideWithValue(DuedoRepository()),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
       child: const MyApp(),
