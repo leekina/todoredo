@@ -21,79 +21,87 @@ class TodoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNotTodo =
-        (todo.type == TodoType.redo) || (todo.type == TodoType.duedo);
-    final mainColor = ref.watch(mainColorProvider);
-
-    //ChatLine
+    //채팅 하나의 Row
     return Slidable(
       key: ValueKey(todo.id),
-      startActionPane: ActionPane(
-        openThreshold: 0.3,
-        closeThreshold: 0.4,
-        extentRatio: 0.2,
-        motion: BehindMotion(),
-        dismissible: DismissiblePane(
-          dismissThreshold: 0.6,
-          onDismissed: () {
-            ref.read(crudTodoProvider.notifier).deleteTodo(todo);
-          },
-        ),
-        children: [
-          SlidableAction(
-            padding: EdgeInsets.all(0),
-            onPressed: (context) {
-              ref.read(crudTodoProvider.notifier).deleteTodo(todo);
-            },
-            foregroundColor: Colors.red,
-            icon: Icons.delete,
-          ),
-        ],
-      ),
-      endActionPane: ActionPane(
-        dragDismissible: false,
-        extentRatio: 0.1,
-        motion: CustomMotion(
-            onOpen: (context) async {
-              ref.read(commentTodoProvider.notifier).setTodo(todo);
-              addTodoNode.requestFocus();
-            },
-            motionWidget: BehindMotion()),
-        children: [
-          SlidableAction(
-            padding: EdgeInsets.all(0),
-            onPressed: (context) {
-              Slidable.of(context)?.close();
-            },
-            autoClose: false,
-            backgroundColor: Colors.transparent,
-            foregroundColor: mainColor,
-            icon: Icons.comment,
-          ),
-        ],
-      ),
+      //siwpe ->
+      startActionPane: deleteAction(ref),
+      //siwpe <-
+      endActionPane: commentAction(ref),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        child: TodoTile(isRedo: isNotTodo, todo: todo),
+        child: TodoTile(todo: todo),
       ),
+    );
+  }
+
+  ActionPane commentAction(WidgetRef ref) {
+    return ActionPane(
+      dragDismissible: false,
+      extentRatio: 0.1,
+      motion: CustomMotion(
+          onOpen: (context) async {
+            ref.read(commentTodoProvider.notifier).setTodo(todo);
+            addTodoNode.requestFocus();
+          },
+          motionWidget: BehindMotion()),
+      children: [
+        SlidableAction(
+          padding: EdgeInsets.all(0),
+          onPressed: (context) {
+            Slidable.of(context)?.close();
+          },
+          autoClose: false,
+          backgroundColor: Colors.transparent,
+          foregroundColor: ref.watch(mainColorProvider),
+          icon: Icons.comment,
+        ),
+      ],
+    );
+  }
+
+  ActionPane deleteAction(WidgetRef ref) {
+    return ActionPane(
+      openThreshold: 0.3,
+      closeThreshold: 0.4,
+      extentRatio: 0.2,
+      motion: BehindMotion(),
+      dismissible: DismissiblePane(
+        dismissThreshold: 0.6,
+        onDismissed: () {
+          ref.read(crudTodoProvider.notifier).deleteTodo(todo);
+        },
+      ),
+      children: [
+        SlidableAction(
+          padding: EdgeInsets.all(0),
+          onPressed: (context) {
+            ref.read(crudTodoProvider.notifier).deleteTodo(todo);
+          },
+          foregroundColor: Colors.red,
+          icon: Icons.delete,
+        ),
+      ],
     );
   }
 }
 
+//채팅의 동작을 정의합니다.
 class TodoTile extends HookConsumerWidget {
   const TodoTile({
     super.key,
-    required this.isRedo,
     required this.todo,
   });
 
-  final bool isRedo;
   final Todo todo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //if isTodo right else left
+    final alignLeft =
+        (todo.type == TodoType.redo) || (todo.type == TodoType.duedo);
     return Align(
-      alignment: isRedo ? Alignment.centerLeft : Alignment.centerRight,
+      alignment: alignLeft ? Alignment.centerLeft : Alignment.centerRight,
       child: Material(
         child: InkWell(
           //길게 누르면 수정
@@ -105,34 +113,36 @@ class TodoTile extends HookConsumerWidget {
               );
             }
           },
+          //두번누르면 완료
           onDoubleTap: () {
             ref.read(crudTodoProvider.notifier).toggleTodoComplete(todo);
-            //언포커스
             addTodoNode.unfocus();
           },
-          onTap: todo.complete == true
-              ? null
-              : () {
-                  ref.read(crudTodoProvider.notifier).toggleTodoImportant(todo);
-                },
+          //한번 누르면 강조
+          onTap: () {
+            todo.complete == true
+                ? null
+                : ref.read(crudTodoProvider.notifier).toggleTodoImportant(todo);
+          },
           child: todo.comment == null
-              ? TodoView(todo: todo, isRedo: isRedo)
-              : TodoViewWithComment(todo: todo, isRedo: isRedo),
+              ? TodoView(todo: todo, isLeft: alignLeft)
+              : TodoViewWithComment(todo: todo, isLeft: alignLeft),
         ),
       ),
     );
   }
 }
 
+//채팅의 뷰를 정의합니다.
 class TodoView extends ConsumerWidget {
   const TodoView({
     super.key,
     required this.todo,
-    required this.isRedo,
+    required this.isLeft,
   });
 
   final Todo todo;
-  final bool isRedo;
+  final bool isLeft;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -156,9 +166,9 @@ class TodoView extends ConsumerWidget {
             topLeft: const Radius.circular(8),
             topRight: const Radius.circular(8),
             bottomLeft:
-                isRedo ? const Radius.circular(0) : const Radius.circular(8),
+                isLeft ? const Radius.circular(0) : const Radius.circular(8),
             bottomRight:
-                isRedo ? const Radius.circular(8) : const Radius.circular(0),
+                isLeft ? const Radius.circular(8) : const Radius.circular(0),
           ),
           color: todo.complete ? mainColor : Theme.of(context).focusColor),
       constraints:
@@ -176,15 +186,16 @@ class TodoView extends ConsumerWidget {
   }
 }
 
+//커밋이 포함된 채팅의 뷰를 정의합니다.
 class TodoViewWithComment extends ConsumerWidget {
   const TodoViewWithComment({
     super.key,
     required this.todo,
-    required this.isRedo,
+    required this.isLeft,
   });
 
   final Todo todo;
-  final bool isRedo;
+  final bool isLeft;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -209,9 +220,9 @@ class TodoViewWithComment extends ConsumerWidget {
             topLeft: const Radius.circular(8),
             topRight: const Radius.circular(8),
             bottomLeft:
-                isRedo ? const Radius.circular(0) : const Radius.circular(8),
+                isLeft ? const Radius.circular(0) : const Radius.circular(8),
             bottomRight:
-                isRedo ? const Radius.circular(8) : const Radius.circular(0),
+                isLeft ? const Radius.circular(8) : const Radius.circular(0),
           ),
           color: todo.complete ? mainColor : Theme.of(context).focusColor),
       constraints:
