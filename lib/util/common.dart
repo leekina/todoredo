@@ -4,14 +4,13 @@ import 'package:chattodo/models/redo.model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chattodo/models/todo.model.dart';
+import 'package:intl/intl.dart';
 
 import 'package:uuid/uuid.dart';
 
 const uuid = Uuid();
 
 FocusNode addTodoNode = FocusNode();
-// final now = DateTime.now();
-// final today = DateFormat('MM. dd').format(DateTime.now());
 
 int todoDateCompare(a, b) {
   final adate = a.type == TodoType.duedo.name && a.completeDate != null
@@ -29,6 +28,10 @@ int duedoDateCompare(a, b) {
   final bdate = b is Duedo ? b.dueDate : b.createDate;
 
   return adate.compareTo(bdate);
+}
+
+String getDateToStringFormat(DateTime date) {
+  return DateFormat('MM. dd').format(date);
 }
 
 List<Todo> tutorialTodo = [

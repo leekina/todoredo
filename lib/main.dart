@@ -18,7 +18,7 @@ import 'package:chattodo/style/app.theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
-
+  //Setting Hive
   await Hive.initFlutter();
   //TodoBox
   await Hive.openBox('todos');
@@ -47,12 +47,14 @@ class MyApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //첫 접속 체크하여 변경
     ref.listen(checkFirstConnectionProvider, (previous, next) async {
       await ref
           .read(sharedPreferencesProvider)
           .setBool("checkFirstConnection", next);
     });
-    //스테이터스바 픽스
+
+    //스테이터스바 컬러 변경
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).scaffoldBackgroundColor,
@@ -84,6 +86,8 @@ class MyApp extends HookConsumerWidget {
       title: 'ChatTodo',
       theme: ThemeData(
           appBarTheme: AppBarTheme(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.w700,
                   color: ref.watch(mainColorProvider),
