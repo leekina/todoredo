@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'chat_view.state.g.dart';
 
+//챗뷰 스크롤 컨트롤러
 @riverpod
 class MyScrollController extends _$MyScrollController {
   @override
