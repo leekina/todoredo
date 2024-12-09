@@ -1,9 +1,9 @@
-import 'package:chattodo/models/common.dart';
-import 'package:chattodo/models/duedo.model.dart';
-import 'package:chattodo/models/redo.model.dart';
+import 'package:chattodo/model/models/common.dart';
+import 'package:chattodo/model/models/duedo.model.dart';
+import 'package:chattodo/model/models/redo.model.dart';
 import 'package:flutter/material.dart';
 
-import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/model/models/todo.model.dart';
 import 'package:intl/intl.dart';
 
 import 'package:uuid/uuid.dart';

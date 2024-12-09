@@ -1,9 +1,9 @@
-import 'package:chattodo/models/common.dart';
+import 'package:chattodo/model/models/common.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:chattodo/util/common.dart';
 
-part 'todo.model.g.dart';
-part 'todo.model.freezed.dart';
+part '../todo.model.g.dart';
+part '../todo.model.freezed.dart';
 
 @freezed
 class Todo with _$Todo {

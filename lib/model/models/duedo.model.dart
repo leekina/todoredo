@@ -1,8 +1,8 @@
 import 'package:chattodo/util/common.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'duedo.model.g.dart';
-part 'duedo.model.freezed.dart';
+part '../duedo.model.g.dart';
+part '../duedo.model.freezed.dart';
 
 @freezed
 class Duedo with _$Duedo {

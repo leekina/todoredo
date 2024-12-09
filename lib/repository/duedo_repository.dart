@@ -1,4 +1,4 @@
-import 'package:chattodo/models/duedo.model.dart';
+import 'package:chattodo/model/models/duedo.model.dart';
 import 'package:chattodo/util/common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';

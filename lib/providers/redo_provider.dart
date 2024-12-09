@@ -1,5 +1,5 @@
-import 'package:chattodo/models/redo.model.dart';
-import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/model/models/redo.model.dart';
+import 'package:chattodo/model/models/todo.model.dart';
 import 'package:chattodo/repository/redo_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

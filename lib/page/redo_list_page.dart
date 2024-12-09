@@ -1,5 +1,5 @@
 import 'package:chattodo/app/state/app.state.dart';
-import 'package:chattodo/models/redo.model.dart';
+import 'package:chattodo/model/models/redo.model.dart';
 import 'package:chattodo/providers/redo_provider.dart';
 import 'package:chattodo/providers/todo_provider.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:chattodo/models/duedo.model.dart';
+import 'package:chattodo/model/models/duedo.model.dart';
 import 'package:chattodo/providers/todo_provider.dart';
 
 import 'package:chattodo/repository/duedo_repository.dart';

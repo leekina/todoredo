@@ -1,6 +1,6 @@
-import 'package:chattodo/models/common.dart';
-import 'package:chattodo/models/redo.model.dart';
-import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/model/models/common.dart';
+import 'package:chattodo/model/models/redo.model.dart';
+import 'package:chattodo/model/models/todo.model.dart';
 
 /* 
 Repository에서는 상태변경이 일어나지 않음

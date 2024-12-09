@@ -1,8 +1,8 @@
-import 'package:chattodo/models/common.dart';
+import 'package:chattodo/model/models/common.dart';
 import 'package:chattodo/page/chat_view.state.dart';
 import 'package:chattodo/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/model/models/todo.model.dart';
 
 import 'package:chattodo/repository/todo_repository.dart';
 

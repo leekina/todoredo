@@ -1,5 +1,5 @@
 import 'package:chattodo/app/state/app.state.dart';
-import 'package:chattodo/models/duedo.model.dart';
+import 'package:chattodo/model/models/duedo.model.dart';
 import 'package:chattodo/page/canendar_page.state.dart';
 import 'package:chattodo/providers/duedo_provider.dart';
 

@@ -1,7 +1,7 @@
-import 'package:chattodo/models/common.dart';
+import 'package:chattodo/model/models/common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
-import 'package:chattodo/models/todo.model.dart';
+import 'package:chattodo/model/models/todo.model.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/repository/repository_scheme.dart';

@@ -1,8 +1,8 @@
 import 'package:chattodo/util/common.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'redo.model.g.dart';
-part 'redo.model.freezed.dart';
+part '../redo.model.g.dart';
+part '../redo.model.freezed.dart';
 
 @freezed
 class Redo with _$Redo {
