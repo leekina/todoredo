@@ -1,11 +1,11 @@
 import 'package:chattodo/model/models/redo.model.dart';
-import 'package:chattodo/util/common.dart';
+import 'package:chattodo/repository/tutorial/tutorial_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:chattodo/repository/repository_scheme.dart';
+import 'package:chattodo/repository/core/repository_scheme.dart';
 
-part 'redo_repository.g.dart';
+part '../redo_repository.g.dart';
 
 @riverpod
 RedoRepository redoRepository(Ref ref) {

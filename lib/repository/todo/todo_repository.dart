@@ -1,12 +1,13 @@
 import 'package:chattodo/model/models/common.dart';
+import 'package:chattodo/repository/tutorial/tutorial_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:chattodo/model/models/todo.model.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:chattodo/repository/repository_scheme.dart';
+import 'package:chattodo/repository/core/repository_scheme.dart';
 import 'package:chattodo/util/common.dart';
-part 'todo_repository.g.dart';
+part '../todo_repository.g.dart';
 
 @riverpod
 TodoRepository todoRepository(Ref ref) {

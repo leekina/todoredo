@@ -2,11 +2,6 @@ import 'package:chattodo/model/models/common.dart';
 import 'package:chattodo/model/models/redo.model.dart';
 import 'package:chattodo/model/models/todo.model.dart';
 
-/* 
-Repository에서는 상태변경이 일어나지 않음
-모든 상태변경은 provider에서 일어남
-*/
-
 abstract class TodoRepositoryScheme {
   Future<List<Todo>> getTodos({TodoType? type});
 

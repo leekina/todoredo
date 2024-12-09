@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'duedo_repository.g.dart';
+part '../duedo_repository.g.dart';
 
 @riverpod
 DuedoRepository duedoRepository(Ref ref) {
