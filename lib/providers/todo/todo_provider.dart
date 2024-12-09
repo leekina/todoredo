@@ -1,12 +1,12 @@
 import 'package:chattodo/model/models/common.dart';
-import 'package:chattodo/page/chat_view.state.dart';
+import 'package:chattodo/pages/todo/state/chat_view.state.dart';
 import 'package:chattodo/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chattodo/model/models/todo.model.dart';
 
-import 'package:chattodo/repository/todo_repository.dart';
+import 'package:chattodo/repository/todo/todo_repository.dart';
 
-part 'todo_provider.g.dart';
+part '../todo_provider.g.dart';
 
 @riverpod
 class CrudTodo extends _$CrudTodo {

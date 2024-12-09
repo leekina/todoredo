@@ -1,11 +1,11 @@
 import 'package:chattodo/model/models/duedo.model.dart';
-import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/providers/todo/todo_provider.dart';
 
-import 'package:chattodo/repository/duedo_repository.dart';
+import 'package:chattodo/repository/duedo/duedo_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'duedo_provider.g.dart';
+part '../duedo_provider.g.dart';
 
 @riverpod
 class CrudDuedo extends _$CrudDuedo {
