@@ -86,7 +86,7 @@ class TodoWidget extends HookConsumerWidget {
   }
 }
 
-//채팅의 동작을 정의합니다.
+//채팅의 동작 및 위치를 정의합니다.
 class TodoTile extends HookConsumerWidget {
   const TodoTile({
     super.key,
@@ -124,9 +124,7 @@ class TodoTile extends HookConsumerWidget {
                 ? null
                 : ref.read(crudTodoProvider.notifier).toggleTodoImportant(todo);
           },
-          child: todo.comment == null
-              ? TodoView(todo: todo, isLeft: alignLeft)
-              : TodoViewWithComment(todo: todo, isLeft: alignLeft),
+          child: TodoView(todo: todo, isLeft: alignLeft),
         ),
       ),
     );
@@ -147,109 +145,60 @@ class TodoView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mainColor = ref.watch(mainColorProvider);
+    //comment가 있을경우 본문을 작은글씨로
+    final smallTextStyle = Theme.of(context).textTheme.bodySmall;
+    // has comment ? comment textStyle : title textStyle
+    final bodyTextStyle = todo.complete
+        ? Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white)
+        : null;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-          border: todo.complete
-              ? Border.all(
-                  color: mainColor,
-                  width: 2,
-                  strokeAlign: BorderSide.strokeAlignOutside)
-              : Border.all(
-                  color: todo.important == true
-                      ? mainColor
-                      : Theme.of(context).focusColor,
-                  width: 2,
-                  strokeAlign: BorderSide.strokeAlignOutside),
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(8),
-            topRight: const Radius.circular(8),
-            bottomLeft:
-                isLeft ? const Radius.circular(0) : const Radius.circular(8),
-            bottomRight:
-                isLeft ? const Radius.circular(8) : const Radius.circular(0),
-          ),
-          color: todo.complete ? mainColor : Theme.of(context).focusColor),
+      decoration: chatBoxDecoration(mainColor, context),
       constraints:
           BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-      child: Text(
-        todo.title,
-        style: todo.complete
-            ? Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(color: Colors.white)
-            : null,
-      ),
+      child: todo.comment == null
+          ? Text(todo.title, style: bodyTextStyle)
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  todo.title,
+                  style: todo.complete
+                      ? smallTextStyle!.copyWith(color: Colors.white54)
+                      : smallTextStyle!.copyWith(
+                          color: smallTextStyle.color!.withOpacity(0.54),
+                        ),
+                ),
+                Text(todo.comment ?? '', style: bodyTextStyle),
+              ],
+            ),
     );
   }
-}
 
-//커밋이 포함된 채팅의 뷰를 정의합니다.
-class TodoViewWithComment extends ConsumerWidget {
-  const TodoViewWithComment({
-    super.key,
-    required this.todo,
-    required this.isLeft,
-  });
-
-  final Todo todo;
-  final bool isLeft;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final mainColor = ref.watch(mainColorProvider);
-    final todoTextstyle = Theme.of(context).textTheme.bodySmall;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-          border: todo.complete
-              ? Border.all(
-                  color: mainColor,
-                  width: 2,
-                  strokeAlign: BorderSide.strokeAlignOutside)
-              : Border.all(
-                  color: todo.important == true
-                      ? mainColor
-                      : Theme.of(context).focusColor,
-                  width: 2,
-                  strokeAlign: BorderSide.strokeAlignOutside),
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(8),
-            topRight: const Radius.circular(8),
-            bottomLeft:
-                isLeft ? const Radius.circular(0) : const Radius.circular(8),
-            bottomRight:
-                isLeft ? const Radius.circular(8) : const Radius.circular(0),
-          ),
-          color: todo.complete ? mainColor : Theme.of(context).focusColor),
-      constraints:
-          BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            todo.title,
-            style: todo.complete
-                ? todoTextstyle!.copyWith(color: Colors.white54)
-                : todoTextstyle!.copyWith(
-                    color: todoTextstyle.color!.withOpacity(0.54),
-                  ),
-          ),
-          Text(
-            todo.comment ?? '',
-            style: todo.complete
-                ? Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Colors.white)
-                : null,
-          ),
-        ],
+  BoxDecoration chatBoxDecoration(Color mainColor, BuildContext context) {
+    return BoxDecoration(
+      border: todo.complete
+          ? Border.all(
+              color: mainColor,
+              width: 2,
+              strokeAlign: BorderSide.strokeAlignOutside)
+          : Border.all(
+              color: todo.important == true
+                  ? mainColor
+                  : Theme.of(context).focusColor,
+              width: 2,
+              strokeAlign: BorderSide.strokeAlignOutside),
+      borderRadius: BorderRadius.only(
+        topLeft: const Radius.circular(8),
+        topRight: const Radius.circular(8),
+        bottomLeft:
+            isLeft ? const Radius.circular(0) : const Radius.circular(8),
+        bottomRight:
+            isLeft ? const Radius.circular(8) : const Radius.circular(0),
       ),
+      color: todo.complete ? mainColor : Theme.of(context).focusColor,
     );
   }
 }
