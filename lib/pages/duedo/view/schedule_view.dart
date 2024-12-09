@@ -1,7 +1,7 @@
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/model/models/duedo.model.dart';
-import 'package:chattodo/page/canendar_page.state.dart';
-import 'package:chattodo/providers/duedo_provider.dart';
+import 'package:chattodo/pages/duedo/state/canendar_page.state.dart';
+import 'package:chattodo/providers/duedo/duedo_provider.dart';
 
 import 'package:chattodo/widget/date_widget.dart';
 import 'package:flutter/material.dart';

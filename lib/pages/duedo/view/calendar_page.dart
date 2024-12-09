@@ -1,8 +1,8 @@
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/model/models/duedo.model.dart';
-import 'package:chattodo/page/canendar_page.state.dart';
-import 'package:chattodo/page/schedule_view.dart';
-import 'package:chattodo/providers/duedo_provider.dart';
+import 'package:chattodo/pages/duedo/state/canendar_page.state.dart';
+import 'package:chattodo/pages/duedo/view/schedule_view.dart';
+import 'package:chattodo/providers/duedo/duedo_provider.dart';
 import 'package:chattodo/style/calendar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

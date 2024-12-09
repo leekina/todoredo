@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-part 'canendar_page.state.g.dart';
+part '../../canendar_page.state.g.dart';
 
 @riverpod
 class DuedoScrollController extends _$DuedoScrollController {

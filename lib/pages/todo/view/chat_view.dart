@@ -1,11 +1,11 @@
-import 'package:chattodo/page/chat_view.state.dart';
+import 'package:chattodo/pages/todo/state/chat_view.state.dart';
 import 'package:chattodo/util/common.dart';
 import 'package:chattodo/widget/todo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/providers/todo/todo_provider.dart';
 import 'package:chattodo/widget/date_widget.dart';
 
 class ChatView extends HookConsumerWidget {

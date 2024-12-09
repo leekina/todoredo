@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:chattodo/repository/duedo_repository.dart';
-import 'package:chattodo/repository/redo_repository.dart';
+import 'package:chattodo/repository/duedo/duedo_repository.dart';
+import 'package:chattodo/repository/redo/redo_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,9 +10,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chattodo/app/state/app.state.dart';
-import 'package:chattodo/page/main_page.dart';
-import 'package:chattodo/providers/todo_provider.dart';
-import 'package:chattodo/repository/todo_repository.dart';
+import 'package:chattodo/app/main_page.dart';
+import 'package:chattodo/providers/todo/todo_provider.dart';
+import 'package:chattodo/repository/todo/todo_repository.dart';
 import 'package:chattodo/style/app.theme.dart';
 
 void main() async {

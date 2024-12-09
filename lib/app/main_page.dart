@@ -1,11 +1,9 @@
+import 'package:chattodo/app/state/app.state.dart';
+import 'package:chattodo/pages/page.dart';
+import 'package:chattodo/util/common.dart';
+import 'package:chattodo/widget/bottom_widget/view/bottom_widget_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:chattodo/app/state/app.state.dart';
-import 'package:chattodo/page/chat_view.dart';
-import 'package:chattodo/page/setting_page.dart';
-
-import 'package:chattodo/util/common.dart';
-import 'package:chattodo/widget/bottom_widget.dart';
 
 class MainPage extends HookConsumerWidget {
   const MainPage({super.key});
