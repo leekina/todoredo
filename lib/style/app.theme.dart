@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+//TODO : 적용 예정 개발중
+
 class ThemeExtensionX extends ThemeExtension<ThemeExtensionX> {
   final Color defaultColor;
   final Color pointColor;
@@ -61,8 +63,8 @@ class ThemeExtensionX extends ThemeExtension<ThemeExtensionX> {
   }
 }
 
-// extension BeautyThemeBuildContextProps on BuildContext {
-//   ThemeExtensionX get appTheme => Theme.of(this).extension<ThemeExtensionX>()!;
-//   Color get mainColor => appTheme.defaultColor;
-//   Color get pointColor => appTheme.pointColor;
-// }
+extension ThemeExtentionXOnBuildContext on BuildContext {
+  ThemeExtensionX get app => Theme.of(this).extension<ThemeExtensionX>()!;
+  Color get mainColor => app.defaultColor;
+  Color get pointColor => app.pointColor;
+}

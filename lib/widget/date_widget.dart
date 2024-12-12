@@ -1,5 +1,6 @@
-import 'package:chattodo/page/calendar_page.dart';
-import 'package:chattodo/providers/duedo_provider.dart';
+import 'package:chattodo/pages/duedo/view/calendar_page.dart';
+import 'package:chattodo/providers/duedo/duedo_provider.dart';
+import 'package:chattodo/util/common.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -13,61 +14,67 @@ class DateWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = DateFormat('MM. dd').format(todoDate);
-    final today = DateFormat('MM. dd').format(DateTime.now());
-    final mainColor = ref.watch(mainColorProvider);
+    final date = getDateToStringFormat(todoDate);
+    final today = getDateToStringFormat(DateTime.now());
     final isToday = date == today;
+
+    return isToday ? TodayDateWidget(todoDate: todoDate) : DateView(todoDate);
+  }
+}
+
+class TodayDateWidget extends HookConsumerWidget {
+  const TodayDateWidget({
+    super.key,
+    required this.todoDate,
+  });
+
+  final DateTime todoDate;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mainColor = ref.watch(mainColorProvider);
     final todayTextstyle =
         Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white);
 
-    return isToday
-        ? ListTile(
-            horizontalTitleGap: 0,
-            contentPadding: EdgeInsets.symmetric(horizontal: 4),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            tileColor: mainColor,
-            minTileHeight: 48,
-            leading: DateView(todoDate),
-            title: Row(
-              children: [
-                SizedBox(width: 8),
-                Expanded(
-                  child: Consumer(
-                    builder: (context, ref, child) {
-                      final currentDateDuedo =
-                          ref.watch(getCurrentDateDuedoProvider);
-                      return currentDateDuedo.maybeWhen(
-                        data: (duedo) => duedo == null
-                            ? Text('')
-                            : Text(
-                                '${duedo.title} ~ ${DateFormat('MM. dd').format(duedo.dueDate)}',
-                                style: todayTextstyle,
-                              ),
-                        orElse: () => const Text(''),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(width: 8),
-              ],
+    return ListTile(
+      horizontalTitleGap: 0,
+      contentPadding: EdgeInsets.symmetric(horizontal: 4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      tileColor: mainColor.withOpacity(0.8),
+      minTileHeight: 48,
+      leading: DateView(todoDate, colorOn: true),
+      title: Consumer(
+        builder: (context, ref, child) {
+          final currentDateDuedo = ref.watch(getCurrentDateDuedoProvider);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: currentDateDuedo.maybeWhen(
+              data: (duedo) => duedo == null
+                  ? Text('예정된 일정이 없습니다.', style: todayTextstyle)
+                  : Text(
+                      '${duedo.title} ~ ${getDateToStringFormat(duedo.dueDate)}',
+                      style: todayTextstyle,
+                    ),
+              orElse: () => const Text(''),
             ),
-            trailing: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const CalendarPage(),
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 32,
-              ),
+          );
+        },
+      ),
+      trailing: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const CalendarPage(),
             ),
-          )
-        : DateView(todoDate);
+          );
+        },
+        child: Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.white,
+          size: 32,
+        ),
+      ),
+    );
   }
 }
 
