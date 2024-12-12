@@ -1,5 +1,5 @@
-import 'package:chattodo/page/calendar_page.dart';
-import 'package:chattodo/providers/duedo_provider.dart';
+import 'package:chattodo/pages/duedo/view/calendar_page.dart';
+import 'package:chattodo/providers/duedo/duedo_provider.dart';
 import 'package:chattodo/util/common.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

@@ -1,12 +1,12 @@
 import 'package:chattodo/app/state/app.state.dart';
-import 'package:chattodo/page/redo_list_page.dart';
-import 'package:chattodo/providers/duedo_provider.dart';
+import 'package:chattodo/pages/redo/view/redo_list_page.dart';
+import 'package:chattodo/providers/duedo/duedo_provider.dart';
 import 'package:chattodo/style/calendar_style.dart';
-import 'package:chattodo/widget/bottom_widget.state.dart';
+import 'package:chattodo/widget/bottom_widget/state/bottom_widget.state.dart';
 import 'package:chattodo/widget/date_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/providers/todo/todo_provider.dart';
 import 'package:chattodo/util/common.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';

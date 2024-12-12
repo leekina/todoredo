@@ -1,13 +1,13 @@
 import 'package:chattodo/app/state/app.state.dart';
 import 'package:chattodo/model/models/common.dart';
 import 'package:chattodo/util/custom_motion.dart';
-import 'package:chattodo/widget/bottom_widget.state.dart';
+import 'package:chattodo/widget/bottom_widget/state/bottom_widget.state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:chattodo/model/models/todo.model.dart';
-import 'package:chattodo/providers/todo_provider.dart';
+import 'package:chattodo/providers/todo/todo_provider.dart';
 import 'package:chattodo/util/common.dart';
 import 'package:chattodo/widget/edit_chat_dialog.dart';
 

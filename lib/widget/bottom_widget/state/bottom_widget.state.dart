@@ -2,7 +2,7 @@ import 'package:chattodo/model/models/todo.model.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'bottom_widget.state.g.dart';
+part '../../bottom_widget.state.g.dart';
 
 @riverpod
 class CommentTodo extends _$CommentTodo {
