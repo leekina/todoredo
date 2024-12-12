@@ -14,7 +14,7 @@ TodoRepository todoRepository(Ref ref) {
   throw UnimplementedError();
 }
 
-class TodoRepository extends TodoRepositoryScheme {
+class TodoRepository implements TodoRepositoryScheme {
   final Box todoBox = Hive.box('todos');
 
   @override

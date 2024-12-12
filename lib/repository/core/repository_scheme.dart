@@ -2,7 +2,7 @@ import 'package:chattodo/model/models/common.dart';
 import 'package:chattodo/model/models/redo.model.dart';
 import 'package:chattodo/model/models/todo.model.dart';
 
-abstract class TodoRepositoryScheme {
+abstract interface class TodoRepositoryScheme {
   Future<List<Todo>> getTodos({TodoType? type});
 
   Future<void> addTodo({required Todo todo});
